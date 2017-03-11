@@ -3,8 +3,6 @@ title = "jkkitakita"
 
 theme = "hugo-tranquilpeak-theme"
 
-publishDir = "docs"
-
 paginate = 7
 canonifyurls = true
 
