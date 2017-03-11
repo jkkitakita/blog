@@ -1,7 +1,6 @@
 languageCode = "ja"
 title = "jkkitakita"
 baseurl = "http://jkkitakita.com"
-canonifyurls = true
 
 theme = "hugo-tranquilpeak-theme"
 
