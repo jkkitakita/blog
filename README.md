@@ -1,0 +1,2 @@
+# blog
+jkkitakita's blog
