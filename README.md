@@ -1,2 +1,1 @@
-# blog
-jkkitakita's blog
+jkkitakita.com
