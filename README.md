@@ -1,1 +1,1 @@
-jkkitakita.com
+http://jkkitakita.com
