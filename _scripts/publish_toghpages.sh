@@ -27,6 +27,8 @@ hugo
 
 echo "Updating gh-pages branch"
 cd public && \
+touch CNAME && \
+echo "jkkitakita.com" > CNAME && \
 git add --all && \
 git commit -m "Publishing to gh-pages (publish.sh)" && \
 git push origin gh-pages
