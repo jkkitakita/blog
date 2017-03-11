@@ -6,34 +6,23 @@
     <description>Recent content on jkkitakita</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Sun, 12 Mar 2017 00:05:49 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 12 Mar 2017 05:46:19 +0900</lastBuildDate>
     <atom:link href="http://jkkitakita.com/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>New Page</title>
-      <link>http://jkkitakita.com/page/contact/</link>
-      <pubDate>Sun, 12 Mar 2017 00:05:49 +0900</pubDate>
+      <title>test</title>
+      <link>http://jkkitakita.com/2017/03/test/</link>
+      <pubDate>Sun, 12 Mar 2017 05:46:19 +0900</pubDate>
       
-      <guid>http://jkkitakita.com/page/contact/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>New Post</title>
-      <link>http://jkkitakita.com/2015/05/new-post/</link>
-      <pubDate>Thu, 28 May 2015 00:00:00 +0000</pubDate>
-      
-      <guid>http://jkkitakita.com/2015/05/new-post/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>New Post</title>
-      <link>http://jkkitakita.com/2015/05/new-post/</link>
-      <pubDate>Thu, 28 May 2015 00:00:00 +0000</pubDate>
-      
-      <guid>http://jkkitakita.com/2015/05/new-post/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;</description>
+      <guid>http://jkkitakita.com/2017/03/test/</guid>
+      <description>&lt;span class=&#34;highlight-text danger&#34;&gt;
+content
+&lt;/span&gt;
+
+&lt;div class=&#34;alert danger no-icon &#34;&gt;
+  &lt;p&gt;Here is a danger alert without icon&lt;/p&gt;
+&lt;/div&gt;
+</description>
     </item>
     
   </channel>

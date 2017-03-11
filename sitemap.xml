@@ -2,18 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://jkkitakita.com/page/contact/</loc>
-    <lastmod>2017-03-12T00:05:49+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://jkkitakita.com/2015/05/new-post/</loc>
-    <lastmod>2015-05-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://jkkitakita.com/2015/05/new-post/</loc>
-    <lastmod>2015-05-28T00:00:00+00:00</lastmod>
+    <loc>http://jkkitakita.com/2017/03/test/</loc>
+    <lastmod>2017-03-12T05:46:19+09:00</lastmod>
   </url>
   
   <url>
@@ -22,38 +12,8 @@
   </url>
   
   <url>
-    <loc>http://jkkitakita.com/categories/category/</loc>
-    <lastmod>2017-03-12T00:05:49+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://jkkitakita.com/page/</loc>
-    <lastmod>2017-03-12T00:05:49+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://jkkitakita.com/post/</loc>
-    <lastmod>2015-05-28T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://jkkitakita.com/categories/subcategory/</loc>
-    <lastmod>2017-03-12T00:05:49+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://jkkitakita.com/tags/tag1/</loc>
-    <lastmod>2017-03-12T00:05:49+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://jkkitakita.com/tags/tag2/</loc>
-    <lastmod>2017-03-12T00:05:49+09:00</lastmod>
+    <lastmod>2017-03-12T05:46:19+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -63,20 +23,20 @@
   </url>
   
   <url>
-    <loc>http://jkkitakita.com/categories/test/</loc>
-    <lastmod>2015-05-28T00:00:00+00:00</lastmod>
+    <loc>http://jkkitakita.com/tags/test/</loc>
+    <lastmod>2017-03-12T05:46:19+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://jkkitakita.com/categories/test2/</loc>
-    <lastmod>2015-05-28T00:00:00+00:00</lastmod>
+    <loc>http://jkkitakita.com/categories/test/</loc>
+    <lastmod>2017-03-12T05:46:19+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://jkkitakita.com/</loc>
-    <lastmod>2017-03-12T00:05:49+09:00</lastmod>
+    <lastmod>2017-03-12T05:46:19+09:00</lastmod>
     <priority>0</priority>
   </url>
   
