@@ -2,8 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://jkkitakita.com/2017/03/test/</loc>
-    <lastmod>2017-03-12T12:32:54+09:00</lastmod>
+    <loc>http://jkkitakita.com/2017/03/sample3/</loc>
+    <lastmod>2017-03-12T14:21:08+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://jkkitakita.com/2017/03/sample2/</loc>
+    <lastmod>2017-03-12T13:39:17+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://jkkitakita.com/archives/</loc>
+    <lastmod>2017-03-12T14:21:08+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jkkitakita.com/archive/</loc>
+  </url>
+  
+  <url>
+    <loc>http://jkkitakita.com/archives/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -13,7 +33,7 @@
   
   <url>
     <loc>http://jkkitakita.com/post/</loc>
-    <lastmod>2017-03-12T12:32:54+09:00</lastmod>
+    <lastmod>2017-03-12T14:21:08+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -24,19 +44,19 @@
   
   <url>
     <loc>http://jkkitakita.com/tags/test/</loc>
-    <lastmod>2017-03-12T12:32:54+09:00</lastmod>
+    <lastmod>2017-03-12T14:21:08+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://jkkitakita.com/categories/test/</loc>
-    <lastmod>2017-03-12T12:32:54+09:00</lastmod>
+    <lastmod>2017-03-12T14:21:08+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://jkkitakita.com/</loc>
-    <lastmod>2017-03-12T12:32:54+09:00</lastmod>
+    <lastmod>2017-03-12T14:21:08+09:00</lastmod>
     <priority>0</priority>
   </url>
   
