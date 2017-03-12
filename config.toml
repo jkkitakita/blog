@@ -5,7 +5,7 @@ theme = "hugo-tranquilpeak-theme"
 
 baseurl = "http://jkkitakita.com"
 disqusShortname = "hugo-tranquilpeak-theme"
-
+googleAnalytics = "UA-93493887-1"
 paginate = 7
 canonifyurls = true
 
