@@ -153,7 +153,8 @@ ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
 &lt;p&gt;ざっくりやったことの流れ&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;pixabayにアカウント登録&lt;/li&gt;
+&lt;li&gt;pixabayにアカウント登録
+&lt;a href=&#34;https://pixabay.com/ja/&#34;&gt;https://pixabay.com/ja/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;APIkey発行&lt;/li&gt;
 &lt;li&gt;シェルの作成
 
@@ -191,6 +192,19 @@ gsed -i -e &amp;quot;2i thumbnailImage = \&amp;quot;$image\&amp;quot;&amp;quot; 
 &lt;/ol&gt;
 &lt;/p&gt;
 &lt;/div&gt;
+
+&lt;h2 id=&#34;4-さいごに&#34;&gt;4. さいごに&lt;/h2&gt;
+
+&lt;p&gt;Qiitaとかでは&lt;/br&gt;
+ちょこちょこ投稿していましたが&lt;/br&gt;
+自分で開設してみたいと思い、始めました。&lt;/br&gt;&lt;/p&gt;
+
+&lt;p&gt;ちょこちょここのサイト自体も&lt;/br&gt;
+updateされるかなと思いますが&lt;/br&gt;
+お気になさらずに。。。。笑&lt;/p&gt;
+
+&lt;p&gt;まぁ気楽に色々と書いていきたいと思いますので&lt;/br&gt;
+宜しくお願いいたします😀&lt;/p&gt;
 </description>
     </item>
     
