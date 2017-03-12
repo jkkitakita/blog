@@ -2,9 +2,11 @@
 thumbnailImagePosition: left
 metaAlignment: center
 categories:
-- test
+- ""
+- ""
 tags:
-- test
+- ""
+- ""
 archives:
 - ""
 - ""
