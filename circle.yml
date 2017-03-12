@@ -1,0 +1,5 @@
+deployment:
+  deploy:
+    branch: master
+    commands:
+      - bash ./deploy.sh
