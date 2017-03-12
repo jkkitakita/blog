@@ -1,6 +1,10 @@
 general:
   build_dir: public
 
+test:
+  override:
+    - echo "test"
+
 deployment:
   deploy:
     branch: master
