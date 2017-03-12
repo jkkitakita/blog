@@ -1,3 +1,6 @@
+general:
+  build_dir: public
+
 deployment:
   deploy:
     branch: master
