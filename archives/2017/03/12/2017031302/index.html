@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.18.1">
-    <title>Hugo/Github Pagesでブログ開設。また、新規投稿時のシェルスクリプトを書いてみた。</title>
+    <title>HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。</title>
     <meta name="author" content="jkkitakita">
     <meta name="keywords" content=", jkkitakita, 北村, JK">
 
@@ -30,33 +30,15 @@
     
 
     
-    <meta name="description" content="1. 本記事のゴール  HugoとGithub Pagesを使って、ブログを開設する 新規投稿時のシェルスクリプトを考える。  2. 前提  私は、新卒二年目（もうすぐ、三年目） インフラエンジニアをやった後、現在、スクラムマスター。 なので、そこまで、技術的な知識はない。  3. はじめていきましょう！   HugoとGithub Pagesを使って、ブログを開設する   これはもう 色々な方々がブログでまとめてくださっているので問題ないかなと。 とりあえず↓が私のブログ
-https://github.com/jkkitakita/blog
-yewtonさんのが参考になりそうです。
-https://www.yewton.net/2016/02/02/blog-with-hugo/
-残課題として、ドメイン周りとか整理する必要があるかも？
-誰かアドバイスがあれば、お願いいたします。。。
-~ ❯❯❯ dig jkkitakita.com ; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; jkkitakita.com ;; global options: &#43;cmd ;; Got answer: ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 2013 ;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 4, ADDITIONAL: 8 ;; QUESTION SECTION: ;jkkitakita.">
-    <meta property="og:description" content="1. 本記事のゴール  HugoとGithub Pagesを使って、ブログを開設する 新規投稿時のシェルスクリプトを考える。  2. 前提  私は、新卒二年目（もうすぐ、三年目） インフラエンジニアをやった後、現在、スクラムマスター。 なので、そこまで、技術的な知識はない。  3. はじめていきましょう！   HugoとGithub Pagesを使って、ブログを開設する   これはもう 色々な方々がブログでまとめてくださっているので問題ないかなと。 とりあえず↓が私のブログ
-https://github.com/jkkitakita/blog
-yewtonさんのが参考になりそうです。
-https://www.yewton.net/2016/02/02/blog-with-hugo/
-残課題として、ドメイン周りとか整理する必要があるかも？
-誰かアドバイスがあれば、お願いいたします。。。
-~ ❯❯❯ dig jkkitakita.com ; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; jkkitakita.com ;; global options: &#43;cmd ;; Got answer: ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 2013 ;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 4, ADDITIONAL: 8 ;; QUESTION SECTION: ;jkkitakita.">
+    <meta name="description" content="1. 本記事のゴール HugoとGithub Pagesを使って、ブログを開設する 新規投稿時のシェルスクリプトを考える。 2. 前提 私は、新卒二年目（もう">
+    <meta property="og:description" content="1. 本記事のゴール HugoとGithub Pagesを使って、ブログを開設する 新規投稿時のシェルスクリプトを考える。 2. 前提 私は、新卒二年目（もう">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Hugo/Github Pagesでブログ開設。また、新規投稿時のシェルスクリプトを書いてみた。">
-    <meta property="og:url" content="/2017/03/hugo/github-pages%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E9%96%8B%E8%A8%AD%E3%81%BE%E3%81%9F%E6%96%B0%E8%A6%8F%E6%8A%95%E7%A8%BF%E6%99%82%E3%81%AE%E3%82%B7%E3%82%A7%E3%83%AB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%82%92%E6%9B%B8%E3%81%84%E3%81%A6%E3%81%BF%E3%81%9F/">
+    <meta property="og:title" content="HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。">
+    <meta property="og:url" content="/archives/2017/03/12/2017031302">
     <meta property="og:site_name" content="JK&#39;s memo">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="JK&#39;s memo">
-    <meta name="twitter:description" content="1. 本記事のゴール  HugoとGithub Pagesを使って、ブログを開設する 新規投稿時のシェルスクリプトを考える。  2. 前提  私は、新卒二年目（もうすぐ、三年目） インフラエンジニアをやった後、現在、スクラムマスター。 なので、そこまで、技術的な知識はない。  3. はじめていきましょう！   HugoとGithub Pagesを使って、ブログを開設する   これはもう 色々な方々がブログでまとめてくださっているので問題ないかなと。 とりあえず↓が私のブログ
-https://github.com/jkkitakita/blog
-yewtonさんのが参考になりそうです。
-https://www.yewton.net/2016/02/02/blog-with-hugo/
-残課題として、ドメイン周りとか整理する必要があるかも？
-誰かアドバイスがあれば、お願いいたします。。。
-~ ❯❯❯ dig jkkitakita.com ; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; jkkitakita.com ;; global options: &#43;cmd ;; Got answer: ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 2013 ;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 4, ADDITIONAL: 8 ;; QUESTION SECTION: ;jkkitakita.">
+    <meta name="twitter:description" content="1. 本記事のゴール HugoとGithub Pagesを使って、ブログを開設する 新規投稿時のシェルスクリプトを考える。 2. 前提 私は、新卒二年目（もう">
     
     
 
@@ -68,7 +50,7 @@ https://www.yewton.net/2016/02/02/blog-with-hugo/
     
 
     
-      <meta property="og:image" content="//pixabay.com/get/e83db7062af21c2ad65a5854e24b4f97e471ebc818b5194897f9c27ca2e5_640.jpg">
+      <meta property="og:image" content="http://jkkitakita.com/images/hugo.png">
     
     
       <meta property="og:image" content="//pixabay.com/get/e83db7062af21c2ad65a5854e24b4f97e471ebc818b5194897f9c27ca2e5_640.jpg">
@@ -209,7 +191,7 @@ https://www.yewton.net/2016/02/02/blog-with-hugo/
       <div class="post-header main-content-wrap text-center">
   
     <h1 class="post-title" itemprop="headline">
-      Hugo/Github Pagesでブログ開設。また、新規投稿時のシェルスクリプトを書いてみた。
+      HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。
     </h1>
   
   <div class="postShorten-meta post-meta">
@@ -271,19 +253,29 @@ https://www.yewton.net/2016/02/02/blog-with-hugo/
 </ol>
 </blockquote>
 
-<p>これはもう
+<h3 id="hugo">Hugo</h3>
+
+<p><img src="http://jkkitakita.com/images/hugo.png" alt="hugo" /></p>
+
+<h3 id="github-pages">Github Pages</h3>
+
+
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
+  <iframe src="//www.youtube.com/embed/2MsN8gpT6jY" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0"></iframe>
+ </div>
+
+
+<p>もうここは
 色々な方々がブログでまとめてくださっているので問題ないかなと。
-とりあえず↓が私のブログ</p>
+yewtonさんの記事が参考になりそうです。
+（参考にさせていただきました。ありがとうございます。）
+<a href="https://www.yewton.net/2016/02/02/blog-with-hugo/">https://www.yewton.net/2016/02/02/blog-with-hugo/</a></p>
 
-<p><a href="https://github.com/jkkitakita/blog">https://github.com/jkkitakita/blog</a></p>
+<p>とりあえず、私のHugo + Github Pagesの構成は
+<a href="https://github.com/jkkitakita/blog" title="JK's memo">こちら</a>。</p>
 
-<p>yewtonさんのが参考になりそうです。</p>
-
-<p><a href="https://www.yewton.net/2016/02/02/blog-with-hugo/">https://www.yewton.net/2016/02/02/blog-with-hugo/</a></p>
-
-<p>残課題として、ドメイン周りとか整理する必要があるかも？</p>
-
-<p>誰かアドバイスがあれば、お願いいたします。。。</p>
+<p>残課題として、ドメイン周りとか整理する必要があるかも？</br>
+誰かアドバイスがあれば、お願いいたします。。。</p>
 
 <pre><code>~ ❯❯❯ dig jkkitakita.com
 
@@ -323,13 +315,93 @@ ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
 </code></pre>
 
 <div class="alert success ">
-  <p><ol>
+  <p><h4 id="memo">memo</h4>
+
+<ol>
+<li>Hugo関連
+
+<ol>
+<li>themeは、kakawaitさんのhugo-tranquilpeak-themeを使わせてもらった。
+<a href="https://themes.gohugo.io/hugo-tranquilpeak-theme/">https://themes.gohugo.io/hugo-tranquilpeak-theme/</a></li>
+<li>そのままだと、archivesページがうまく表示されなかったので、layout/taxonomy/archive.htmlを作成した。（themes/hugo-tranquilpeak-theme/layouts/taxonomy/archive.terms.htmlから複製）</li>
+<li>日本語（ja）だとやっぱり色々だめかな。（ex.placeholderでないとか。）
+↓は、にしておいた方が良さそう。
+
+<ol>
+<li><code>languageCode = &quot;en-us&quot;</code></li>
+<li><code>defaultContentLanguage = &quot;en-us&quot;</code></li>
+</ol></li>
+</ol></li>
+
+<li><p>ドメイン関連</p>
+
+<ol>
 <li><code>192.30.252.153</code>、<code>192.30.252.154</code>は、Github Pagesのドメイン
 <a href="https://help.github.com/articles/setting-up-an-apex-domain/">https://help.github.com/articles/setting-up-an-apex-domain/</a></li>
 <li>ドメインは、お名前.comで管理</li>
 <li>DNS関連は、AWS Route53。（Aレコード）</li>
-<li>残課題として、サブドメインの方が、Github Pagesとしては、良い？
+</ol></li>
+
+<li><p>残課題</p>
+
+<ol>
+<li>サブドメインの方が、Github Pagesとしては、良い？
 <a href="https://help.github.com/articles/about-supported-custom-domains/">https://help.github.com/articles/about-supported-custom-domains/</a></li>
+<li>CDNの整備</li>
+<li>Hugoの知識不足。</li>
+<li>ネタ不足。笑</li>
+</ol></li>
+</ol>
+</p>
+</div>
+
+<blockquote>
+<p>2.新規投稿時のシェルスクリプトを考える。</p>
+</blockquote>
+
+<p>なんかただ作成するだけだと寂しいから</br>
+「綺麗な画像が欲しい！」と思って</br>
+無料画像的なのを引っ張ってくるスクリプトつくってみた。</br>
+（これダメだったら、誰か指摘してください。。笑）</br></p>
+
+<p>ざっくりやったことの流れ</p>
+
+<ol>
+<li>pixabayにアカウント登録</li>
+<li>APIkey発行</li>
+<li>シェルの作成
+
+<ol>
+<li>記事作成（hugo new）</li>
+<li>curl で 画像を取得</li>
+<li>hugo用にワンライナーで整形</li>
+<li>sedで新規作成した記事へ挿入</li>
+</ol></li>
+<li>完成</li>
+</ol>
+
+<pre><code class="language-post.sh">#!bin/bash
+
+num=`expr $RANDOM % 20`
+DATE_TIME=`date '+%Y%m%d%H%M'`
+
+hugo new post/$1.md
+image=`curl 'https://pixabay.com/api/?key=${Key}&amp;q=landscape&amp;image_type=photo&amp;pretty=true' | jq -r '.hits['$num'].webformatURL' | cut -c7-`
+
+gsed -i -e &quot;2i coverImage = \&quot;$image\&quot;&quot; content/post/$DATE_TIME.md
+gsed -i -e &quot;2i thumbnailImage = \&quot;$image\&quot;&quot; content/post/$DATE_TIME.md
+</code></pre>
+
+<div class="alert success ">
+  <p><h4 id="memo">memo</h4>
+
+<ol>
+<li>ランダムで20個生成する感じになっているが、同じ画像が出ることがある。</li>
+<li>sedでうまくいかなかったので、gsedをinstallした。</br>
+（参考）<a href="http://cross-black777.hatenablog.com/entry/2015/02/23/214337">http://cross-black777.hatenablog.com/entry/2015/02/23/214337</a></li>
+<li>そもそもブログの画像、ライセンス、著作権の勉強しないとかなと思った。</br>
+&ldquo;(/へ＼*)&ldquo;))ｳｩ､ﾋｯｸ</li>
+<li>Hugoさんのlogoは、なんかいけそうだと思ったので、使わせてもらいました。</li>
 </ol>
 </p>
 </div>
@@ -359,7 +431,7 @@ ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="http://jkkitakita.com/2017/03/sample3/" data-tooltip="sample3">
+            <a class="post-action-btn btn btn--disabled">
           
             <i class="fa fa-angle-left"></i>
             <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -384,17 +456,17 @@ ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fjkkitakita.com%2f2017%2f03%2fhugo%2fgithub-pages%25E3%2581%25A7%25E3%2583%2596%25E3%2583%25AD%25E3%2582%25B0%25E9%2596%258B%25E8%25A8%25AD%25E3%2581%25BE%25E3%2581%259F%25E6%2596%25B0%25E8%25A6%258F%25E6%258A%2595%25E7%25A8%25BF%25E6%2599%2582%25E3%2581%25AE%25E3%2582%25B7%25E3%2582%25A7%25E3%2583%25AB%25E3%2582%25B9%25E3%2582%25AF%25E3%2583%25AA%25E3%2583%2597%25E3%2583%2588%25E3%2582%2592%25E6%259B%25B8%25E3%2581%2584%25E3%2581%25A6%25E3%2581%25BF%25E3%2581%259F%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fjkkitakita.com%2farchives%2f2017%2f03%2f12%2f2017031302">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fjkkitakita.com%2f2017%2f03%2fhugo%2fgithub-pages%25E3%2581%25A7%25E3%2583%2596%25E3%2583%25AD%25E3%2582%25B0%25E9%2596%258B%25E8%25A8%25AD%25E3%2581%25BE%25E3%2581%259F%25E6%2596%25B0%25E8%25A6%258F%25E6%258A%2595%25E7%25A8%25BF%25E6%2599%2582%25E3%2581%25AE%25E3%2582%25B7%25E3%2582%25A7%25E3%2583%25AB%25E3%2582%25B9%25E3%2582%25AF%25E3%2583%25AA%25E3%2583%2597%25E3%2583%2588%25E3%2582%2592%25E6%259B%25B8%25E3%2581%2584%25E3%2581%25A6%25E3%2581%25BF%25E3%2581%259F%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fjkkitakita.com%2farchives%2f2017%2f03%2f12%2f2017031302">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fjkkitakita.com%2f2017%2f03%2fhugo%2fgithub-pages%25E3%2581%25A7%25E3%2583%2596%25E3%2583%25AD%25E3%2582%25B0%25E9%2596%258B%25E8%25A8%25AD%25E3%2581%25BE%25E3%2581%259F%25E6%2596%25B0%25E8%25A6%258F%25E6%258A%2595%25E7%25A8%25BF%25E6%2599%2582%25E3%2581%25AE%25E3%2582%25B7%25E3%2582%25A7%25E3%2583%25AB%25E3%2582%25B9%25E3%2582%25AF%25E3%2583%25AA%25E3%2583%2597%25E3%2583%2588%25E3%2582%2592%25E6%259B%25B8%25E3%2581%2584%25E3%2581%25A6%25E3%2581%25BF%25E3%2581%259F%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fjkkitakita.com%2farchives%2f2017%2f03%2f12%2f2017031302">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -440,7 +512,7 @@ ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="http://jkkitakita.com/2017/03/sample3/" data-tooltip="sample3">
+            <a class="post-action-btn btn btn--disabled">
           
             <i class="fa fa-angle-left"></i>
             <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -465,17 +537,17 @@ ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fjkkitakita.com%2f2017%2f03%2fhugo%2fgithub-pages%25E3%2581%25A7%25E3%2583%2596%25E3%2583%25AD%25E3%2582%25B0%25E9%2596%258B%25E8%25A8%25AD%25E3%2581%25BE%25E3%2581%259F%25E6%2596%25B0%25E8%25A6%258F%25E6%258A%2595%25E7%25A8%25BF%25E6%2599%2582%25E3%2581%25AE%25E3%2582%25B7%25E3%2582%25A7%25E3%2583%25AB%25E3%2582%25B9%25E3%2582%25AF%25E3%2583%25AA%25E3%2583%2597%25E3%2583%2588%25E3%2582%2592%25E6%259B%25B8%25E3%2581%2584%25E3%2581%25A6%25E3%2581%25BF%25E3%2581%259F%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fjkkitakita.com%2farchives%2f2017%2f03%2f12%2f2017031302">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fjkkitakita.com%2f2017%2f03%2fhugo%2fgithub-pages%25E3%2581%25A7%25E3%2583%2596%25E3%2583%25AD%25E3%2582%25B0%25E9%2596%258B%25E8%25A8%25AD%25E3%2581%25BE%25E3%2581%259F%25E6%2596%25B0%25E8%25A6%258F%25E6%258A%2595%25E7%25A8%25BF%25E6%2599%2582%25E3%2581%25AE%25E3%2582%25B7%25E3%2582%25A7%25E3%2583%25AB%25E3%2582%25B9%25E3%2582%25AF%25E3%2583%25AA%25E3%2583%2597%25E3%2583%2588%25E3%2582%2592%25E6%259B%25B8%25E3%2581%2584%25E3%2581%25A6%25E3%2581%25BF%25E3%2581%259F%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fjkkitakita.com%2farchives%2f2017%2f03%2f12%2f2017031302">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fjkkitakita.com%2f2017%2f03%2fhugo%2fgithub-pages%25E3%2581%25A7%25E3%2583%2596%25E3%2583%25AD%25E3%2582%25B0%25E9%2596%258B%25E8%25A8%25AD%25E3%2581%25BE%25E3%2581%259F%25E6%2596%25B0%25E8%25A6%258F%25E6%258A%2595%25E7%25A8%25BF%25E6%2599%2582%25E3%2581%25AE%25E3%2582%25B7%25E3%2582%25A7%25E3%2583%25AB%25E3%2582%25B9%25E3%2582%25AF%25E3%2583%25AA%25E3%2583%2597%25E3%2583%2588%25E3%2582%2592%25E6%259B%25B8%25E3%2581%2584%25E3%2581%25A6%25E3%2581%25BF%25E3%2581%259F%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fjkkitakita.com%2farchives%2f2017%2f03%2f12%2f2017031302">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -502,17 +574,17 @@ ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
       <div id="share-options-bar" class="share-options-bar" data-behavior="4">
   <ul class="share-options">
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fjkkitakita.com%2f2017%2f03%2fhugo%2fgithub-pages%25E3%2581%25A7%25E3%2583%2596%25E3%2583%25AD%25E3%2582%25B0%25E9%2596%258B%25E8%25A8%25AD%25E3%2581%25BE%25E3%2581%259F%25E6%2596%25B0%25E8%25A6%258F%25E6%258A%2595%25E7%25A8%25BF%25E6%2599%2582%25E3%2581%25AE%25E3%2582%25B7%25E3%2582%25A7%25E3%2583%25AB%25E3%2582%25B9%25E3%2582%25AF%25E3%2583%25AA%25E3%2583%2597%25E3%2583%2588%25E3%2582%2592%25E6%259B%25B8%25E3%2581%2584%25E3%2581%25A6%25E3%2581%25BF%25E3%2581%259F%2f">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http%3a%2f%2fjkkitakita.com%2farchives%2f2017%2f03%2f12%2f2017031302">
         <i class="fa fa-google-plus"></i><span>Share on Google Plus</span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fjkkitakita.com%2f2017%2f03%2fhugo%2fgithub-pages%25E3%2581%25A7%25E3%2583%2596%25E3%2583%25AD%25E3%2582%25B0%25E9%2596%258B%25E8%25A8%25AD%25E3%2581%25BE%25E3%2581%259F%25E6%2596%25B0%25E8%25A6%258F%25E6%258A%2595%25E7%25A8%25BF%25E6%2599%2582%25E3%2581%25AE%25E3%2582%25B7%25E3%2582%25A7%25E3%2583%25AB%25E3%2582%25B9%25E3%2582%25AF%25E3%2583%25AA%25E3%2583%2597%25E3%2583%2588%25E3%2582%2592%25E6%259B%25B8%25E3%2581%2584%25E3%2581%25A6%25E3%2581%25BF%25E3%2581%259F%2f">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fjkkitakita.com%2farchives%2f2017%2f03%2f12%2f2017031302">
         <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fjkkitakita.com%2f2017%2f03%2fhugo%2fgithub-pages%25E3%2581%25A7%25E3%2583%2596%25E3%2583%25AD%25E3%2582%25B0%25E9%2596%258B%25E8%25A8%25AD%25E3%2581%25BE%25E3%2581%259F%25E6%2596%25B0%25E8%25A6%258F%25E6%258A%2595%25E7%25A8%25BF%25E6%2599%2582%25E3%2581%25AE%25E3%2582%25B7%25E3%2582%25A7%25E3%2583%25AB%25E3%2582%25B9%25E3%2582%25AF%25E3%2583%25AA%25E3%2583%2597%25E3%2583%2588%25E3%2582%2592%25E6%259B%25B8%25E3%2581%2584%25E3%2581%25A6%25E3%2581%25BF%25E3%2581%259F%2f">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fjkkitakita.com%2farchives%2f2017%2f03%2f12%2f2017031302">
         <i class="fa fa-twitter"></i><span>Share on Twitter</span>
       </a>
     </li>
@@ -572,39 +644,15 @@ ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="http://jkkitakita.com/2017/03/sample3/">
-                <h3 class="media-heading">sample3</h3>
+              <a class="link-unstyled" href="http://jkkitakita.com/archives/2017/03/12/2017031302">
+                <h3 class="media-heading">HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。</h3>
               </a>
               <span class="media-meta">
                 <span class="media-date text-small">
                   Mar 3, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">content  Here is a danger alert without icon
- </div>
-            </div>
-            <div style="clear:both;"></div>
-            <hr>
-          </div>
-        
-          <div class="media">
-            
-            <div class="media-body">
-              <a class="link-unstyled" href="http://jkkitakita.com/2017/03/hugo/github-pages%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E9%96%8B%E8%A8%AD%E3%81%BE%E3%81%9F%E6%96%B0%E8%A6%8F%E6%8A%95%E7%A8%BF%E6%99%82%E3%81%AE%E3%82%B7%E3%82%A7%E3%83%AB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%82%92%E6%9B%B8%E3%81%84%E3%81%A6%E3%81%BF%E3%81%9F/">
-                <h3 class="media-heading">Hugo/Github Pagesでブログ開設。また、新規投稿時のシェルスクリプトを書いてみた。</h3>
-              </a>
-              <span class="media-meta">
-                <span class="media-date text-small">
-                  Mar 3, 2017
-                </span>
-              </span>
-              <div class="media-content hide-xs font-merryweather">1. 本記事のゴール  HugoとGithub Pagesを使って、ブログを開設する 新規投稿時のシェルスクリプトを考える。  2. 前提  私は、新卒二年目（もうすぐ、三年目） インフラエンジニアをやった後、現在、スクラムマスター。 なので、そこまで、技術的な知識はない。  3. はじめていきましょう！   HugoとGithub Pagesを使って、ブログを開設する   これはもう 色々な方々がブログでまとめてくださっているので問題ないかなと。 とりあえず↓が私のブログ
-https://github.com/jkkitakita/blog
-yewtonさんのが参考になりそうです。
-https://www.yewton.net/2016/02/02/blog-with-hugo/
-残課題として、ドメイン周りとか整理する必要があるかも？
-誰かアドバイスがあれば、お願いいたします。。。
-~ ❯❯❯ dig jkkitakita.com ; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; jkkitakita.com ;; global options: +cmd ;; Got answer: ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 2013 ;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 4, ADDITIONAL: 8 ;; QUESTION SECTION: ;jkkitakita.</div>
+              <div class="media-content hide-xs font-merryweather">1. 本記事のゴール HugoとGithub Pagesを使って、ブログを開設する 新規投稿時のシェルスクリプトを考える。 2. 前提 私は、新卒二年目（もう</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -617,7 +665,7 @@ https://www.yewton.net/2016/02/02/blog-with-hugo/
          data-message-zero="no post found"
          data-message-one="1 post found"
          data-message-other="{n} posts found">
-         2 posts found
+         1 posts found
       </p>
     </div>
   </div>
@@ -661,9 +709,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'http:\/\/jkkitakita.com\/2017\/03\/hugo\/github-pages%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E9%96%8B%E8%A8%AD%E3%81%BE%E3%81%9F%E6%96%B0%E8%A6%8F%E6%8A%95%E7%A8%BF%E6%99%82%E3%81%AE%E3%82%B7%E3%82%A7%E3%83%AB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%82%92%E6%9B%B8%E3%81%84%E3%81%A6%E3%81%BF%E3%81%9F\/';
+          this.page.url = 'http:\/\/jkkitakita.com\/archives\/2017\/03\/12\/2017031302';
           
-            this.page.identifier = '\/2017\/03\/hugo\/github-pages%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E9%96%8B%E8%A8%AD%E3%81%BE%E3%81%9F%E6%96%B0%E8%A6%8F%E6%8A%95%E7%A8%BF%E6%99%82%E3%81%AE%E3%82%B7%E3%82%A7%E3%83%AB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%82%92%E6%9B%B8%E3%81%84%E3%81%A6%E3%81%BF%E3%81%9F\/'
+            this.page.identifier = '\/archives\/2017\/03\/12\/2017031302'
           
         };
         (function() {

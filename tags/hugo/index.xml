@@ -9,11 +9,11 @@
     <atom:link href="http://jkkitakita.com/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Hugo/Github Pagesでブログ開設。また、新規投稿時のシェルスクリプトを書いてみた。</title>
-      <link>http://jkkitakita.com/2017/03/hugo/github-pages%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E9%96%8B%E8%A8%AD%E3%81%BE%E3%81%9F%E6%96%B0%E8%A6%8F%E6%8A%95%E7%A8%BF%E6%99%82%E3%81%AE%E3%82%B7%E3%82%A7%E3%83%AB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%82%92%E6%9B%B8%E3%81%84%E3%81%A6%E3%81%BF%E3%81%9F/</link>
+      <title>HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。</title>
+      <link>http://jkkitakita.com/archives/2017/03/12/2017031302</link>
       <pubDate>Sun, 12 Mar 2017 13:39:17 +0900</pubDate>
       
-      <guid>http://jkkitakita.com/2017/03/hugo/github-pages%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E9%96%8B%E8%A8%AD%E3%81%BE%E3%81%9F%E6%96%B0%E8%A6%8F%E6%8A%95%E7%A8%BF%E6%99%82%E3%81%AE%E3%82%B7%E3%82%A7%E3%83%AB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%82%92%E6%9B%B8%E3%81%84%E3%81%A6%E3%81%BF%E3%81%9F/</guid>
+      <guid>http://jkkitakita.com/archives/2017/03/12/2017031302</guid>
       <description>
 
 &lt;h2 id=&#34;1-本記事のゴール&#34;&gt;1. 本記事のゴール&lt;/h2&gt;
@@ -39,19 +39,29 @@
 &lt;/ol&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;これはもう
+&lt;h3 id=&#34;hugo&#34;&gt;Hugo&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://jkkitakita.com/images/hugo.png&#34; alt=&#34;hugo&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;github-pages&#34;&gt;Github Pages&lt;/h3&gt;
+
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/2MsN8gpT6jY&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
+
+&lt;p&gt;もうここは
 色々な方々がブログでまとめてくださっているので問題ないかなと。
-とりあえず↓が私のブログ&lt;/p&gt;
+yewtonさんの記事が参考になりそうです。
+（参考にさせていただきました。ありがとうございます。）
+&lt;a href=&#34;https://www.yewton.net/2016/02/02/blog-with-hugo/&#34;&gt;https://www.yewton.net/2016/02/02/blog-with-hugo/&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://github.com/jkkitakita/blog&#34;&gt;https://github.com/jkkitakita/blog&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;とりあえず、私のHugo + Github Pagesの構成は
+&lt;a href=&#34;https://github.com/jkkitakita/blog&#34; title=&#34;JK&#39;s memo&#34;&gt;こちら&lt;/a&gt;。&lt;/p&gt;
 
-&lt;p&gt;yewtonさんのが参考になりそうです。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.yewton.net/2016/02/02/blog-with-hugo/&#34;&gt;https://www.yewton.net/2016/02/02/blog-with-hugo/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;残課題として、ドメイン周りとか整理する必要があるかも？&lt;/p&gt;
-
-&lt;p&gt;誰かアドバイスがあれば、お願いいたします。。。&lt;/p&gt;
+&lt;p&gt;残課題として、ドメイン周りとか整理する必要があるかも？&lt;/br&gt;
+誰かアドバイスがあれば、お願いいたします。。。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;~ ❯❯❯ dig jkkitakita.com
 
@@ -91,13 +101,93 @@ ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;div class=&#34;alert success &#34;&gt;
-  &lt;p&gt;&lt;ol&gt;
+  &lt;p&gt;&lt;h4 id=&#34;memo&#34;&gt;memo&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Hugo関連
+
+&lt;ol&gt;
+&lt;li&gt;themeは、kakawaitさんのhugo-tranquilpeak-themeを使わせてもらった。
+&lt;a href=&#34;https://themes.gohugo.io/hugo-tranquilpeak-theme/&#34;&gt;https://themes.gohugo.io/hugo-tranquilpeak-theme/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;そのままだと、archivesページがうまく表示されなかったので、layout/taxonomy/archive.htmlを作成した。（themes/hugo-tranquilpeak-theme/layouts/taxonomy/archive.terms.htmlから複製）&lt;/li&gt;
+&lt;li&gt;日本語（ja）だとやっぱり色々だめかな。（ex.placeholderでないとか。）
+↓は、にしておいた方が良さそう。
+
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;languageCode = &amp;quot;en-us&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;defaultContentLanguage = &amp;quot;en-us&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;ドメイン関連&lt;/p&gt;
+
+&lt;ol&gt;
 &lt;li&gt;&lt;code&gt;192.30.252.153&lt;/code&gt;、&lt;code&gt;192.30.252.154&lt;/code&gt;は、Github Pagesのドメイン
 &lt;a href=&#34;https://help.github.com/articles/setting-up-an-apex-domain/&#34;&gt;https://help.github.com/articles/setting-up-an-apex-domain/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;ドメインは、お名前.comで管理&lt;/li&gt;
 &lt;li&gt;DNS関連は、AWS Route53。（Aレコード）&lt;/li&gt;
-&lt;li&gt;残課題として、サブドメインの方が、Github Pagesとしては、良い？
+&lt;/ol&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;残課題&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;サブドメインの方が、Github Pagesとしては、良い？
 &lt;a href=&#34;https://help.github.com/articles/about-supported-custom-domains/&#34;&gt;https://help.github.com/articles/about-supported-custom-domains/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;CDNの整備&lt;/li&gt;
+&lt;li&gt;Hugoの知識不足。&lt;/li&gt;
+&lt;li&gt;ネタ不足。笑&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;2.新規投稿時のシェルスクリプトを考える。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;なんかただ作成するだけだと寂しいから&lt;/br&gt;
+「綺麗な画像が欲しい！」と思って&lt;/br&gt;
+無料画像的なのを引っ張ってくるスクリプトつくってみた。&lt;/br&gt;
+（これダメだったら、誰か指摘してください。。笑）&lt;/br&gt;&lt;/p&gt;
+
+&lt;p&gt;ざっくりやったことの流れ&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;pixabayにアカウント登録&lt;/li&gt;
+&lt;li&gt;APIkey発行&lt;/li&gt;
+&lt;li&gt;シェルの作成
+
+&lt;ol&gt;
+&lt;li&gt;記事作成（hugo new）&lt;/li&gt;
+&lt;li&gt;curl で 画像を取得&lt;/li&gt;
+&lt;li&gt;hugo用にワンライナーで整形&lt;/li&gt;
+&lt;li&gt;sedで新規作成した記事へ挿入&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;完成&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-post.sh&#34;&gt;#!bin/bash
+
+num=`expr $RANDOM % 20`
+DATE_TIME=`date &#39;+%Y%m%d%H%M&#39;`
+
+hugo new post/$1.md
+image=`curl &#39;https://pixabay.com/api/?key=${Key}&amp;amp;q=landscape&amp;amp;image_type=photo&amp;amp;pretty=true&#39; | jq -r &#39;.hits[&#39;$num&#39;].webformatURL&#39; | cut -c7-`
+
+gsed -i -e &amp;quot;2i coverImage = \&amp;quot;$image\&amp;quot;&amp;quot; content/post/$DATE_TIME.md
+gsed -i -e &amp;quot;2i thumbnailImage = \&amp;quot;$image\&amp;quot;&amp;quot; content/post/$DATE_TIME.md
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div class=&#34;alert success &#34;&gt;
+  &lt;p&gt;&lt;h4 id=&#34;memo&#34;&gt;memo&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;ランダムで20個生成する感じになっているが、同じ画像が出ることがある。&lt;/li&gt;
+&lt;li&gt;sedでうまくいかなかったので、gsedをinstallした。&lt;/br&gt;
+（参考）&lt;a href=&#34;http://cross-black777.hatenablog.com/entry/2015/02/23/214337&#34;&gt;http://cross-black777.hatenablog.com/entry/2015/02/23/214337&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;そもそもブログの画像、ライセンス、著作権の勉強しないとかなと思った。&lt;/br&gt;
+&amp;ldquo;(/へ＼*)&amp;ldquo;))ｳｩ､ﾋｯｸ&lt;/li&gt;
+&lt;li&gt;Hugoさんのlogoは、なんかいけそうだと思ったので、使わせてもらいました。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/p&gt;
 &lt;/div&gt;
