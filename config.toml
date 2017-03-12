@@ -10,7 +10,7 @@ paginate = 7
 canonifyurls = true
 
 [permalinks]
-  post = "/:year/:month/:slug/"
+  post = "/archives/:year/:month/:day/:filename"
 
 [taxonomies]
   tag = "tags"
@@ -150,6 +150,9 @@ canonifyurls = true
   # Set this value to `true` if you have old posts that use the cover image or the first photo as the thumbnail image
   # and set `autoThumbnailImage` to `false` on a post to overwrite this setting
   autoThumbnailImage = true
+
+  # summaries
+  hasCJKLanguage = true
 
   # Header configuration
   # The link at the right of the header is customizable

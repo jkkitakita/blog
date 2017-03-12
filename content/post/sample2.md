@@ -1,13 +1,14 @@
 +++
-thumbnailImage = "//pixabay.com/get/e83db7062af21c2ad65a5854e24b4f97e471ebc818b5194897f9c27ca2e5_640.jpg"
+thumbnailImage = "/images/hugo.png"
 coverImage = "//pixabay.com/get/e83db7062af21c2ad65a5854e24b4f97e471ebc818b5194897f9c27ca2e5_640.jpg"
 date = "2017-03-12T13:39:17+09:00"
-title = "Hugo/Github Pagesでブログ開設。また、新規投稿時のシェルスクリプトを書いてみた。"
+title = "HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。"
 tags = ["hugo", "Github pages"]
 categories = ["tech"]
 metaAlignment = "center"
 archives = ["","",""]
 thumbnailImagePosition = "left"
+isCJKLanguage = true
 
 +++
 
@@ -26,18 +27,24 @@ thumbnailImagePosition = "left"
 
 > 1. HugoとGithub Pagesを使って、ブログを開設する
 
-これはもう
+### Hugo
+
+![hugo](/images/hugo.png)
+
+### Github Pages
+
+{{< youtube 2MsN8gpT6jY >}}
+
+もうここは
 色々な方々がブログでまとめてくださっているので問題ないかなと。
-とりあえず↓が私のブログ
-
-https://github.com/jkkitakita/blog
-
-yewtonさんのが参考になりそうです。
-
+yewtonさんの記事が参考になりそうです。
+（参考にさせていただきました。ありがとうございます。）
 https://www.yewton.net/2016/02/02/blog-with-hugo/
 
-残課題として、ドメイン周りとか整理する必要があるかも？
+とりあえず、私のHugo + Github Pagesの構成は
+[こちら](https://github.com/jkkitakita/blog "JK's memo")。
 
+残課題として、ドメイン周りとか整理する必要があるかも？</br>
 誰かアドバイスがあれば、お願いいたします。。。
 
 ```
@@ -79,10 +86,70 @@ ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
 ```
 
 {{< alert success >}}
-1. `192.30.252.153`、`192.30.252.154`は、Github Pagesのドメイン
-https://help.github.com/articles/setting-up-an-apex-domain/
-2. ドメインは、お名前.comで管理
-3. DNS関連は、AWS Route53。（Aレコード）
-4. 残課題として、サブドメインの方が、Github Pagesとしては、良い？
-https://help.github.com/articles/about-supported-custom-domains/
+#### memo
+
+1. Hugo関連
+  1. themeは、kakawaitさんのhugo-tranquilpeak-themeを使わせてもらった。
+  https://themes.gohugo.io/hugo-tranquilpeak-theme/
+  1. そのままだと、archivesページがうまく表示されなかったので、layout/taxonomy/archive.htmlを作成した。（themes/hugo-tranquilpeak-theme/layouts/taxonomy/archive.terms.htmlから複製）
+  1. 日本語（ja）だとやっぱり色々だめかな。（ex.placeholderでないとか。）
+  ↓は、にしておいた方が良さそう。
+      1. `languageCode = "en-us"`
+      1. `defaultContentLanguage = "en-us"`
+1. ドメイン関連
+  1. `192.30.252.153`、`192.30.252.154`は、Github Pagesのドメイン
+  https://help.github.com/articles/setting-up-an-apex-domain/
+  2. ドメインは、お名前.comで管理
+  3. DNS関連は、AWS Route53。（Aレコード）
+
+3. 残課題
+  1. サブドメインの方が、Github Pagesとしては、良い？
+  https://help.github.com/articles/about-supported-custom-domains/
+  2. CDNの整備
+  3. Hugoの知識不足。
+  4. ネタ不足。笑
+{{< /alert >}}
+
+>2.新規投稿時のシェルスクリプトを考える。
+
+なんかただ作成するだけだと寂しいから</br>
+「綺麗な画像が欲しい！」と思って</br>
+無料画像的なのを引っ張ってくるスクリプトつくってみた。</br>
+（これダメだったら、誰か指摘してください。。笑）</br>
+
+ざっくりやったことの流れ
+
+1. pixabayにアカウント登録
+2. APIkey発行
+3. シェルの作成
+  4. 記事作成（hugo new）
+  5. curl で 画像を取得
+  6. hugo用にワンライナーで整形
+  7. sedで新規作成した記事へ挿入
+8. 完成
+
+
+```post.sh
+#!bin/bash
+
+num=`expr $RANDOM % 20`
+DATE_TIME=`date '+%Y%m%d%H%M'`
+
+hugo new post/$1.md
+image=`curl 'https://pixabay.com/api/?key=${Key}&q=landscape&image_type=photo&pretty=true' | jq -r '.hits['$num'].webformatURL' | cut -c7-`
+
+gsed -i -e "2i coverImage = \"$image\"" content/post/$DATE_TIME.md
+gsed -i -e "2i thumbnailImage = \"$image\"" content/post/$DATE_TIME.md
+```
+
+
+{{< alert success >}}
+#### memo
+
+1. ランダムで20個生成する感じになっているが、同じ画像が出ることがある。
+2. sedでうまくいかなかったので、gsedをinstallした。</br>
+（参考）http://cross-black777.hatenablog.com/entry/2015/02/23/214337
+3. そもそもブログの画像、ライセンス、著作権の勉強しないとかなと思った。</br>
+"(/へ＼*)"))ｳｩ､ﾋｯｸ
+4. Hugoさんのlogoは、なんかいけそうだと思ったので、使わせてもらいました。
 {{< /alert >}}
