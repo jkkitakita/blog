@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JK&#39;s memo</title>
+    <link>http://jkkitakita.com/categories/index.xml</link>
+    <description>Recent content on JK&#39;s memo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://jkkitakita.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>2017032900</title>
+      <link>http://jkkitakita.com/archives/2017/03/29/2017032900</link>
+      <pubDate>Wed, 29 Mar 2017 19:15:18 +0900</pubDate>
+      
+      <guid>http://jkkitakita.com/archives/2017/03/29/2017032900</guid>
+      <description>
+
+&lt;h1 id=&#34;stretch-pr-北村&#34;&gt;Stretch_PR 北村&lt;/h1&gt;
+
+&lt;h2 id=&#34;テーマ&#34;&gt;テーマ&lt;/h2&gt;
+
+&lt;p&gt;プログラミング基礎
+&amp;ldquo;プログラミングする上で（特に、B→Dashを開発する上で）基本的な知識を身につけること。&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;達成可否&#34;&gt;達成可否&lt;/h2&gt;
+
+&lt;p&gt;ほぼ達成&lt;/p&gt;
+
+&lt;h4 id=&#34;railstutrial制覇-x-2&#34;&gt;Railstutrial制覇 x 2&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1回目：100%&lt;/li&gt;
+&lt;li&gt;2回目：90%
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://railstutorial.jp/&#34;&gt;https://railstutorial.jp/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mighty-ridge-66123.herokuapp.com/&#34;&gt;https://mighty-ridge-66123.herokuapp.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jkkitakita/sample_app&#34;&gt;https://github.com/jkkitakita/sample_app&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;基本情報技術者-模擬試験実施すること-60&#34;&gt;基本情報技術者 模擬試験実施すること（60%）&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1回目（2/22）：o&lt;/li&gt;
+&lt;li&gt;2回目（3/22）：o&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;そこから得た事&#34;&gt;そこから得た事&lt;/h2&gt;
+
+&lt;p&gt;1.
+ - 一般的なWEBアプリケーションの詳細な設計・実装内容の把握
+ - テスト大事&lt;/p&gt;
+
+&lt;p&gt;2.
+ - 世の中は、横文字が多い。
+ - 受験勉強だと思えば、大したことない。
+ - 組織・マネジメント系の問題は、感覚でもなんとなくいける。
+ - 大事だと思ったこと
+    - 隙間時間、ルーティンの重要性
+    - とりあえず、覚えること&lt;/p&gt;
+
+&lt;h2 id=&#34;来季のストレッチ目標-予定&#34;&gt;来季のストレッチ目標（予定）&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;何かサービス作りたい。 ※ サービス案募集&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;課外活動&#34;&gt;課外活動&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;記事投稿&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;[Grafana] Grafanaで、AWSのリザーブドインスタンス（RI）を監視してみた。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/jkkitakita/items/6155ff7899eb9d701611&#34;&gt;http://qiita.com/jkkitakita/items/6155ff7899eb9d701611&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/jkkitakita/items/35529c745e6ff5efd433&#34;&gt;http://qiita.com/jkkitakita/items/35529c745e6ff5efd433&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;ブログの開設&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://jkkitakita.com/&#34;&gt;http://jkkitakita.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jkkitakita?tab=repositories&#34;&gt;https://github.com/jkkitakita?tab=repositories&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;vagrant + ansibleで環境構築&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/jkkitakita/centos&#34;&gt;https://github.com/jkkitakita/centos&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;今後の予定&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;railstutrialにcap導入（今後）&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;開発環境（vagrant）へのデプロイ&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;本番環境（EC2）へのデプロイ&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;勉強会&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Battle Conference U30&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://battleconference-u30.connpass.com/event/49985/&#34;&gt;https://battleconference-u30.connpass.com/event/49985/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;吉田さん・橘さん、下会所さん・橘さんの飲み会&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>2017032900</title>
+      <link>http://jkkitakita.com/archives/2017/03/29/2017032900</link>
+      <pubDate>Wed, 29 Mar 2017 19:15:18 +0900</pubDate>
+      
+      <guid>http://jkkitakita.com/archives/2017/03/29/2017032900</guid>
+      <description>
+
+&lt;h1 id=&#34;stretch-pr-北村&#34;&gt;Stretch_PR 北村&lt;/h1&gt;
+
+&lt;h2 id=&#34;テーマ&#34;&gt;テーマ&lt;/h2&gt;
+
+&lt;p&gt;プログラミング基礎
+&amp;ldquo;プログラミングする上で（特に、B→Dashを開発する上で）基本的な知識を身につけること。&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;達成可否&#34;&gt;達成可否&lt;/h2&gt;
+
+&lt;p&gt;ほぼ達成&lt;/p&gt;
+
+&lt;h4 id=&#34;railstutrial制覇-x-2&#34;&gt;Railstutrial制覇 x 2&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1回目：100%&lt;/li&gt;
+&lt;li&gt;2回目：90%
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://railstutorial.jp/&#34;&gt;https://railstutorial.jp/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mighty-ridge-66123.herokuapp.com/&#34;&gt;https://mighty-ridge-66123.herokuapp.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jkkitakita/sample_app&#34;&gt;https://github.com/jkkitakita/sample_app&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;基本情報技術者-模擬試験実施すること-60&#34;&gt;基本情報技術者 模擬試験実施すること（60%）&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1回目（2/22）：o&lt;/li&gt;
+&lt;li&gt;2回目（3/22）：o&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;そこから得た事&#34;&gt;そこから得た事&lt;/h2&gt;
+
+&lt;p&gt;1.
+ - 一般的なWEBアプリケーションの詳細な設計・実装内容の把握
+ - テスト大事&lt;/p&gt;
+
+&lt;p&gt;2.
+ - 世の中は、横文字が多い。
+ - 受験勉強だと思えば、大したことない。
+ - 組織・マネジメント系の問題は、感覚でもなんとなくいける。
+ - 大事だと思ったこと
+    - 隙間時間、ルーティンの重要性
+    - とりあえず、覚えること&lt;/p&gt;
+
+&lt;h2 id=&#34;来季のストレッチ目標-予定&#34;&gt;来季のストレッチ目標（予定）&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;何かサービス作りたい。 ※ サービス案募集&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;課外活動&#34;&gt;課外活動&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;記事投稿&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;[Grafana] Grafanaで、AWSのリザーブドインスタンス（RI）を監視してみた。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/jkkitakita/items/6155ff7899eb9d701611&#34;&gt;http://qiita.com/jkkitakita/items/6155ff7899eb9d701611&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/jkkitakita/items/35529c745e6ff5efd433&#34;&gt;http://qiita.com/jkkitakita/items/35529c745e6ff5efd433&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;ブログの開設&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://jkkitakita.com/&#34;&gt;http://jkkitakita.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jkkitakita?tab=repositories&#34;&gt;https://github.com/jkkitakita?tab=repositories&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;vagrant + ansibleで環境構築&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/jkkitakita/centos&#34;&gt;https://github.com/jkkitakita/centos&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;今後の予定&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;railstutrialにcap導入（今後）&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;開発環境（vagrant）へのデプロイ&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;本番環境（EC2）へのデプロイ&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;勉強会&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Battle Conference U30&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://battleconference-u30.connpass.com/event/49985/&#34;&gt;https://battleconference-u30.connpass.com/event/49985/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;吉田さん・橘さん、下会所さん・橘さんの飲み会&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
