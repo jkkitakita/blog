@@ -2,8 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://jkkitakita.com/archives/2017/03/29/2017032900</loc>
-    <lastmod>2017-03-29T19:15:18+09:00</lastmod>
+    <loc>http://jkkitakita.com/archives/2017/04/05/2017040512</loc>
+    <lastmod>2017-04-05T00:13:51+09:00</lastmod>
   </url>
   
   <url>
@@ -12,20 +12,14 @@
   </url>
   
   <url>
-    <loc>http://jkkitakita.com/tags/</loc>
-    <lastmod>2017-03-29T19:15:18+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://jkkitakita.com/categories/</loc>
-    <lastmod>2017-03-29T19:15:18+09:00</lastmod>
+    <lastmod>2017-04-05T00:13:51+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://jkkitakita.com/archives/</loc>
-    <lastmod>2017-03-29T19:15:18+09:00</lastmod>
+    <lastmod>2017-04-05T00:13:51+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -36,6 +30,12 @@
   
   <url>
     <loc>http://jkkitakita.com/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jkkitakita.com/tags/dialy/</loc>
+    <lastmod>2017-04-05T00:13:51+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -53,13 +53,19 @@
   
   <url>
     <loc>http://jkkitakita.com/</loc>
-    <lastmod>2017-03-29T19:15:18+09:00</lastmod>
+    <lastmod>2017-04-05T00:13:51+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jkkitakita.com/categories/mylife/</loc>
+    <lastmod>2017-04-05T00:13:51+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://jkkitakita.com/post/</loc>
-    <lastmod>2017-03-29T19:15:18+09:00</lastmod>
+    <lastmod>2017-04-05T00:13:51+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -71,6 +77,12 @@
   <url>
     <loc>http://jkkitakita.com/categories/tech/</loc>
     <lastmod>2017-03-12T13:39:17+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jkkitakita.com/tags/%E4%BC%9A%E8%A8%88/</loc>
+    <lastmod>2017-04-05T00:13:51+09:00</lastmod>
     <priority>0</priority>
   </url>
   
