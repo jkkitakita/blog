@@ -16,17 +16,16 @@
       <guid>http://jkkitakita.com/archives/2017/04/20/2017042019</guid>
       <description>
 
-&lt;p&gt;あの&lt;a href=&#34;https://www.pairs.lv/&#34;&gt;pairs&lt;/a&gt;を開発・運営している
-eureka, Inc.さんのオフィスにて
-Atlassianのユーザー会があったので、行ってきました＾＾&lt;/p&gt;
+&lt;p&gt;あの&lt;a href=&#34;https://www.pairs.lv/&#34;&gt;pairs&lt;/a&gt;を開発・運営しているeureka, Inc.さんのオフィスにて&lt;/p&gt;
 
-&lt;p&gt;第21回 Tokyo Atlassian ユーザーグループ @eureka #augj
+&lt;p&gt;Atlassianのユーザー会があったので、行ってきました＾＾&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;第21回 Tokyo Atlassian ユーザーグループ(AUG) @eureka #augj&lt;/strong&gt;
 &lt;a href=&#34;https://aug.atlassian.com/events/details/atlassian-tokyo-presents-di-21hui-tokyo-atlassian-yuzagurupu-eureka-augj#/&#34;&gt;https://aug.atlassian.com/events/details/atlassian-tokyo-presents-di-21hui-tokyo-atlassian-yuzagurupu-eureka-augj#/&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;atlassian-user-group-aug-とは&#34;&gt;Atlassian User Group（AUG）とは&lt;/h2&gt;
 
-&lt;p&gt;ユーザーが中心になって活動している組織です。
-ハッシュタグ： #AUGJ&lt;/p&gt;
+&lt;p&gt;ユーザーが中心になって活動している組織。&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;セミナー会&lt;/li&gt;
@@ -92,17 +91,21 @@ Atlassianのユーザー会があったので、行ってきました＾＾&lt;/
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;まぁあとは、わからないことがあれば
-  いつでも電話してー！と言っていたので、鬼電しようかなと思っています。笑&lt;/p&gt;
+&lt;p&gt;あとは、わからないことがあれば&lt;/p&gt;
+
+&lt;p&gt;いつでも電話してー！と言っていたので、鬼電しようかなと思っています。笑&lt;/p&gt;
+
+&lt;p&gt;cf.) &lt;a href=&#34;https://confluence.atlassian.com/jpns&#34;&gt;日本語サポートサイト&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;atassian製品の事例紹介&#34;&gt;Atassian製品の事例紹介&lt;/h2&gt;
 
 &lt;h3 id=&#34;リソースを効率的に使うためのバックログ使用例&#34;&gt;リソースを効率的に使うためのバックログ使用例&lt;/h3&gt;
 
 &lt;p&gt;&lt;script async class=&#39;speakerdeck-embed&#39; data-id=&#39;a209b8b6357646fcb94119af0c6947e6&#39; data-ratio=&#39;1.33333333333333&#39; src=&#39;//speakerdeck.com/assets/embed.js&#39;&gt;&lt;/script&gt;
-  by Housmart Hiroki Matsueさん&lt;/p&gt;
+  &lt;div style=&#34;text-align: right;&#34;&gt;by Housmart Hiroki Matsueさん&lt;/div&gt;&lt;/p&gt;
 
-&lt;ol&gt;
+&lt;div class=&#34;alert success &#34;&gt;
+  &lt;p&gt;&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;ポイント&lt;/strong&gt;
 
 &lt;ol&gt;
@@ -119,13 +122,16 @@ Atlassianのユーザー会があったので、行ってきました＾＾&lt;/
 &lt;li&gt;見える化は、必要最低限でいいからやりたい！&lt;/li&gt;
 &lt;/ol&gt;&lt;/li&gt;
 &lt;/ol&gt;
+&lt;/p&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&#34;sourcetreeを実際に使ってみた話-運用を回す話&#34;&gt;SourceTreeを実際に使ってみた話（運用を回す話）&lt;/h3&gt;
 
 &lt;p&gt;&lt;script async class=&#39;speakerdeck-embed&#39; data-id=&#39;dac39aec84564eecac45714555a1ce6e&#39; data-ratio=&#39;1.33333333333333&#39; src=&#39;//speakerdeck.com/assets/embed.js&#39;&gt;&lt;/script&gt;
-  by はてな 曽根 壮大さん&lt;/p&gt;
+  &lt;div style=&#34;text-align: right;&#34;&gt;by はてな 曽根 壮大さん&lt;/div&gt;&lt;/p&gt;
 
-&lt;ol&gt;
+&lt;div class=&#34;alert success &#34;&gt;
+  &lt;p&gt;&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;ポイント&lt;/strong&gt;
 
 &lt;ol&gt;
@@ -143,6 +149,8 @@ Atlassianのユーザー会があったので、行ってきました＾＾&lt;/
 &lt;li&gt;てか、SourceTreeってAtlassianのツールだったのか笑&lt;/li&gt;
 &lt;/ol&gt;&lt;/li&gt;
 &lt;/ol&gt;
+&lt;/p&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
 
