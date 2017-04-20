@@ -6,8 +6,172 @@
     <description>Recent content on JK&#39;s memo</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 05 Apr 2017 00:13:51 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 20 Apr 2017 19:14:11 +0900</lastBuildDate>
     <atom:link href="http://jkkitakita.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Tokyo Atlassian ユーザーグループに行ってみた。</title>
+      <link>http://jkkitakita.com/archives/2017/04/20/2017042019</link>
+      <pubDate>Thu, 20 Apr 2017 19:14:11 +0900</pubDate>
+      
+      <guid>http://jkkitakita.com/archives/2017/04/20/2017042019</guid>
+      <description>
+
+&lt;p&gt;あの&lt;a href=&#34;https://www.pairs.lv/&#34;&gt;pairs&lt;/a&gt;を開発・運営している
+eureka, Inc.さんのオフィスにて
+Atlassianのユーザー会があったので、行ってきました＾＾&lt;/p&gt;
+
+&lt;p&gt;第21回 Tokyo Atlassian ユーザーグループ @eureka #augj
+&lt;a href=&#34;https://aug.atlassian.com/events/details/atlassian-tokyo-presents-di-21hui-tokyo-atlassian-yuzagurupu-eureka-augj#/&#34;&gt;https://aug.atlassian.com/events/details/atlassian-tokyo-presents-di-21hui-tokyo-atlassian-yuzagurupu-eureka-augj#/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;atlassian-user-group-aug-とは&#34;&gt;Atlassian User Group（AUG）とは&lt;/h2&gt;
+
+&lt;p&gt;ユーザーが中心になって活動している組織です。
+ハッシュタグ： #AUGJ&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;セミナー会&lt;/li&gt;
+&lt;li&gt;カジュアルトーク&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;などの形式で定期的に開催していまーす。
+とのこと。&lt;/p&gt;
+
+&lt;h2 id=&#34;augの概要&#34;&gt;AUGの概要&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://aug.atlassian.com/&#34;&gt;AUGのコミュニケーションサイト&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;新-atlassianの歩き方-by-atlassian-犬山さん&#34;&gt;新・Atlassianの歩き方  by Atlassian 犬山さん&lt;/h2&gt;
+
+&lt;p&gt;cf. ) &lt;a href=&#34;http://qiita.com/kunny53/items/06759877d321c799df95&#34;&gt;Atlassianの歩き方&lt;/a&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;#&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;タイトル&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;ざっくり言うと？&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;備考&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;a href=&#34;https://confluence.atlassian.com/jpns&#34;&gt;日本語サポートサイト&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;公式ドキュメントの日本版&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;a href=&#34;https://community.atlassian.com/&#34;&gt;オンラインコミュニティ&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Atlassian製品の開発・改善・情報交換を目的とするコミュニティの総称&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;※ 今後日本語対応も予定中&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;a href=&#34;http://japan.blogs.atlassian.com/&#34;&gt;Atlassian Japan Blog&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;日々のAtlassianの更新情報を知りたい時見る&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;a href=&#34;https://ja.atlassian.com/team-playbook&#34;&gt;Team playbook&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;チームの健康診断ツール&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;font color=&#34;Red&#34;&gt;これ使ってみたい！&lt;/font&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;5&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;a href=&#34;https://www.atlassian.com/company/events/summit&#34;&gt;Atlassian Summit&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;AtlassianもSummitやってるよー！&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;まぁあとは、わからないことがあれば
+  いつでも電話してー！と言っていたので、鬼電しようかなと思っています。笑&lt;/p&gt;
+
+&lt;h2 id=&#34;atassian製品の事例紹介&#34;&gt;Atassian製品の事例紹介&lt;/h2&gt;
+
+&lt;h3 id=&#34;リソースを効率的に使うためのバックログ使用例&#34;&gt;リソースを効率的に使うためのバックログ使用例&lt;/h3&gt;
+
+&lt;p&gt;&lt;script async class=&#39;speakerdeck-embed&#39; data-id=&#39;a209b8b6357646fcb94119af0c6947e6&#39; data-ratio=&#39;1.33333333333333&#39; src=&#39;//speakerdeck.com/assets/embed.js&#39;&gt;&lt;/script&gt;
+  by Housmart Hiroki Matsueさん&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;ポイント&lt;/strong&gt;
+
+&lt;ol&gt;
+&lt;li&gt;サービス毎にボードを分けている、&lt;/li&gt;
+&lt;li&gt;ステータス毎のカラム（縦軸）（例）ToDo・進行中・完了 etc&amp;hellip;&lt;/li&gt;
+&lt;li&gt;ラベル毎のスイムレーン（横軸）（例）要件定義、QA、営業 etc&amp;hellip;&lt;/li&gt;
+&lt;li&gt;&lt;font color=&#34;Red&#34;&gt;ラベル毎、かつ、担当者毎に時間の見える化&lt;/font&gt;  （例）QAにどれくらい使ったか&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;所感&lt;/strong&gt;
+
+&lt;ol&gt;
+&lt;li&gt;運用フェーズになると、ステータスはやっぱり結構増やしたほうがいい。&lt;/li&gt;
+&lt;li&gt;ラベルって活用しているんだな。&lt;/li&gt;
+&lt;li&gt;見える化は、必要最低限でいいからやりたい！&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;sourcetreeを実際に使ってみた話-運用を回す話&#34;&gt;SourceTreeを実際に使ってみた話（運用を回す話）&lt;/h3&gt;
+
+&lt;p&gt;&lt;script async class=&#39;speakerdeck-embed&#39; data-id=&#39;dac39aec84564eecac45714555a1ce6e&#39; data-ratio=&#39;1.33333333333333&#39; src=&#39;//speakerdeck.com/assets/embed.js&#39;&gt;&lt;/script&gt;
+  by はてな 曽根 壮大さん&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;ポイント&lt;/strong&gt;
+
+&lt;ol&gt;
+&lt;li&gt;履歴を取らないリスクって結構ある。&lt;/li&gt;
+&lt;li&gt;履歴を取ることによって、リスクを取りに行きやすい。（チャレンジしやすい）&lt;/li&gt;
+&lt;li&gt;非エンジニアの人にもGitを使ってもらうようにすれば、組織は変わっていく！&lt;/li&gt;
+&lt;li&gt;Source TreeとかのGUIの利点は、非エンジニアの人でもとっつきやすい！英語アレルギーの人にもわかりやすい！&lt;/li&gt;
+&lt;li&gt;まずは、小さく。Teamに導入できる問題を整えてあげることが大事。&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;所感&lt;/strong&gt;
+
+&lt;ol&gt;
+&lt;li&gt;どっちかっていうと、非エンジニア向きの話だったので、内容自体は、大したものではないかなと思った。&lt;/li&gt;
+&lt;li&gt;ただ、組織改善という観点では、確かにツールの導入は、結構ありかなと思った！&lt;/li&gt;
+&lt;li&gt;てか、SourceTreeってAtlassianのツールだったのか笑&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;せっかくeurekaさんまで行ったのに、あまり女の人との出会いがなかった、、、笑&lt;/li&gt;
+&lt;li&gt;懇親会で話していると、世間は、まだまだオンプレの人が多いんだなーと感じた。&lt;/li&gt;
+&lt;li&gt;「JIRAみないで、SlackからJIRA入力したい！」とか話していると案外、「そうだよねー笑」みたいな人もいて、やっぱりみんな思ってたのかと共感できた。笑&lt;/li&gt;
+&lt;li&gt;とりあえず、プラグインかSlack連携ツールを作って、自動化しなければなーと感じたので、今日から作ろうと思う！&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;そんな感じ。
+まぁ今後もこういうイベントでて
+世の中の感覚・アンテナを広げていきましょ！&lt;/p&gt;
+
+&lt;h2 id=&#34;参考-登壇者-順不同&#34;&gt;参考（登壇者 ※順不同）&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;eureka Narichika Kajiharaさん
+&lt;a href=&#34;https://www.slideshare.net/kajinari/presentations&#34;&gt;https://www.slideshare.net/kajinari/presentations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Atlassian 犬山 奈穂さん
+&lt;a href=&#34;http://japan.blogs.atlassian.com/author/ninuyama/&#34;&gt;http://japan.blogs.atlassian.com/author/ninuyama/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Housmart Hiroki Matsueさん
+&lt;a href=&#34;https://speakerdeck.com/matsue&#34;&gt;https://speakerdeck.com/matsue&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;はてな 曽根 壮大さん
+&lt;a href=&#34;http://soudai.hatenablog.com/&#34;&gt;http://soudai.hatenablog.com/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>「まだ若手社員と言われるうちに知っておきたい「会社の数字」」を読んでみて。</title>
