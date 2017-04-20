@@ -24,7 +24,9 @@
 &lt;p&gt;&lt;strong&gt;第21回 Tokyo Atlassian ユーザーグループ(AUG) @eureka #augj&lt;/strong&gt;
 &lt;a href=&#34;https://aug.atlassian.com/events/details/atlassian-tokyo-presents-di-21hui-tokyo-atlassian-yuzagurupu-eureka-augj#/&#34;&gt;https://aug.atlassian.com/events/details/atlassian-tokyo-presents-di-21hui-tokyo-atlassian-yuzagurupu-eureka-augj#/&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;atlassian-user-group-aug-とは&#34;&gt;Atlassian User Group（AUG）とは&lt;/h2&gt;
+&lt;h1 id=&#34;1-atlassian-user-group-aug-とは&#34;&gt;1. Atlassian User Group（AUG）とは&lt;/h1&gt;
+
+&lt;hr /&gt;
 
 &lt;p&gt;ユーザーが中心になって活動している組織。&lt;/p&gt;
 
@@ -36,13 +38,30 @@
 &lt;p&gt;などの形式で定期的に開催していまーす。
 とのこと。&lt;/p&gt;
 
-&lt;h2 id=&#34;augの概要&#34;&gt;AUGの概要&lt;/h2&gt;
+&lt;h1 id=&#34;2-augの概要&#34;&gt;2. AUGの概要&lt;/h1&gt;
+
+&lt;hr /&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://aug.atlassian.com/&#34;&gt;AUGのコミュニケーションサイト&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;3-コンテンツ&#34;&gt;3. コンテンツ&lt;/h1&gt;
+
+&lt;hr /&gt;
 
 &lt;h2 id=&#34;新-atlassianの歩き方-by-atlassian-犬山さん&#34;&gt;新・Atlassianの歩き方  by Atlassian 犬山さん&lt;/h2&gt;
 
 &lt;p&gt;cf. ) &lt;a href=&#34;http://qiita.com/kunny53/items/06759877d321c799df95&#34;&gt;Atlassianの歩き方&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Atlassian製品の&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ドキュメント&lt;/li&gt;
+&lt;li&gt;最新のアップデート&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;に関して、ざっと教えていただいた。&lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;table&gt;
 &lt;thead&gt;
@@ -100,28 +119,29 @@
 
 &lt;h2 id=&#34;atassian製品の事例紹介&#34;&gt;Atassian製品の事例紹介&lt;/h2&gt;
 
+&lt;hr /&gt;
+
 &lt;h3 id=&#34;リソースを効率的に使うためのバックログ使用例&#34;&gt;リソースを効率的に使うためのバックログ使用例&lt;/h3&gt;
 
 &lt;p&gt;&lt;script async class=&#39;speakerdeck-embed&#39; data-id=&#39;a209b8b6357646fcb94119af0c6947e6&#39; data-ratio=&#39;1.33333333333333&#39; src=&#39;//speakerdeck.com/assets/embed.js&#39;&gt;&lt;/script&gt;
   &lt;div style=&#34;text-align: right;&#34;&gt;by Housmart Hiroki Matsueさん&lt;/div&gt;&lt;/p&gt;
 
 &lt;div class=&#34;alert success &#34;&gt;
-  &lt;p&gt;&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;ポイント&lt;/strong&gt;
+  &lt;p&gt;&lt;strong&gt;■ ポイント&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;サービス毎にボードを分けている、&lt;/li&gt;
 &lt;li&gt;ステータス毎のカラム（縦軸）（例）ToDo・進行中・完了 etc&amp;hellip;&lt;/li&gt;
 &lt;li&gt;ラベル毎のスイムレーン（横軸）（例）要件定義、QA、営業 etc&amp;hellip;&lt;/li&gt;
 &lt;li&gt;&lt;font color=&#34;Red&#34;&gt;ラベル毎、かつ、担当者毎に時間の見える化&lt;/font&gt;  （例）QAにどれくらい使ったか&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;所感&lt;/strong&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;■ 所感&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;運用フェーズになると、ステータスはやっぱり結構増やしたほうがいい。&lt;/li&gt;
-&lt;li&gt;ラベルって活用しているんだな。&lt;/li&gt;
+&lt;li&gt;運用フェーズになると、ステータスはやっぱり結構増やさないと回らなくなるんだなー。&lt;/li&gt;
+&lt;li&gt;ラベルって活用しているんだなー。&lt;/li&gt;
 &lt;li&gt;見える化は、必要最低限でいいからやりたい！&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/p&gt;
 &lt;/div&gt;
@@ -132,8 +152,7 @@
   &lt;div style=&#34;text-align: right;&#34;&gt;by はてな 曽根 壮大さん&lt;/div&gt;&lt;/p&gt;
 
 &lt;div class=&#34;alert success &#34;&gt;
-  &lt;p&gt;&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;ポイント&lt;/strong&gt;
+  &lt;p&gt;&lt;strong&gt;■ ポイント&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;履歴を取らないリスクって結構ある。&lt;/li&gt;
@@ -141,42 +160,57 @@
 &lt;li&gt;非エンジニアの人にもGitを使ってもらうようにすれば、組織は変わっていく！&lt;/li&gt;
 &lt;li&gt;Source TreeとかのGUIの利点は、非エンジニアの人でもとっつきやすい！英語アレルギーの人にもわかりやすい！&lt;/li&gt;
 &lt;li&gt;まずは、小さく。Teamに導入できる問題を整えてあげることが大事。&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;所感&lt;/strong&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;■ 所感&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;どっちかっていうと、非エンジニア向きの話だったので、内容自体は、大したものではないかなと思った。&lt;/li&gt;
-&lt;li&gt;ただ、組織改善という観点では、確かにツールの導入は、結構ありかなと思った！&lt;/li&gt;
+&lt;li&gt;ただ、組織改善という観点では、確かにツールの導入は、まぁまぁあり！&lt;/li&gt;
 &lt;li&gt;てか、SourceTreeってAtlassianのツールだったのか笑&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
+&lt;h1 id=&#34;4-感想&#34;&gt;4. 感想&lt;/h1&gt;
 
 &lt;ol&gt;
 &lt;li&gt;せっかくeurekaさんまで行ったのに、あまり女の人との出会いがなかった、、、笑&lt;/li&gt;
 &lt;li&gt;懇親会で話していると、世間は、まだまだオンプレの人が多いんだなーと感じた。&lt;/li&gt;
-&lt;li&gt;「JIRAみないで、SlackからJIRA入力したい！」とか話していると案外、「そうだよねー笑」みたいな人もいて、やっぱりみんな思ってたのかと共感できた。笑&lt;/li&gt;
-&lt;li&gt;とりあえず、プラグインかSlack連携ツールを作って、自動化しなければなーと感じたので、今日から作ろうと思う！&lt;/li&gt;
+&lt;li&gt;「JIRAみないで、SlackからJIRA入力したい！」とか話していると案外、「そうだよねー笑」みたいな人もいて、やっぱりみんな思ってたのかと共感できた。&lt;br /&gt;
+※ Atlassianのイベントでこんなこと言っていいのかわからなかったが。。。笑&lt;/li&gt;
+&lt;li&gt;とりあえず、プラグインかSlack連携ツールを作って、自動化しなければ！と感じたので、今日から作ろうと思う！！！&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;そんな感じ。
-まぁ今後もこういうイベントでて
-世の中の感覚・アンテナを広げていきましょ！&lt;/p&gt;
+&lt;p&gt;そんな感じ。&lt;/p&gt;
 
-&lt;h2 id=&#34;参考-登壇者-順不同&#34;&gt;参考（登壇者 ※順不同）&lt;/h2&gt;
+&lt;p&gt;今後もこういうイベントでて&lt;/p&gt;
+
+&lt;p&gt;世の中にアンテナを広げていきましょ(｀・ω・´)ｷﾘｯ&lt;/p&gt;
+
+&lt;h1 id=&#34;5-参考-登壇者-順不同&#34;&gt;5. 参考（登壇者 ※順不同）&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;eureka Narichika Kajiharaさん
-&lt;a href=&#34;https://www.slideshare.net/kajinari/presentations&#34;&gt;https://www.slideshare.net/kajinari/presentations&lt;/a&gt;&lt;/li&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.slideshare.net/kajinari/presentations&#34;&gt;https://www.slideshare.net/kajinari/presentations&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;Atlassian 犬山 奈穂さん
-&lt;a href=&#34;http://japan.blogs.atlassian.com/author/ninuyama/&#34;&gt;http://japan.blogs.atlassian.com/author/ninuyama/&lt;/a&gt;&lt;/li&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://japan.blogs.atlassian.com/author/ninuyama/&#34;&gt;http://japan.blogs.atlassian.com/author/ninuyama/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;Housmart Hiroki Matsueさん
-&lt;a href=&#34;https://speakerdeck.com/matsue&#34;&gt;https://speakerdeck.com/matsue&lt;/a&gt;&lt;/li&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://speakerdeck.com/matsue&#34;&gt;https://speakerdeck.com/matsue&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;はてな 曽根 壮大さん
-&lt;a href=&#34;http://soudai.hatenablog.com/&#34;&gt;http://soudai.hatenablog.com/&lt;/a&gt;&lt;/li&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://soudai.hatenablog.com/&#34;&gt;http://soudai.hatenablog.com/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
