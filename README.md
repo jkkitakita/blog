@@ -14,3 +14,22 @@ http://jkkitakita.com
     3. moyamoya： 何だか、もやもやしていること
   - 主に、Techで使用するTag
     1. 技術要素毎
+
+## 新規投稿手順
+
+1. 新規記事作成
+  ```
+  $ hugo new post/YYYYMMDD.md
+  ```
+2. 1.で生成したmdファイルを編集（記事編集）
+3. ローカルでサーバー起動して、確認
+```
+$ hugo server
+# ブラウザから、http://localhost:1313 にアクセス
+```
+4. 完成したら、下記コマンドを実行して、投稿
+```
+$ ./deploy.sh
+```
+5. 自分の記事が更新されていることを確認
+http://jkkitakita.com
