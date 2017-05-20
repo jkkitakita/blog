@@ -18,9 +18,9 @@ http://jkkitakita.com
 ## 新規投稿手順
 
 1. 新規記事作成
-  ```
-  $ hugo new post/YYYYMMDD.md
-  ```
+```
+$ hugo new post/YYYYMMDD.md
+```
 2. 1.で生成したmdファイルを編集（記事編集）
 3. ローカルでサーバー起動して、確認
 ```
