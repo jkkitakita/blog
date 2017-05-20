@@ -27,7 +27,8 @@ $ hugo new post/YYYYMMDD.md
 $ hugo server
 # ブラウザから、http://localhost:1313 にアクセス
 ```
-4. 完成したら、下記コマンドを実行して、投稿
+4. 完成したら、コミットして、リモートにpush
+5. 下記コマンドを実行して、投稿
 ```
 $ ./deploy.sh
 ```
