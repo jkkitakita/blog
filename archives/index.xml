@@ -9,6 +9,390 @@
     <atom:link href="http://jkkitakita.com/archives/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Javaがわからないエンジニアが、JJUG CCC行ってみた。</title>
+      <link>http://jkkitakita.com/archives/2017/05/20/20170520</link>
+      <pubDate>Sat, 20 May 2017 18:16:36 +0900</pubDate>
+      
+      <guid>http://jkkitakita.com/archives/2017/05/20/20170520</guid>
+      <description>
+
+&lt;h2 id=&#34;どうして行こうと思った&#34;&gt;どうして行こうと思った？&lt;/h2&gt;
+
+&lt;p&gt;GWに開催された&lt;br /&gt;
+soudaiさんの&lt;a href=&#34;https://soudai1025.connpass.com/event/55846/&#34;&gt;たけともそん&lt;/a&gt;に参加させていただいて&lt;br /&gt;
+そのsoudaiさんが登壇されるということで&lt;br /&gt;
+行ってきました。&lt;/p&gt;
+
+&lt;h2 id=&#34;jjug-ccc参加してみて&#34;&gt;JJUG CCC参加してみて&lt;/h2&gt;
+
+&lt;p&gt;基本的なタイムテーブルは&lt;a href=&#34;http://yujisoftware.github.io/jjug-ccc/2017-Spring/&#34;&gt;こちら&lt;/a&gt;参照。&lt;/p&gt;
+
+&lt;p&gt;会場はこんな感じ。&lt;/p&gt;
+
+&lt;p&gt;■ 休憩中のLT&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://jkkitakita.com/images/IMG_0010.JPG&#34; alt=&#34;会場1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;■ 講演中&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://jkkitakita.com/images/IMG_0012.JPG&#34; alt=&#34;会場2&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;（ぼやけとるー笑）&lt;/p&gt;
+
+&lt;p&gt;以下、自分が参加したセッションと&lt;br /&gt;
+思い返して大事だと思ったポイントとコメント   。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-javaエンジニアに知って欲しいrdbアンチパターン&#34;&gt;1. Javaエンジニアに知って欲しいRDBアンチパターン&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;ポイント&#34;&gt;ポイント&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- データにロジックを埋め込むな
+- アプリには、データベースの中身がわからない
+- DBを停止すると、サービスが止まる
+- DBを変更すると、複数サービスの改修が必要
+- データは常に変化する
+- アプリと違って、DBの知識、数年では廃れない。
+- モニタリング大事。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;コメント&#34;&gt;コメント&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- 当たり前なんだけど、どれも大事。
+- 特に、モニタリング。
+- 何が良くて、何が悪いのかが推測になってしまう。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;2-javaとアイドルのコラボ-某アイドルbot開発の裏側&#34;&gt;2. Javaとアイドルのコラボ！？某アイドルBot開発の裏側&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;乃木坂46の若月佑美さんと会話できる&lt;a href=&#34;http://wakasamabot.sakamichi46.com/&#34;&gt;若様bot&lt;/a&gt;の話。&lt;/p&gt;
+
+&lt;h4 id=&#34;フレーズ&#34;&gt;フレーズ&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- みなさん、会場合ってますか？（笑）
+- とりあえず、このセッションのゴールは、みんなが若月さん推しになること（笑）
+- LINEbotって難しそうなイメージがあるけど、そうでもない。
+- 思っているより、コードは買いていない
+- 基本的に、LINEで受け付けた言葉を、[Microsoft Cognitive Services](https://azure.microsoft.com/ja-jp/services/cognitive-services/)に投げつけて、解析結果を返しているだけ。
+- データ
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;コメント-1&#34;&gt;コメント&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- 実際、若様bot使って見たけど、すごい！面白い！笑
+- 自分でもなんか作ってみようかなと思える講演でこういうのやってみたい。笑
+- Microsoft Cognitive Servicesの画像解析とかは面白そう。
+- 何bot作ろうかな。俺だと、[吉岡里帆](https://ameblo.jp/yoshi-rihorihoriho/)botでも作ろうかな笑
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;それ以外に聞いた講演&#34;&gt;それ以外に聞いた講演&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;3-javaエンジニアから見たkotlinの魅力&#34;&gt;3. Javaエンジニアから見たKotlinの魅力&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://events.google.com/io/&#34;&gt;Google I/O 2017&lt;/a&gt;で話題のKotlinってどんな感じなのかなと気になったので。&lt;/li&gt;
+&lt;li&gt;とりあえず、Javaとの互換性が高く、シンプルに書けるんだなという感じ。（違ったらすいません。笑）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;4-グラフデータベース入門&#34;&gt;4. グラフデータベース入門&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;まぁ本当に入門って感じ。&lt;/li&gt;
+&lt;li&gt;グラフデータベース面白いけど、まだまだ面白い領域を超えない感じ。&lt;/li&gt;
+&lt;li&gt;あとは、百々さんが頑張ってくれるだろう。。。笑&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
+
+&lt;p&gt;講演聞く以外は、基本的には&lt;br /&gt;
+以前の&lt;a href=&#34;http://jkkitakita.com/archives/2017/04/20/2017042019/&#34;&gt;Atlassianユーザー会&lt;/a&gt;でお会いした
+Atlassianの犬山さんに&lt;br /&gt;
+JIRAの使い方に関して相談させてもらっていた。&lt;br /&gt;
+まだまだどの企業も探り探りらしい。&lt;/p&gt;
+
+&lt;p&gt;誰か、&lt;a href=&#34;https://ja.atlassian.com/software/jira/portfolio&#34;&gt;Portfolio for JIRA&lt;/a&gt;の良い使い方知らないかなー。&lt;br /&gt;
+まぁJIRAを使っているので、それでできれば一番ベストなのでしょうが。&lt;br /&gt;
+まぁAgileの&lt;code&gt;モニタリング&lt;/code&gt;するよい方法があればいいのですがといった感じ。&lt;/p&gt;
+
+&lt;h2 id=&#34;さいごに&#34;&gt;さいごに&lt;/h2&gt;
+
+&lt;p&gt;自分はまだまだ外の世界がわからないペーペーなので&lt;br /&gt;
+引き続きこういう外のイベントは参加していこー。&lt;/p&gt;
+
+&lt;h2 id=&#34;みなさん-有難うございました&#34;&gt;みなさん、有難うございました！&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://soudai.hatenablog.com/&#34;&gt;soudaiさん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.slideshare.net/MasayaDake/ss-76145383&#34;&gt;嶽　雅也さん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://kikutaro777.hatenablog.com/&#34;&gt;キクタローさん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://twitter.com/soranakk&#34;&gt;空中さん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://japan.blogs.atlassian.com/author/ninuyama/&#34;&gt;Atlassian犬山さん&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Javaがわからないエンジニアが、JJUG CCC行ってみた。</title>
+      <link>http://jkkitakita.com/archives/2017/05/20/20170520</link>
+      <pubDate>Sat, 20 May 2017 18:16:36 +0900</pubDate>
+      
+      <guid>http://jkkitakita.com/archives/2017/05/20/20170520</guid>
+      <description>
+
+&lt;h2 id=&#34;どうして行こうと思った&#34;&gt;どうして行こうと思った？&lt;/h2&gt;
+
+&lt;p&gt;GWに開催された&lt;br /&gt;
+soudaiさんの&lt;a href=&#34;https://soudai1025.connpass.com/event/55846/&#34;&gt;たけともそん&lt;/a&gt;に参加させていただいて&lt;br /&gt;
+そのsoudaiさんが登壇されるということで&lt;br /&gt;
+行ってきました。&lt;/p&gt;
+
+&lt;h2 id=&#34;jjug-ccc参加してみて&#34;&gt;JJUG CCC参加してみて&lt;/h2&gt;
+
+&lt;p&gt;基本的なタイムテーブルは&lt;a href=&#34;http://yujisoftware.github.io/jjug-ccc/2017-Spring/&#34;&gt;こちら&lt;/a&gt;参照。&lt;/p&gt;
+
+&lt;p&gt;会場はこんな感じ。&lt;/p&gt;
+
+&lt;p&gt;■ 休憩中のLT&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://jkkitakita.com/images/IMG_0010.JPG&#34; alt=&#34;会場1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;■ 講演中&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://jkkitakita.com/images/IMG_0012.JPG&#34; alt=&#34;会場2&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;（ぼやけとるー笑）&lt;/p&gt;
+
+&lt;p&gt;以下、自分が参加したセッションと&lt;br /&gt;
+思い返して大事だと思ったポイントとコメント   。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-javaエンジニアに知って欲しいrdbアンチパターン&#34;&gt;1. Javaエンジニアに知って欲しいRDBアンチパターン&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;ポイント&#34;&gt;ポイント&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- データにロジックを埋め込むな
+- アプリには、データベースの中身がわからない
+- DBを停止すると、サービスが止まる
+- DBを変更すると、複数サービスの改修が必要
+- データは常に変化する
+- アプリと違って、DBの知識、数年では廃れない。
+- モニタリング大事。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;コメント&#34;&gt;コメント&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- 当たり前なんだけど、どれも大事。
+- 特に、モニタリング。
+- 何が良くて、何が悪いのかが推測になってしまう。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;2-javaとアイドルのコラボ-某アイドルbot開発の裏側&#34;&gt;2. Javaとアイドルのコラボ！？某アイドルBot開発の裏側&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;乃木坂46の若月佑美さんと会話できる&lt;a href=&#34;http://wakasamabot.sakamichi46.com/&#34;&gt;若様bot&lt;/a&gt;の話。&lt;/p&gt;
+
+&lt;h4 id=&#34;フレーズ&#34;&gt;フレーズ&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- みなさん、会場合ってますか？（笑）
+- とりあえず、このセッションのゴールは、みんなが若月さん推しになること（笑）
+- LINEbotって難しそうなイメージがあるけど、そうでもない。
+- 思っているより、コードは買いていない
+- 基本的に、LINEで受け付けた言葉を、[Microsoft Cognitive Services](https://azure.microsoft.com/ja-jp/services/cognitive-services/)に投げつけて、解析結果を返しているだけ。
+- データ
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;コメント-1&#34;&gt;コメント&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- 実際、若様bot使って見たけど、すごい！面白い！笑
+- 自分でもなんか作ってみようかなと思える講演でこういうのやってみたい。笑
+- Microsoft Cognitive Servicesの画像解析とかは面白そう。
+- 何bot作ろうかな。俺だと、[吉岡里帆](https://ameblo.jp/yoshi-rihorihoriho/)botでも作ろうかな笑
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;それ以外に聞いた講演&#34;&gt;それ以外に聞いた講演&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;3-javaエンジニアから見たkotlinの魅力&#34;&gt;3. Javaエンジニアから見たKotlinの魅力&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://events.google.com/io/&#34;&gt;Google I/O 2017&lt;/a&gt;で話題のKotlinってどんな感じなのかなと気になったので。&lt;/li&gt;
+&lt;li&gt;とりあえず、Javaとの互換性が高く、シンプルに書けるんだなという感じ。（違ったらすいません。笑）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;4-グラフデータベース入門&#34;&gt;4. グラフデータベース入門&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;まぁ本当に入門って感じ。&lt;/li&gt;
+&lt;li&gt;グラフデータベース面白いけど、まだまだ面白い領域を超えない感じ。&lt;/li&gt;
+&lt;li&gt;あとは、百々さんが頑張ってくれるだろう。。。笑&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
+
+&lt;p&gt;講演聞く以外は、基本的には&lt;br /&gt;
+以前の&lt;a href=&#34;http://jkkitakita.com/archives/2017/04/20/2017042019/&#34;&gt;Atlassianユーザー会&lt;/a&gt;でお会いした
+Atlassianの犬山さんに&lt;br /&gt;
+JIRAの使い方に関して相談させてもらっていた。&lt;br /&gt;
+まだまだどの企業も探り探りらしい。&lt;/p&gt;
+
+&lt;p&gt;誰か、&lt;a href=&#34;https://ja.atlassian.com/software/jira/portfolio&#34;&gt;Portfolio for JIRA&lt;/a&gt;の良い使い方知らないかなー。&lt;br /&gt;
+まぁJIRAを使っているので、それでできれば一番ベストなのでしょうが。&lt;br /&gt;
+まぁAgileの&lt;code&gt;モニタリング&lt;/code&gt;するよい方法があればいいのですがといった感じ。&lt;/p&gt;
+
+&lt;h2 id=&#34;さいごに&#34;&gt;さいごに&lt;/h2&gt;
+
+&lt;p&gt;自分はまだまだ外の世界がわからないペーペーなので&lt;br /&gt;
+引き続きこういう外のイベントは参加していこー。&lt;/p&gt;
+
+&lt;h2 id=&#34;みなさん-有難うございました&#34;&gt;みなさん、有難うございました！&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://soudai.hatenablog.com/&#34;&gt;soudaiさん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.slideshare.net/MasayaDake/ss-76145383&#34;&gt;嶽　雅也さん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://kikutaro777.hatenablog.com/&#34;&gt;キクタローさん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://twitter.com/soranakk&#34;&gt;空中さん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://japan.blogs.atlassian.com/author/ninuyama/&#34;&gt;Atlassian犬山さん&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Javaがわからないエンジニアが、JJUG CCC行ってみた。</title>
+      <link>http://jkkitakita.com/archives/2017/05/20/20170520</link>
+      <pubDate>Sat, 20 May 2017 18:16:36 +0900</pubDate>
+      
+      <guid>http://jkkitakita.com/archives/2017/05/20/20170520</guid>
+      <description>
+
+&lt;h2 id=&#34;どうして行こうと思った&#34;&gt;どうして行こうと思った？&lt;/h2&gt;
+
+&lt;p&gt;GWに開催された&lt;br /&gt;
+soudaiさんの&lt;a href=&#34;https://soudai1025.connpass.com/event/55846/&#34;&gt;たけともそん&lt;/a&gt;に参加させていただいて&lt;br /&gt;
+そのsoudaiさんが登壇されるということで&lt;br /&gt;
+行ってきました。&lt;/p&gt;
+
+&lt;h2 id=&#34;jjug-ccc参加してみて&#34;&gt;JJUG CCC参加してみて&lt;/h2&gt;
+
+&lt;p&gt;基本的なタイムテーブルは&lt;a href=&#34;http://yujisoftware.github.io/jjug-ccc/2017-Spring/&#34;&gt;こちら&lt;/a&gt;参照。&lt;/p&gt;
+
+&lt;p&gt;会場はこんな感じ。&lt;/p&gt;
+
+&lt;p&gt;■ 休憩中のLT&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://jkkitakita.com/images/IMG_0010.JPG&#34; alt=&#34;会場1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;■ 講演中&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://jkkitakita.com/images/IMG_0012.JPG&#34; alt=&#34;会場2&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;（ぼやけとるー笑）&lt;/p&gt;
+
+&lt;p&gt;以下、自分が参加したセッションと&lt;br /&gt;
+思い返して大事だと思ったポイントとコメント   。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-javaエンジニアに知って欲しいrdbアンチパターン&#34;&gt;1. Javaエンジニアに知って欲しいRDBアンチパターン&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;ポイント&#34;&gt;ポイント&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- データにロジックを埋め込むな
+- アプリには、データベースの中身がわからない
+- DBを停止すると、サービスが止まる
+- DBを変更すると、複数サービスの改修が必要
+- データは常に変化する
+- アプリと違って、DBの知識、数年では廃れない。
+- モニタリング大事。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;コメント&#34;&gt;コメント&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- 当たり前なんだけど、どれも大事。
+- 特に、モニタリング。
+- 何が良くて、何が悪いのかが推測になってしまう。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;2-javaとアイドルのコラボ-某アイドルbot開発の裏側&#34;&gt;2. Javaとアイドルのコラボ！？某アイドルBot開発の裏側&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;乃木坂46の若月佑美さんと会話できる&lt;a href=&#34;http://wakasamabot.sakamichi46.com/&#34;&gt;若様bot&lt;/a&gt;の話。&lt;/p&gt;
+
+&lt;h4 id=&#34;フレーズ&#34;&gt;フレーズ&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- みなさん、会場合ってますか？（笑）
+- とりあえず、このセッションのゴールは、みんなが若月さん推しになること（笑）
+- LINEbotって難しそうなイメージがあるけど、そうでもない。
+- 思っているより、コードは買いていない
+- 基本的に、LINEで受け付けた言葉を、[Microsoft Cognitive Services](https://azure.microsoft.com/ja-jp/services/cognitive-services/)に投げつけて、解析結果を返しているだけ。
+- データ
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;コメント-1&#34;&gt;コメント&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;- 実際、若様bot使って見たけど、すごい！面白い！笑
+- 自分でもなんか作ってみようかなと思える講演でこういうのやってみたい。笑
+- Microsoft Cognitive Servicesの画像解析とかは面白そう。
+- 何bot作ろうかな。俺だと、[吉岡里帆](https://ameblo.jp/yoshi-rihorihoriho/)botでも作ろうかな笑
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;それ以外に聞いた講演&#34;&gt;それ以外に聞いた講演&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;3-javaエンジニアから見たkotlinの魅力&#34;&gt;3. Javaエンジニアから見たKotlinの魅力&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://events.google.com/io/&#34;&gt;Google I/O 2017&lt;/a&gt;で話題のKotlinってどんな感じなのかなと気になったので。&lt;/li&gt;
+&lt;li&gt;とりあえず、Javaとの互換性が高く、シンプルに書けるんだなという感じ。（違ったらすいません。笑）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;4-グラフデータベース入門&#34;&gt;4. グラフデータベース入門&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;まぁ本当に入門って感じ。&lt;/li&gt;
+&lt;li&gt;グラフデータベース面白いけど、まだまだ面白い領域を超えない感じ。&lt;/li&gt;
+&lt;li&gt;あとは、百々さんが頑張ってくれるだろう。。。笑&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
+
+&lt;p&gt;講演聞く以外は、基本的には&lt;br /&gt;
+以前の&lt;a href=&#34;http://jkkitakita.com/archives/2017/04/20/2017042019/&#34;&gt;Atlassianユーザー会&lt;/a&gt;でお会いした
+Atlassianの犬山さんに&lt;br /&gt;
+JIRAの使い方に関して相談させてもらっていた。&lt;br /&gt;
+まだまだどの企業も探り探りらしい。&lt;/p&gt;
+
+&lt;p&gt;誰か、&lt;a href=&#34;https://ja.atlassian.com/software/jira/portfolio&#34;&gt;Portfolio for JIRA&lt;/a&gt;の良い使い方知らないかなー。&lt;br /&gt;
+まぁJIRAを使っているので、それでできれば一番ベストなのでしょうが。&lt;br /&gt;
+まぁAgileの&lt;code&gt;モニタリング&lt;/code&gt;するよい方法があればいいのですがといった感じ。&lt;/p&gt;
+
+&lt;h2 id=&#34;さいごに&#34;&gt;さいごに&lt;/h2&gt;
+
+&lt;p&gt;自分はまだまだ外の世界がわからないペーペーなので&lt;br /&gt;
+引き続きこういう外のイベントは参加していこー。&lt;/p&gt;
+
+&lt;h2 id=&#34;みなさん-有難うございました&#34;&gt;みなさん、有難うございました！&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://soudai.hatenablog.com/&#34;&gt;soudaiさん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.slideshare.net/MasayaDake/ss-76145383&#34;&gt;嶽　雅也さん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://kikutaro777.hatenablog.com/&#34;&gt;キクタローさん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://twitter.com/soranakk&#34;&gt;空中さん&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://japan.blogs.atlassian.com/author/ninuyama/&#34;&gt;Atlassian犬山さん&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Tokyo Atlassian ユーザーグループに行ってみた。</title>
       <link>http://jkkitakita.com/archives/2017/04/20/2017042019</link>
       <pubDate>Thu, 20 Apr 2017 19:14:11 +0900</pubDate>
