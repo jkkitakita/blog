@@ -1,98 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Dialy on JK&#39;s memo</title>
-    <link>http://jkkitakita.com/tags/dialy/index.xml</link>
-    <description>Recent content in Dialy on JK&#39;s memo</description>
+    <title>dialy on jkkitakita</title>
+    <link>https://blog.jkkitakita.dev/tags/dialy/</link>
+    <description>Recent content in dialy on jkkitakita</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <atom:link href="http://jkkitakita.com/tags/dialy/index.xml" rel="self" type="application/rss+xml" />
+    <language>ja</language>
+    <copyright>&amp;copy; &lt;a href=&#34;https://github.com/jkkitakita&#34;&gt;Jun Kitamura&lt;/a&gt; 2020</copyright>
+    <lastBuildDate>Wed, 05 Apr 2017 00:13:51 +0900</lastBuildDate>
+    
+	<atom:link href="https://blog.jkkitakita.dev/tags/dialy/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>「まだ若手社員と言われるうちに知っておきたい「会社の数字」」を読んでみて。</title>
-      <link>http://jkkitakita.com/archives/2017/04/05/2017040512</link>
+      <link>https://blog.jkkitakita.dev/post/2017040512/</link>
       <pubDate>Wed, 05 Apr 2017 00:13:51 +0900</pubDate>
       
-      <guid>http://jkkitakita.com/archives/2017/04/05/2017040512</guid>
-      <description>&lt;p&gt;現在
-ITベンチャーでエンジニアとして働かせてもらって
-社会人3年目になった。&lt;/p&gt;
-
-&lt;p&gt;色々とマネジメントもさせてもらっているのですが
-その中で&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;「○○○の金額が、○○○」&lt;/li&gt;
-&lt;li&gt;「VCから、○○○調達したい」&lt;/li&gt;
-&lt;li&gt;「銀行から○○○借り入れしないと」&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;的な話をちょこちょこ耳に入ってきて
-（今までも話していたのだけれど、たぶん気にしてなかった。）
-いやあ確かに大事！
-と思って、恥ずかしながら、そこらへんの勉強をと思い
-とりあえずググって出てきた
-「まだ若手社員と言われるうちに知っておきたい「会社の数字」」
-という本を読んでみたので、その感想とかとか。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;作者： 伊達 淳
-出版社/メーカー： 株式会社講談社
-発売日： 2013/07/04
-メディア： 単行本
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.amazon.co.jp/%E3%81%BE%E3%81%A0%E8%8B%A5%E6%89%8B%E7%A4%BE%E5%93%A1%E3%81%A8%E3%81%84%E3%82%8F%E3%82%8C%E3%82%8B%E3%81%86%E3%81%A1%E3%81%AB%E7%9F%A5%E3%81%A3%E3%81%A6%E3%81%8A%E3%81%8D%E3%81%9F%E3%81%84%E3%80%8C%E4%BC%9A%E7%A4%BE%E3%81%AE%E6%95%B0%E5%AD%97%E3%80%8D-%E4%BC%8A%E9%81%94-%E6%95%A6/dp/4062184125&#34;&gt;https://www.amazon.co.jp/%E3%81%BE%E3%81%A0%E8%8B%A5%E6%89%8B%E7%A4%BE%E5%93%A1%E3%81%A8%E3%81%84%E3%82%8F%E3%82%8C%E3%82%8B%E3%81%86%E3%81%A1%E3%81%AB%E7%9F%A5%E3%81%A3%E3%81%A6%E3%81%8A%E3%81%8D%E3%81%9F%E3%81%84%E3%80%8C%E4%BC%9A%E7%A4%BE%E3%81%AE%E6%95%B0%E5%AD%97%E3%80%8D-%E4%BC%8A%E9%81%94-%E6%95%A6/dp/4062184125&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;なるほどなるほど。
-確かにそういうの大事。
-と思うことがあった。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;本からの学びの箇条書き
-
-&lt;ol&gt;
-&lt;li&gt;エンジニアとか関係なく、社会人として、必須の知識だと感じた。（最先端の研究者とかだと別かも？）&lt;/li&gt;
-&lt;li&gt;今後、どんな会社で働こうが共通スキルなので、知って損することはない。&lt;/li&gt;
-&lt;li&gt;会計の知識があるのとないのとでは、見える世界がまるで違う気がした。&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;li&gt;キーワード
-
-&lt;ol&gt;
-&lt;li&gt;資金繰り&lt;/li&gt;
-&lt;li&gt;採算性&lt;/li&gt;
-&lt;li&gt;借入金&lt;/li&gt;
-&lt;li&gt;投資リスク&lt;/li&gt;
-&lt;li&gt;支払い条件&lt;/li&gt;
-&lt;li&gt;取引先分析&lt;/li&gt;
-&lt;li&gt;人件費&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;正直、数式とかちょこちょこ出てくるけど
-全然難しくない。という小学生レベルの数式ですし
-内容も、ストーリー仕立てなので、読みやすく
-かつ、基本はちゃんと抑えているので
-本当「若手社員」のとっかかりとしては良本なんじゃないかなと思いました。&lt;/p&gt;
-
-&lt;p&gt;特に印象に残っているのは&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;「ゴーイングコンサーン」が、会計の基本ルール&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;ということ。&lt;/p&gt;
-
-&lt;p&gt;これは、
-会計の世界の大前提として
-「会社は倒産しない」
-があるからこそ、成立するということ。&lt;/p&gt;
-
-&lt;p&gt;本当まさに
-そんなの当たり前だろ
-って作者の思い通りのツッコミをしてしまったのですが
-これがあるからこそ
-会社が継続できるんだなとつくづく感じました。&lt;/p&gt;
-
-&lt;p&gt;今後も会社に関する数字の勉強とかしていかないとなー。&lt;/p&gt;
-</description>
+      <guid>https://blog.jkkitakita.dev/post/2017040512/</guid>
+      <description>現在 ITベンチャーでエンジニアとして働かせてもらって 社会人3年目になった。 色々とマネジメントもさせてもらっているのですが その中で 「○○○の金</description>
     </item>
     
   </channel>
