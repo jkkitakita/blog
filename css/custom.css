@@ -32,6 +32,16 @@ article+article {
   margin-bottom: 5px;
 }
 
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+    color: gray;
+    font-weight: bold;
+}
+
 .content h3:not(:first-child),
 .content h4:not(:first-child),
 .content h5:not(:first-child),

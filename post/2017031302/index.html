@@ -134,7 +134,7 @@
 <li>インフラエンジニアをやった後、現在、スクラムマスター。</li>
 <li>なので、そこまで、技術的な知識はない。</li>
 </ol>
-<h2 id="3-はじめていきましょう">3. はじめていきましょう！</h2>
+<h2 id="3-はじめていきましょう">3. はじめていきましょう</h2>
 <blockquote>
 <ol>
 <li>HugoとGithub Pagesを使って、ブログを開設する</li>
@@ -148,22 +148,19 @@
   <iframe src="https://www.youtube.com/embed/2MsN8gpT6jY" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
 </div>
 
-<p>もうここは
-色々な方々がブログでまとめてくださっているので問題ないかなと。
-yewtonさんの記事が参考になりそうです。
-（参考にさせていただきました。ありがとうございます。）
-<a href="https://www.yewton.net/2016/02/02/blog-with-hugo/">https://www.yewton.net/2016/02/02/blog-with-hugo/</a></p>
+<hr>
+<p>もうここは、色々な方々がブログでまとめてくださっているので問題ないかなと。yewtonさんの記事が参考になりそうです。（参考にさせていただきました。ありがとうございます。）</p>
+<p><a href="https://www.yewton.net/2016/02/02/blog-with-hugo/">https://www.yewton.net/2016/02/02/blog-with-hugo/</a></p>
 <p>とりあえず、私のHugo + Github Pagesの構成は
 <a href="https://github.com/jkkitakita/blog" title="JK's memo">こちら</a>。</p>
-<p>残課題として、ドメイン周りとか整理する必要があるかも？<br>
-誰かアドバイスがあれば、お願いいたします。。。</p>
-<pre><code>~ ❯❯❯ dig jkkitakita.com
+<p>残課題として、ドメイン周りとか整理する必要があるかも？誰かアドバイスがあれば、お願いいたします。。。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~ ❯❯❯ dig jkkitakita.com
 
 ; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; jkkitakita.com
 ;; global options: +cmd
 ;; Got answer:
-;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 2013
-;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 4, ADDITIONAL: 8
+;; -&gt;&gt;HEADER<span style="color:#e6db74">&lt;&lt;- opco</span>de: QUERY, status: NOERROR, id: <span style="color:#ae81ff">2013</span>
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 4, ADDITIONAL: <span style="color:#ae81ff">8</span>
 
 ;; QUESTION SECTION:
 ;jkkitakita.com.			IN	A
@@ -188,77 +185,58 @@ ns-708.awsdns-24.net.	38549	IN	A	205.251.194.196
 ns-1310.awsdns-35.org.	59218	IN	A	205.251.197.30
 ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
 
-;; Query time: 16 msec
-;; SERVER: 2400:2410:8be2:1d00:1111:1111:1111:1111#53(2400:2410:8be2:1d00:1111:1111:1111:1111)
-;; WHEN: Sun Mar 12 23:57:59 2017
-;; MSG SIZE  rcvd: 377
-</code></pre><h4 id="memo">memo</h4>
+;; Query time: <span style="color:#ae81ff">16</span> msec
+;; SERVER: 2400:2410:8be2:1d00:1111:1111:1111:1111#53<span style="color:#f92672">(</span>2400:2410:8be2:1d00:1111:1111:1111:1111<span style="color:#f92672">)</span>
+;; WHEN: Sun Mar <span style="color:#ae81ff">12</span> 23:57:59 <span style="color:#ae81ff">2017</span>
+;; MSG SIZE  rcvd: <span style="color:#ae81ff">377</span>
+</code></pre></div><h4 id="memo">memo</h4>
 <ol>
-<li>
-<p>Hugo関連</p>
-</li>
-<li>
-<p>themeは、kakawaitさんのhugo-tranquilpeak-themeを使わせてもらった。
-<a href="https://themes.gohugo.io/hugo-tranquilpeak-theme/">https://themes.gohugo.io/hugo-tranquilpeak-theme/</a></p>
-</li>
-<li>
-<p>そのままだと、archivesページがうまく表示されなかったので、layout/taxonomy/archive.htmlを作成した。（themes/hugo-tranquilpeak-theme/layouts/taxonomy/archive.terms.htmlから複製）</p>
-</li>
-<li>
-<p>日本語（ja）だとやっぱり色々だめかな。（ex.placeholderでないとか。）
-↓は、にしておいた方が良さそう。</p>
+<li>Hugo関連
+<ol>
+<li>themeは、kakawaitさんのhugo-tranquilpeak-themeを使わせてもらった。<br>
+<a href="https://themes.gohugo.io/hugo-tranquilpeak-theme/">https://themes.gohugo.io/hugo-tranquilpeak-theme/</a></li>
+<li>そのままだと、archivesページがうまく表示されなかったので、layout/taxonomy/archive.htmlを作成した。（themes/hugo-tranquilpeak-theme/layouts/taxonomy/archive.terms.htmlから複製）</li>
+<li>日本語（ja）だとやっぱり色々だめかな。（ex.placeholderでないとか。）
+↓は、にしておいた方が良さそう。
 <ol>
 <li><code>languageCode = &quot;en-us&quot;</code></li>
-<li><code>defaultContentLanguage = &quot;en-us&quot;</code></li>
+<li>`defaultContentLanguage = &ldquo;en-us&quot;</li>
 </ol>
 </li>
-<li>
-<p>ドメイン関連</p>
+</ol>
 </li>
-<li>
-<p><code>192.30.252.153</code>、<code>192.30.252.154</code>は、Github Pagesのドメイン
-<a href="https://help.github.com/articles/setting-up-an-apex-domain/">https://help.github.com/articles/setting-up-an-apex-domain/</a></p>
+<li>ドメイン関連
+<ol>
+<li><code>192.30.252.153</code>、<code>192.30.252.154</code>は、Github Pagesのドメイン<br>
+<a href="https://help.github.com/articles/setting-up-an-apex-domain/">https://help.github.com/articles/setting-up-an-apex-domain/</a></li>
+<li>ドメインは、お名前.comで管理</li>
+<li>DNS関連は、AWS Route53。（Aレコード）</li>
+</ol>
 </li>
-<li>
-<p>ドメインは、お名前.comで管理</p>
-</li>
-<li>
-<p>DNS関連は、AWS Route53。（Aレコード）</p>
-</li>
-<li>
-<p>残課題</p>
-</li>
-<li>
-<p>サブドメインの方が、Github Pagesとしては、良い？
-<a href="https://help.github.com/articles/about-supported-custom-domains/">https://help.github.com/articles/about-supported-custom-domains/</a></p>
-</li>
-<li>
-<p>CDNの整備</p>
-</li>
-<li>
-<p>Hugoの知識不足。</p>
-</li>
-<li>
-<p>ネタ不足。笑</p>
+<li>残課題
+<ol>
+<li>サブドメインの方が、Github Pagesとしては、良い？<br>
+<a href="https://help.github.com/articles/about-supported-custom-domains/">https://help.github.com/articles/about-supported-custom-domains/</a></li>
+<li>CDNの整備</li>
+<li>Hugoの知識不足。</li>
+<li>ネタ不足。笑</li>
+</ol>
 </li>
 </ol>
 <blockquote>
 <p>2.新規投稿時のシェルスクリプトを考える。</p>
 </blockquote>
-<p>なんかただ作成するだけだと寂しいから<br>
-「綺麗な画像が欲しい！」と思って<br>
-無料画像的なのを引っ張ってくるスクリプトつくってみた。<br>
-（これダメだったら、誰か指摘してください。。笑）</p>
+<p>なんかただ作成するだけだと寂しいから、「綺麗な画像が欲しい！」と思って、無料画像的なのを引っ張ってくるスクリプトつくってみた。（これダメだったら、誰か指摘してください。。笑）</p>
 <p>ざっくりやったことの流れ</p>
 <ol>
-<li>pixabayにアカウント登録
+<li>pixabayにアカウント登録<br>
 <a href="https://pixabay.com/ja/">https://pixabay.com/ja/</a></li>
 <li>APIkey発行</li>
-<li>シェルの作成</li>
-<li>記事作成（hugo new）</li>
-<li>curl で 画像を取得</li>
-<li>hugo用にワンライナーで整形</li>
-<li>sedで新規作成した記事へ挿入</li>
+<li>シェルの作成
+4. 記事作成（hugo new）
+5. curl で 画像を取得
+6. hugo用にワンライナーで整形
+7. sedで新規作成した記事へ挿入</li>
 <li>完成</li>
 </ol>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-post.sh" data-lang="post.sh"><span style="color:#75715e">#!bin/bash
@@ -275,19 +253,13 @@ gsed -i -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">2
 <ol>
 <li>ランダムで20個生成する感じになっているが、同じ画像が出ることがある。</li>
 <li>sedでうまくいかなかったので、gsedをinstallした。<br>
-（参考）http://cross-black777.hatenablog.com/entry/2015/02/23/214337</li>
-<li>そもそもブログの画像、ライセンス、著作権の勉強しないとかなと思った。<br>
-&ldquo;(/へ＼*)&quot;))ｳｩ､ﾋｯｸ</li>
+（参考）<a href="http://cross-black777.hatenablog.com/entry/2015/02/23/214337">http://cross-black777.hatenablog.com/entry/2015/02/23/214337</a></li>
+<li>そもそもブログの画像、ライセンス、著作権の勉強しないとかなと思った。</li>
 <li>Hugoさんのlogoは、なんかいけそうだと思ったので、使わせてもらいました。</li>
 </ol>
 <h2 id="4-さいごに">4. さいごに</h2>
-<p>Qiitaとかでは<br>
-ちょこちょこ投稿していましたが<br>
-自分で開設してみたいと思い、始めました。</p>
-<p>ちょこちょここのサイト自体も<br>
-updateされるかなと思いますが<br>
-お気になさらずに。。。。笑</p>
-<p>まぁ気楽に色々と書いていきたいと思いますので<br>
+<p>Qiitaとかでは、ちょこちょこ投稿していましたが、自分で開設してみたいと思い、始めました。ちょこちょここのサイト自体も、updateされるかなと思いますが、お気になさらずに。。。。笑</p>
+<p>まぁ気楽に色々と書いていきたいと思いますので
 宜しくお願いいたします😀</p>
 
       

@@ -7,7 +7,7 @@
 <title>Javaがわからないエンジニアが、JJUG CCC行ってみた。 | jkkitakita</title>
 
 <meta property='og:title' content='Javaがわからないエンジニアが、JJUG CCC行ってみた。 - jkkitakita'>
-<meta property='og:description' content='どうして行こうと思った？ GWに開催された soudaiさんのたけともそんに参加させていただいて そのsoudaiさんが登壇されるということで 行っ'>
+<meta property='og:description' content='どうして行こうと思ったか GWに開催されたsoudaiさんのたけともそんに参加させていただいて、そのsoudaiさんが登壇されるということで、'>
 <meta property='og:url' content='https://blog.jkkitakita.dev/post/20170520/'>
 <meta property='og:site_name' content='jkkitakita'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/23c25c7545ad2fdbdbab1f9201bf96b7?s=256'><meta property='article:author' content='https://facebook.com/jkkitakita'><meta property='article:section' content='Post'><meta property='article:tag' content='meet-up'><meta property='article:tag' content='java'><meta property='article:tag' content=''><meta property='article:published_time' content='2017-05-20T18:16:36&#43;09:00'/><meta property='article:modified_time' content='2017-05-20T18:16:36&#43;09:00'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@jkkitakita'><meta name='twitter:creator' content='@jkkitakita'>
@@ -125,11 +125,8 @@
     <h1 class="title">Javaがわからないエンジニアが、JJUG CCC行ってみた。</h1>
     
     <div class="content">
-      <h2 id="どうして行こうと思った">どうして行こうと思った？</h2>
-<p>GWに開催された
-soudaiさんの<a href="https://soudai1025.connpass.com/event/55846/">たけともそん</a>に参加させていただいて
-そのsoudaiさんが登壇されるということで
-行ってきました。</p>
+      <h2 id="どうして行こうと思ったか">どうして行こうと思ったか</h2>
+<p>GWに開催されたsoudaiさんの<a href="https://soudai1025.connpass.com/event/55846/">たけともそん</a>に参加させていただいて、そのsoudaiさんが登壇されるということで、行ってきました。</p>
 <h2 id="jjug-ccc参加してみて">JJUG CCC参加してみて</h2>
 <p>基本的なタイムテーブルは<a href="http://yujisoftware.github.io/jjug-ccc/2017-Spring/">こちら</a>参照。</p>
 <p>会場はこんな感じ。</p>
@@ -138,40 +135,43 @@ soudaiさんの<a href="https://soudai1025.connpass.com/event/55846/">たけと�
 <p>■ 講演中</p>
 <p><img src="/images/IMG_0012.JPG" alt="会場2"></p>
 <p>（ぼやけとるー笑）</p>
-<p>以下、自分が参加したセッションと
-思い返して大事だと思ったポイントとコメント	。</p>
+<p>以下、自分が参加したセッションと思い返して大事だと思ったポイントとコメント。</p>
 <h3 id="1-javaエンジニアに知って欲しいrdbアンチパターン">1. Javaエンジニアに知って欲しいRDBアンチパターン</h3>
 <hr>
 <h4 id="ポイント">ポイント</h4>
-<pre><code>- データにロジックを埋め込むな
-- アプリには、データベースの中身がわからない
-- DBを停止すると、サービスが止まる
-- DBを変更すると、複数サービスの改修が必要
-- データは常に変化する
-- アプリと違って、DBの知識、数年では廃れない。
-- モニタリング大事。
-</code></pre>
+<ul>
+<li>データにロジックを埋め込むな</li>
+<li>アプリには、データベースの中身がわからない</li>
+<li>DBを停止すると、サービスが止まる</li>
+<li>DBを変更すると、複数サービスの改修が必要</li>
+<li>データは常に変化する</li>
+<li>アプリと違って、DBの知識、数年では廃れない。</li>
+<li>モニタリング大事。</li>
+</ul>
 <h4 id="コメント">コメント</h4>
-<pre><code>- 当たり前なんだけど、どれも大事。
-- 特に、モニタリング。
-- 何が良くて、何が悪いのかが推測になってしまう。
-</code></pre>
+<ul>
+<li>当たり前なんだけど、どれも大事。</li>
+<li>特に、モニタリング。</li>
+<li>何が良くて、何が悪いのかが推測になってしまう。</li>
+</ul>
 <h3 id="2-javaとアイドルのコラボ某アイドルbot開発の裏側">2. Javaとアイドルのコラボ！？某アイドルBot開発の裏側</h3>
 <hr>
 <p>乃木坂46の若月佑美さんと会話できる<a href="http://wakasamabot.sakamichi46.com/">若様bot</a>の話。</p>
 <h4 id="フレーズ">フレーズ</h4>
-<pre><code>- みなさん、会場合ってますか？（笑）
-- とりあえず、このセッションのゴールは、みんなが若月さん推しになること（笑）
-- LINEbotって難しそうなイメージがあるけど、そうでもない。
-- 思っているより、コードは買いていない
-- 基本的に、LINEで受け付けた言葉を、[Microsoft Cognitive Services](https://azure.microsoft.com/ja-jp/services/cognitive-services/)に投げつけて、解析結果を返しているだけ。
-</code></pre>
+<ul>
+<li>みなさん、会場合ってますか？（笑）</li>
+<li>とりあえず、このセッションのゴールは、みんなが若月さん推しになること（笑）</li>
+<li>LINEbotって難しそうなイメージがあるけど、そうでもない。</li>
+<li>思っているより、コードは買いていない</li>
+<li>基本的に、LINEで受け付けた言葉を、<a href="https://azure.microsoft.com/ja-jp/services/cognitive-services/">Microsoft Cognitive Services</a>に投げつけて、解析結果を返しているだけ。</li>
+</ul>
 <h4 id="コメント-1">コメント</h4>
-<pre><code>- 実際、若様bot使って見たけど、すごい！面白い！笑
-- 自分でもなんか作ってみようかなと思える講演でこういうのやってみたい。笑
-- Microsoft Cognitive Servicesの画像解析とかは面白そう。
-- 何bot作ろうかな。俺だと、[吉岡里帆](https://ameblo.jp/yoshi-rihorihoriho/)botでも作ろうかな笑
-</code></pre>
+<ul>
+<li>実際、若様bot使って見たけど、すごい！面白い！笑</li>
+<li>自分でもなんか作ってみようかなと思える講演でこういうのやってみたい。笑</li>
+<li>Microsoft Cognitive Servicesの画像解析とかは面白そう。</li>
+<li>何bot作ろうかな。俺だと、<a href="https://ameblo.jp/yoshi-rihorihoriho/">吉岡里帆</a>botでも作ろうかな笑</li>
+</ul>
 <h3 id="それ以外に聞いた講演">それ以外に聞いた講演</h3>
 <hr>
 <h4 id="3-javaエンジニアから見たkotlinの魅力">3. Javaエンジニアから見たKotlinの魅力</h4>
@@ -186,18 +186,11 @@ soudaiさんの<a href="https://soudai1025.connpass.com/event/55846/">たけと�
 <li>あとは、百々さんが頑張ってくれるだろう。。。笑</li>
 </ul>
 <h2 id="その他">その他</h2>
-<p>講演聞く以外は、基本的には
-以前の<a href="/archives/2017/04/20/2017042019/">Atlassianユーザー会</a>でお会いした
-Atlassianの犬山さんに	
-JIRAの使い方に関して相談させてもらっていた。	
-まだまだどの企業も探り探りらしい。</p>
-<p>誰か、<a href="https://ja.atlassian.com/software/jira/portfolio">Portfolio for JIRA</a>の良い使い方知らないかなー。	
-まぁJIRAを使っているので、それでできれば一番ベストなのでしょうが。	
-まぁAgileの<code>モニタリング</code>するよい方法があればいいのですがといった感じ。</p>
+<p>講演聞く以外は、基本的には、以前の<a href="/archives/2017/04/20/2017042019/">Atlassianユーザー会</a>でお会いしたAtlassianの犬山さんに、JIRAの使い方に関して相談させてもらっていた。まだまだどの企業も探り探りらしい。</p>
+<p>誰か、<a href="https://ja.atlassian.com/software/jira/portfolio">Portfolio for JIRA</a>の良い使い方知らないかなー。まぁJIRAを使っているので、それでできれば一番ベストなのでしょうが。まぁAgileの<code>モニタリング</code>するよい方法があればいいのですがといった感じ。</p>
 <h2 id="さいごに">さいごに</h2>
-<p>自分はまだまだ外の世界がわからないペーペーなので
-引き続きこういう外のイベントは参加していこー。</p>
-<h2 id="みなさん有難うございました">みなさん、有難うございました！</h2>
+<p>自分はまだまだ外の世界がわからないペーペーなので、引き続きこういう外のイベントは参加していこー。</p>
+<h2 id="みなさん有難うございました">みなさん、有難うございました</h2>
 <ul>
 <li><a href="http://soudai.hatenablog.com/">soudaiさん</a></li>
 <li><a href="https://www.slideshare.net/MasayaDake/ss-76145383">嶽　雅也さん</a></li>
@@ -221,8 +214,6 @@ JIRAの使い方に関して相談させてもらっていた。
     
   </div>
 </section>
-
-    <script src="/js/copycode.js"></script>
 
 
 <section class="section">
