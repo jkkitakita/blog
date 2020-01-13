@@ -1,27 +1,27 @@
 # blog
 
-https://blog.jkkitakita.dev/
+<https://blog.jkkitakita.dev/>
 
-# How to use
+## How to use
 
-## 1. Add Some Content
+### 1. Add Some Content
 
-```
+```shell
 hugo new post/YYYYMMDD.md
 ```
 
-## 2. Start the Hugo server
+### 2. Start the Hugo server
 
-http://localhost:1313
+<http://localhost:1313>
 
-```
+```shell
 hugo server
 ```
 
-## 3. Edit contents and git push
+### 3. Edit contents and git push
 
-## 4. Publish contents
+### 4. Publish contents
 
-```
+```shell
 ./deploy.sh
 ```
