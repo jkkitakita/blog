@@ -25,7 +25,7 @@ related = true # Includes related articles at the bottom of the article
 codeCopy = true # Add copy button above code blocks
 
 [params.features]
-disqusOnDemand = true  # Load Disqus comments on click
+disqusOnDemand = false  # Load Disqus comments on click
 
 
 [params.opengraph.facebook]
