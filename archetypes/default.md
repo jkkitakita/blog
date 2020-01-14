@@ -1,15 +1,11 @@
 ---
-thumbnailImagePosition: left
-metaAlignment: center
-categories:
-- ""
-- ""
+title: "{{ replace .Name "-" " " | title }}"
+description: ""
+date: {{ .Date }}
 tags:
 - ""
 - ""
-archives:
-- ""
-- ""
-- ""
 isCJKLanguage: true
+toc: true
+keywords: 20
 ---

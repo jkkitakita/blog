@@ -4,13 +4,20 @@
 
 ## How to use
 
-### 1. Add Some Content
+### 1. Clone and add themes as submodules
+
+```shell
+git clone git@github.com:jkkitakita/blog.git
+git submodule add https://github.com/jkkitakita/kiss.git themes/kiss
+```
+
+### 2. Add Some Content
 
 ```shell
 hugo new post/YYYYMMDD.md
 ```
 
-### 2. Start the Hugo server
+### 3. Start the Hugo server
 
 <http://localhost:1313>
 
@@ -18,9 +25,9 @@ hugo new post/YYYYMMDD.md
 hugo server
 ```
 
-### 3. Edit contents and git push
+### 4. Edit contents and git push
 
-### 4. Publish contents
+### 5. Publish contents
 
 ```shell
 ./deploy.sh
