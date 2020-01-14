@@ -3,6 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://blog.jkkitakita.dev/post/202001150046/</loc>
+    <lastmod>2020-01-14T19:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jkkitakita.dev/tags/event/</loc>
+    <lastmod>2020-01-14T19:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jkkitakita.dev/tags/go/</loc>
+    <lastmod>2020-01-14T19:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jkkitakita.dev/</loc>
+    <lastmod>2020-01-14T19:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jkkitakita.dev/post/</loc>
+    <lastmod>2020-01-14T19:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jkkitakita.dev/tags/</loc>
+    <lastmod>2020-01-14T19:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.jkkitakita.dev/tags/java/</loc>
     <lastmod>2017-05-20T18:16:36+09:00</lastmod>
   </url>
@@ -13,22 +43,7 @@
   </url>
   
   <url>
-    <loc>https://blog.jkkitakita.dev/</loc>
-    <lastmod>2017-05-20T18:16:36+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://blog.jkkitakita.dev/tags/meet-up/</loc>
-    <lastmod>2017-05-20T18:16:36+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.jkkitakita.dev/post/</loc>
-    <lastmod>2017-05-20T18:16:36+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.jkkitakita.dev/tags/</loc>
     <lastmod>2017-05-20T18:16:36+09:00</lastmod>
   </url>
   
