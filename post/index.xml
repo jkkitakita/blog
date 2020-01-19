@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>&amp;copy; &lt;a href=&#34;https://github.com/jkkitakita&#34;&gt;Jun Kitamura&lt;/a&gt; 2020</copyright>
-    <lastBuildDate>Tue, 14 Jan 2020 19:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 19 Jan 2020 13:10:43 +0900</lastBuildDate>
     
 	<atom:link href="https://blog.jkkitakita.dev/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>iOS・SwiftプロジェクトのCI/CDで、bitrise.ymlをリポジトリ内で管理する</title>
+      <link>https://blog.jkkitakita.dev/post/202001191310/</link>
+      <pubDate>Sun, 19 Jan 2020 13:10:43 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/202001191310/</guid>
+      <description>はじめに 普段は、CircleCIをメインで使っていますが、モバイルアプリのCI/CDで流行っているBitriseを少し触ってみて、Circl</description>
+    </item>
     
     <item>
       <title>[event] Goもくもく会（ごもくかい）#23</title>

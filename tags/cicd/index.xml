@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cicd on jkkitakita</title>
+    <link>https://blog.jkkitakita.dev/tags/cicd/</link>
+    <description>Recent content in cicd on jkkitakita</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>&amp;copy; &lt;a href=&#34;https://github.com/jkkitakita&#34;&gt;Jun Kitamura&lt;/a&gt; 2020</copyright>
+    <lastBuildDate>Sun, 19 Jan 2020 13:10:43 +0900</lastBuildDate>
+    
+	<atom:link href="https://blog.jkkitakita.dev/tags/cicd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>iOS・SwiftプロジェクトのCI/CDで、bitrise.ymlをリポジトリ内で管理する</title>
+      <link>https://blog.jkkitakita.dev/post/202001191310/</link>
+      <pubDate>Sun, 19 Jan 2020 13:10:43 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/202001191310/</guid>
+      <description>はじめに 普段は、CircleCIをメインで使っていますが、モバイルアプリのCI/CDで流行っているBitriseを少し触ってみて、Circl</description>
+    </item>
+    
+  </channel>
+</rss>
