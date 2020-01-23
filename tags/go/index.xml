@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Go on jkkitakita</title>
+    <title>go on jkkitakita</title>
     <link>https://blog.jkkitakita.dev/tags/go/</link>
-    <description>Recent content in Go on jkkitakita</description>
+    <description>Recent content in go on jkkitakita</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>&amp;copy; &lt;a href=&#34;https://github.com/jkkitakita&#34;&gt;Jun Kitamura&lt;/a&gt; 2020</copyright>
-    <lastBuildDate>Tue, 14 Jan 2020 19:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 23 Jan 2020 19:17:25 +0900</lastBuildDate>
     
 	<atom:link href="https://blog.jkkitakita.dev/tags/go/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>DMM.go #1行ってきた。</title>
+      <link>https://blog.jkkitakita.dev/post/202001231917/</link>
+      <pubDate>Thu, 23 Jan 2020 19:17:25 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/202001231917/</guid>
+      <description>DMMさんのGoの勉強会に行ってきたので、その時のメモ。 https://dmm.connpass.com/event/157222/ 適宜、スライド追記されたら更新する予定。 タイムスケジュール c.f. DMM.go #1 （スクショがダメだ</description>
+    </item>
     
     <item>
       <title>[event] Goもくもく会（ごもくかい）#23</title>
