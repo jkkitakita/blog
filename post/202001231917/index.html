@@ -143,20 +143,17 @@
 </li>
 </ul>
 <h3 id="cloud-nativeな時代に考えるmonorepo-y_matsuwitterhttpstwittercomy_matsuwitter">Cloud Nativeな時代に考えるmonorepo <a href="https://twitter.com/y_matsuwitter">@y_matsuwitter</a></h3>
-<ul>
-<li>Cloud Native時代の開発と現状
+<h4 id="cloud-native時代の開発と現状">Cloud Native時代の開発と現状</h4>
 <ul>
 <li>マイクロサービスが前提になってきている</li>
 <li>組織戦略とも絡んでくるよね。ってなってmonorepoをテーマにしようと思った。</li>
 </ul>
-</li>
-<li>改めて、Cloud Native とは
+<h4 id="改めてcloud-native-とは">改めて、Cloud Native とは</h4>
 <ul>
 <li><a href="https://github.com/cncf/toc/blob/master/DEFINITION.md#%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88">CNCFが出しているCloud Nativeの定義</a>の紹介</li>
 <li>Cloud の利点を適切に理解して、使う必要があるよね。</li>
 </ul>
-</li>
-<li>Cloud Native時代の基盤の選択肢
+<h4 id="cloud-native時代の基盤の選択肢">Cloud Native時代の基盤の選択肢</h4>
 <ul>
 <li>Kubernetes</li>
 <li>Container as a Service</li>
@@ -165,29 +162,24 @@
 <li>とかとか、いろいろなユースケースがあって</li>
 <li>アーキテクチャは、チームと寄り添いながら、運営していく必要がある。</li>
 </ul>
-</li>
-<li>そこで、なんでmonorepoなのか？
+<h4 id="そこでなんでmonorepoなのか">そこで、なんでmonorepoなのか？</h4>
 <ul>
 <li>アプリケーションが色々散らばっている。</li>
 <li>かつ、そのプロトコルも複数ある。</li>
 <li>特にManaged Serviceは、プロトコルが決まっていて、それぞれ使わないといけないプロトコルが決まっていたりする。</li>
 <li>monorepo という選択肢がいいんじゃないか。</li>
 </ul>
-</li>
-<li>monorepoとは？
+<h4 id="monorepoとは">monorepoとは？</h4>
 <ul>
 <li>Package間のinterfaceを一括管理できる</li>
 </ul>
-</li>
-<li>なぜmonorepo？
+<h4 id="なぜmonorepo">なぜmonorepo？</h4>
 <ul>
 <li>パッケージ間のinterfaceを1つのリポジトリに集約する</li>
 <li>仕組みの共有が容易。</li>
 </ul>
-</li>
-<li>Go と bazelでCloud Nativeなmonorepo運用
-<ul>
-<li>課題
+<h4 id="go-と-bazelでcloud-nativeなmonorepo運用">Go と bazelでCloud Nativeなmonorepo運用</h4>
+<h5 id="課題">課題</h5>
 <ul>
 <li>全サービスのソースコードが集まる
 <ul>
@@ -200,8 +192,7 @@
 </ul>
 </li>
 </ul>
-</li>
-<li>対策
+<h5 id="対策">対策</h5>
 <ul>
 <li>賢いビルドツール
 <ul>
@@ -210,24 +201,16 @@
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-</li>
-<li>そこで、<a href="https://bazel.build/">bazel</a>の登場
-<ul>
-<li>特徴
+<h4 id="そこでbazelhttpsbazelbuildの登場">そこで、<a href="https://bazel.build/">bazel</a>の登場</h4>
+<h5 id="特徴">特徴</h5>
 <ul>
 <li>依存関係に応じて、影響する部分を特定ビルド</li>
 <li>ビルド結果のキャッシュにより、不要なビルドを行わない</li>
 <li>キャッシュはローカルだけではなく、リモート環境も指定可能。</li>
 <li>様々な言語に対応している。</li>
 </ul>
-</li>
-</ul>
-</li>
-<li>Go と bazel でmonorepo
-<ul>
-<li><a href="https://github.com/bazelbuild/bazel-gazelle">Gazelle</a>
+<h4 id="go-と-bazel-でmonorepo">Go と bazel でmonorepo</h4>
+<h5 id="gazellehttpsgithubcombazelbuildbazel-gazelle"><a href="https://github.com/bazelbuild/bazel-gazelle">Gazelle</a></h5>
 <ul>
 <li>ビルド対象・依存関係を細かく指定する必要がない。
 <ul>
@@ -236,8 +219,7 @@
 </li>
 <li>bazelを運用するには、ほぼ必須（？）</li>
 </ul>
-</li>
-<li>bazelの課題
+<h5 id="bazelの課題">bazelの課題</h5>
 <ul>
 <li>依存関係を全て記述する必要がある
 <ul>
@@ -251,8 +233,7 @@
 </ul>
 </li>
 </ul>
-</li>
-<li>各ツールとの組み合わせ
+<h5 id="各ツールとの組み合わせ">各ツールとの組み合わせ</h5>
 <ul>
 <li>protobufとの相性
 <ul>
@@ -265,10 +246,6 @@
 </li>
 <li>ほとんどの生成過程をbazelのキャッシュディレクトリで実施する必要がある。</li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
 <h3 id="practical-distributed-tracing-hatsunemiku3939httpsgithubcomhatsunemiku3939">PRACTICAL DISTRIBUTED TRACING <a href="https://github.com/HatsuneMiku3939">@HatsuneMiku3939</a></h3>
 
 <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
@@ -277,8 +254,8 @@
 
 
 <p><a href="https://docs.google.com/presentation/d/1HVSQaEU1rsycka--QYKaODJHO1eNPNlmk0tz_ON_YYM/edit#slide=id.g33148270ac_0_143">PRACTICAL DISTRIBUTED TRACING</a></p>
+<h4 id="マイクロサービスで出てくる分散トレーシングの話">マイクロサービスで出てくる。分散トレーシングの話。</h4>
 <ul>
-<li>マイクロサービスで出てくる。分散トレーシングの話。</li>
 <li>分散アプリの性能を計測する仕組み。</li>
 <li>従来のAPMと何が違う？
 <ul>
@@ -288,48 +265,43 @@
 </li>
 <li>リクエスト全体の「処理の流れ」を把握するモノ。
 <ul>
-<li>Trace
+<li>処理の単位は、TraceとSpanに分かれている</li>
+</ul>
+</li>
+</ul>
+<h4 id="trace">Trace</h4>
 <ul>
 <li>システムを貫通するリクエストの集合体</li>
 </ul>
-</li>
-<li>Span
+<h4 id="span">Span</h4>
 <ul>
 <li>作業の単位</li>
 <li>1 Trace は 1 以上の Spanで構成される</li>
 <li>前後がわかるように親子関係を持っている</li>
 </ul>
-</li>
-</ul>
-</li>
-<li>基本は、「あるサービスのOutboundは、他のサービスのInbound。」
-<ul>
-<li>Inboundするとき
+<h4 id="基本はあるサービスのoutboundは他のサービスのinbound">基本は、「あるサービスのOutboundは、他のサービスのInbound。」</h4>
+<h5 id="inboundするとき">Inboundするとき</h5>
 <ul>
 <li>とりあえず、新しいSpanを生成</li>
 <li>親子関係を作成する</li>
 <li>TraceIDがなかったら、作る</li>
 </ul>
-</li>
-<li>Outboundするとき
+<h5 id="outboundするとき">Outboundするとき</h5>
 <ul>
 <li>Span ID 伝搬する。
 <ul>
 <li>基本はHeader。（ダメなら、body？）
 <ul>
-<li>gRPC: Header</li>
-<li>kafka: Header</li>
+<li>gRPC, kafka etc&hellip;</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-</li>
-<li>問題は、ソリューションがいっぱいあって、SDKがそれぞれ異なる。</li>
-<li>OpenCensus
+<h4 id="opencensus">OpenCensus</h4>
+<h5 id="opencensusとは">OpenCensusとは。</h5>
 <ul>
+<li>問題は、ソリューションがいっぱいあって、SDKがそれぞれ異なるが、これを選んだ。</li>
 <li>一番しっかりできていると思っている。</li>
 <li>いろいろな機能があるが、主な目的は、分散トレーシング。</li>
 <li>StackDriverとかX-rayとかにもexportすることができる。
@@ -338,8 +310,7 @@
 </ul>
 </li>
 </ul>
-</li>
-<li>やるべき3つのこと
+<h5 id="やるべき3つのこと">やるべき3つのこと</h5>
 <ul>
 <li>Exporterの初期化
 <ul>
@@ -349,15 +320,14 @@
 <li>Inbound トレーシング</li>
 <li>Outbound トレーシング</li>
 </ul>
-</li>
-<li>他にも機能がいっぱい！
+<p>基本的にこれだけ。</p>
+<h5 id="他にも機能がいっぱい">他にも機能がいっぱい！</h5>
 <ul>
 <li>gRPC tracing</li>
 <li>Server Clent metric</li>
-<li>DB Integration</li>
+<li>DB Integration etc&hellip;</li>
 </ul>
-</li>
-<li>実戦運用
+<h5 id="実戦運用">実戦運用</h5>
 <ul>
 <li>小規模ならAgentなし
 <ul>
@@ -379,18 +349,16 @@
 </ul>
 </li>
 </ul>
-</li>
-<li>最後に
+<h4 id="最後に">最後に</h4>
 <ul>
 <li>ただ、OpenCensusはOpenTracingと統合されて、OpenTelementaryになる。</li>
-</ul>
-</li>
 </ul>
 <h3 id="vcr-in-goモック自動生成で楽しちゃう話-yyh_glhttpstwittercomyyh_gl">VCR in Go：モック自動生成で楽しちゃう話 <a href="https://twitter.com/yyh_gl">@yyh_gl</a></h3>
 
 <div class="embed">
   <script async class="speakerdeck-embed" data-id="e03f7c5484e84f7eac649202ea4c2327" data-ratio="1.777777777" src="//speakerdeck.com/assets/embed.js"></script>
 </div>
+<h4 id="はじめに">はじめに</h4>
 <ul>
 <li>皆さんテスト書いてますか？</li>
 <li>外部システムをモック化したい</li>
@@ -406,32 +374,29 @@
 <li>Video Cassette Recorder</li>
 </ul>
 </li>
-<li>VCR
+</ul>
+<h4 id="vcr">VCR</h4>
 <ul>
 <li>大事なのは、確実に、実際のレスポンスをモック化できること</li>
-</ul>
-</li>
 <li>紹介するのは、<a href="https://github.com/dnaeon/go-vcr">dnaeon/go-vcr</a>
 <ul>
 <li><a href="https://github.com/vcr/vcr">vcr/vcr</a>のGoバージョン</li>
-<li>基本的な要素は２つ
-<ul>
-<li>Recorder
+</ul>
+</li>
+</ul>
+<h5 id="基本的な要素は２つ">基本的な要素は２つ</h5>
+<h6 id="recorder">Recorder</h6>
 <ul>
 <li>レスポンスを記録するやつ</li>
 <li>実態は、構造体</li>
 </ul>
-</li>
-<li>Casete
+<h6 id="casete">Casete</h6>
 <ul>
 <li>保存したレスポンス</li>
 <li>yaml</li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<h5 id="特徴と運用方法">特徴と運用方法</h5>
+<ul>
 <li>リクエストの同一性について
 <ul>
 <li>デフォルトでは、下記パラメータが同じであれば、同一リクエストとして判定</li>
@@ -448,6 +413,9 @@
 <li>テスト関数ごとにカセットを用意</li>
 </ul>
 </li>
+</ul>
+<h5 id="メリットデメリット">メリット・デメリット</h5>
+<ul>
 <li>メリット
 <ul>
 <li>モックと実システム間の仕様のズレがなくなり。</li>
@@ -463,6 +431,7 @@
 </li>
 </ul>
 <h3 id="チャット小説アプリ-teller-を支える-gaego-tomoemonhttpstwittercomtomoemon">チャット小説アプリ TELLER を支える GAE/Go <a href="https://twitter.com/tomoemon">@tomoemon</a></h3>
+<h4 id="はじめに-1">はじめに</h4>
 <ul>
 <li>Goよりかは、プロダクト寄りの話多め。</li>
 <li>チャット型小説アプリTELLERの紹介</li>
@@ -476,13 +445,15 @@
 </li>
 </ul>
 </li>
-<li>DI自動化したい
+</ul>
+<h4 id="di自動化したい">DI自動化したい</h4>
 <ul>
 <li>DI自動化したい。<a href="https://github.com/google/wire">wire</a>入れよう！</li>
 <li>後々ジョインするメンバーの参入障壁があがる？</li>
 <li>詳細的に言語機能との差異が生まれて負債にならないか？</li>
 </ul>
-</li>
+<h4 id="課題と対策">課題と対策</h4>
+<ul>
 <li>広告で見たストーリーを見つけられない
 <ul>
 <li>2年前は検索機能がなかった。</li>
