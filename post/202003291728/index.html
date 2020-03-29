@@ -137,9 +137,10 @@
 
 <h2 id="内容">内容</h2>
 <h3 id="rook-基礎バージョンアップ-rev4thttpstwittercomrev4t">Rook 基礎・バージョンアップ <a href="https://twitter.com/rev4t">@rev4t</a></h3>
+<hr>
 <iframe src="//www.slideshare.net/slideshow/embed_code/key/8Fiu2FQopxr41n" width="595" height="376" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen></iframe>
 
-<h4 id="そもそもどういう時に利用する物なのか">そもそもどういう時に利用する物なのか？</h4>
+<h4 id="そもそもどういう時に利用する物なのか">そもそもどういう時に利用する物なのか</h4>
 <ul>
 <li>Kubernetesで外部ストレージを利用したい時</li>
 </ul>
@@ -190,11 +191,6 @@
 ceph status
 </code></pre></div><ol start="2">
 <li>RookのControl planeが正常に稼働していることを確認</li>
-</ol>
-<ul>
-<li>対象のRook/Cephのversionとhealthyであること</li>
-</ul>
-<ol start="3">
 <li>CRDとRBACの更新</li>
 </ol>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># e.g.</span>
@@ -222,16 +218,11 @@ kubectl apply -f upgrade-from-v1.1-crds.yaml
 </ol>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># e.g. v1.2.5へ</span>
 kubectl -n $ROOK_SYSTEM_NAMESPACE set image deploy/rook-ceph-oeprator rook-ceph-operator<span style="color:#f92672">=</span>rook/ceph:v1.2.5
-</code></pre></div><p>（注）Cephのdelete/createが伴う場合がある。</p>
+</code></pre></div><p>（注）Cephのdelete/createが伴う場合があるそう。</p>
 <p><img src="https://image.slidesharecdn.com/rook-meetup-2-sogabe-rev1-200327104438/95/rook-31-638.jpg?cb=1585306044" alt="rook-minor-upgrade"></p>
 <h5 id="cephv1424---v1427">Ceph（v14.2.4 -&gt; v14.2.7）</h5>
 <ol>
-<li>imageのversionを更新する。</li>
-</ol>
-<ul>
-<li>imageを更新すれば、あとはRook Operatorがやってくれる。</li>
-</ul>
-<ol start="2">
+<li>imageのversionを更新する。（imageを更新すれば、あとはRook Operatorがやってくれる。）</li>
 <li>完了するまで待つ。</li>
 </ol>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># cephのステータス確認して、HEALTH_OKかどうか</span>
@@ -272,12 +263,12 @@ A. 検証していないが、多分できると思っている。</p>
 A. Ceph OSDのpodを再起動されることになるので、クライアントからのリクエストのlatencyが高くなるだろうと思っている。影響の少ない時間帯で実施するなどの対応が必要だろうと思っている。</p>
 </blockquote>
 <h3 id="rookceph-upstream最新状況-satoru_takeuchihttpstwittercomsatoru_takeuchi">Rook/Ceph upstream最新状況 <a href="https://twitter.com/satoru_takeuchi">@satoru_takeuchi</a></h3>
+<hr>
 
 <div class="embed">
   <script async class="speakerdeck-embed" data-id="a2fc007ecacd49d882d04677392176a2" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js"></script>
 </div>
 
-<p><a href="https://speakerdeck.com/sat/ceph-upstreamzui-xin-zhuang-kuang">https://speakerdeck.com/sat/ceph-upstreamzui-xin-zhuang-kuang</a></p>
 <h4 id="目次">目次</h4>
 <ol>
 <li>前提知識: OSD作成方法</li>
@@ -286,6 +277,7 @@ A. Ceph OSDのpodを再起動されることになるので、クライアント
 <li>Rookを取り巻く状況</li>
 </ol>
 <h4 id="1-前提知識-osd作成方法">1. 前提知識: OSD作成方法</h4>
+<hr>
 <p>OSDの作成方法には大きく２つの方法があるとのこと</p>
 <h5 id="11-従来の方法">1.1. 従来の方法</h5>
 <ul>
@@ -307,6 +299,7 @@ A. Ceph OSDのpodを再起動されることになるので、クライアント
 </li>
 </ul>
 <h4 id="2-rook最新安定版の新機能">2. Rook最新安定版の新機能</h4>
+<hr>
 <h5 id="21-osd-on-pvcでlvサポート">2.1. OSD on PVCでLVサポート</h5>
 <ul>
 <li>OSD on PVCでロジカルボリューム（LV）対応した（サイボウズ作）</li>
@@ -364,6 +357,7 @@ A. Ceph OSDのpodを再起動されることになるので、クライアント
 </li>
 </ul>
 <h4 id="3-rook次期安定版の開発状況">3. Rook次期安定版の開発状況</h4>
+<hr>
 <h5 id="31-failure-domainをまたいだosdの均等分散配置">3.1. Failure domainをまたいだOSDの均等分散配置</h5>
 <ul>
 <li>k8sのTopologySpreadConstraints機能のサポート
@@ -393,7 +387,7 @@ A. Ceph OSDのpodを再起動されることになるので、クライアント
 </li>
 <li>しかし、3つの壁が。。。</li>
 </ul>
-<h6 id="壁1-masterでosd-on-lv-backed-pvcが動かない">壁1: masterでOSD on LV-backed PVCが動かない！</h6>
+<h6 id="壁1-masterでosd-on-lv-backed-pvcが動かない">壁1: masterでOSD on LV-backed PVCが動かない</h6>
 <ul>
 <li>このPRでリグレッションが発生
 <ul>
@@ -453,36 +447,32 @@ A. Ceph OSDのpodを再起動されることになるので、クライアント
 <li>バグ解決</li>
 </ul>
 <h4 id="4-rookを取り巻く状況">4. Rookを取り巻く状況</h4>
+<hr>
 <h5 id="41-プロジェクトの成熟度">4.1. プロジェクトの成熟度</h5>
 <ul>
 <li>現在は、Incubating</li>
 <li>もうちょっとで、卒業するかも？
-<a href="https://github.com/cncf/toc/pull/366">https://github.com/cncf/toc/pull/366</a></li>
+<ul>
+<li><a href="https://github.com/cncf/toc/pull/366">https://github.com/cncf/toc/pull/366</a></li>
+</ul>
+</li>
 </ul>
 <h5 id="42-rookcephを使う製品">4.2. Rook/Cephを使う製品</h5>
 <ul>
-<li>Red Hat OpenShift Container Storage4（GA・2020-01-15）
-<ul>
-<li><a href="https://blog.openshift.com/introducing-openshift-container-storage-4-2/">https://blog.openshift.com/introducing-openshift-container-storage-4-2/</a></li>
-</ul>
-</li>
-<li>Containerized SUSE Enterprise Storage on CaaSP（Tecknical preview）
-<ul>
-<li><a href="https://www.suse.com/c/ceph-on-kubernetes-tech-preview/">https://www.suse.com/c/ceph-on-kubernetes-tech-preview/</a></li>
-</ul>
-</li>
+<li><a href="https://blog.openshift.com/introducing-openshift-container-storage-4-2/">Red Hat OpenShift Container Storage4（GA・2020-01-15）</a></li>
+<li><a href="https://www.suse.com/c/ceph-on-kubernetes-tech-preview/">Containerized SUSE Enterprise Storage on CaaSP（Tecknical preview）</a></li>
 </ul>
 <h4 id="5-参考リンク">5. 参考リンク</h4>
 <ul>
 <li><a href="https://blog.cybozu.io/entry/2019/12/03/114746">ストレージオーケストレーターRookへのサイボウズのコミット方針</a></li>
+<li><a href="https://blog.cybozu.io/entry/2019/11/08/090000">Kubernetesでローカルストレージを有効活用しよう</a></li>
+<li><a href="https://docs.google.com/presentation/d/1mMPYMDC4JMGWhoL3FzFgeasSLJepNwYMfwQD-T_gET4/edit#slide=id.g3a79217937_0_104">Rook - Graduation Proposal</a></li>
 <li>賢く「散らす」ための Topology Spread Constraints
 
 <div class="embed">
   <script async class="speakerdeck-embed" data-id="61215f14bf534bce8ee5726a2ce243dd" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js"></script>
 </div>
 </li>
-<li><a href="https://blog.cybozu.io/entry/2019/11/08/090000">Kubernetesでローカルストレージを有効活用しよう</a></li>
-<li><a href="https://docs.google.com/presentation/d/1mMPYMDC4JMGWhoL3FzFgeasSLJepNwYMfwQD-T_gET4/edit#slide=id.g3a79217937_0_104">Rook - Graduation Proposal</a></li>
 </ul>
 <h4 id="質疑応答-1">質疑応答</h4>
 <blockquote>
@@ -494,6 +484,7 @@ A. はい。その通りです。Storage ClassでTopoLVMのものを指定して
 A. 現在、ドキュメント整備中です。基本的には、そのドキュメントがみてやっていただければ良いようになっていく予定です。</p>
 </blockquote>
 <h3 id="rook-cephでexternal-clusterを利用する-futa_0203httpstwittercomfuta_0203">Rook-CephでExternal Clusterを利用する <a href="https://twitter.com/FUTA_0203">@FUTA_0203</a></h3>
+<hr>
 
 <div class="embed">
   <script async class="speakerdeck-embed" data-id="5f8ed15c3bcf4136a53d04ad4d74b9e6" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js"></script>
@@ -506,6 +497,7 @@ A. 現在、ドキュメント整備中です。基本的には、そのドキ�
 <li>Rook-Ceph External Cluster利用時の注意点</li>
 </ol>
 <h5 id="1-rook-ceph-external-clusterの概要">1. Rook-Ceph External Clusterの概要</h5>
+<hr>
 <ul>
 <li>Rook-Cephを構築したクラスター外に存在する、Cephクラスターのストレージリソースを利用すること
 <ul>
@@ -565,6 +557,7 @@ cd cluster/examples/kubernetes/ceph
 </div>
 
 <h5 id="2-rook-ceph-external-clusterの利用方法">2. Rook-Ceph External Clusterの利用方法</h5>
+<hr>
 <ul>
 <li>ストレージリソースを用意する際、local cluster側の操作のみで完結できるのはよき。</li>
 </ul>
@@ -574,6 +567,7 @@ cd cluster/examples/kubernetes/ceph
 </div>
 
 <h5 id="3-rook-ceph-external-cluster利用時の注意点">3. Rook-Ceph External Cluster利用時の注意点</h5>
+<hr>
 <ul>
 <li>1番気をつけた方がいいのは、Cephバージョンかな？</li>
 <li>configmapの修正が必要なのは、嫌だね。
@@ -594,6 +588,7 @@ cd cluster/examples/kubernetes/ceph
 <li><a href="https://github.com/rook/rook/issues/4816">GitHub Issues - External cluster details are not populated to configmap rook-ceph-csi-config</a></li>
 </ul>
 <h3 id="rook-cephでいろいろベンチマークとってみる-japan_rookhttpstwittercomjapan_rook">Rook-Cephでいろいろベンチマークとってみる <a href="https://twitter.com/japan_rook">@japan_rook</a></h3>
+<hr>
 
 <div class="embed">
   <script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js"></script>
@@ -622,8 +617,7 @@ cd cluster/examples/kubernetes/ceph
 <ul>
 <li><a href="https://kubestone.io/en/latest/benchmarks/fio/">kubestone fio</a></li>
 <li>fioのCustome Resouceが便利</li>
-<li>ここのQuick Start通りにやればokってことかな？
-<a href="https://kubestone.io/en/latest/quickstart/">https://kubestone.io/en/latest/quickstart/</a></li>
+<li>ここの<a href="https://kubestone.io/en/latest/quickstart/">Quick Start</a>通りにやればokってことかな？</li>
 </ul>
 </li>
 <li>fioのpodから100GBをマウント</li>
@@ -633,30 +627,22 @@ cd cluster/examples/kubernetes/ceph
 <ol>
 <li>素のEBS（gp2）vs Rook-Ceph 3x replica RBD</li>
 <li>CephクラスタのOSD数</li>
-<li>レプリカ数</li>
+<li>レプリカ数（一般的に、3xのreplicasだが。）</li>
 </ol>
-<ul>
-<li>一般的に、3xのreplicasだが。</li>
-</ul>
 <h6 id="1-素のebsgp2vs-rook-ceph-3x-replica-rbd">1. 素のEBS（gp2）vs Rook-Ceph 3x replica RBD</h6>
-<p>結論としては</p>
 <ul>
 <li>負荷が低い時のwriteは結構違う。EBSの方が速い</li>
 <li>個人的には、それぞれOSDを3つつけていて、並列にreadができるので、1個のEBSからreadするのと、3個のEBSから読み込むよりも有利なので、Rook-Cephの方が役に立つ（read強い。）</li>
 </ul>
 
 <div class="embed">
-  <script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="9" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js"></script>
+  <script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="10" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js"></script>
 </div>
 
 <h6 id="2-cephクラスタのosd数">2. CephクラスタのOSD数</h6>
-<p>結論としては</p>
-<ul>
-<li>OSDが多い方が良い。おすすめ。</li>
-</ul>
 
 <div class="embed">
-  <script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="9" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js"></script>
+  <script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="13" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js"></script>
 </div>
 
 <h6 id="3-レプリカ数">3. レプリカ数</h6>
@@ -664,24 +650,9 @@ cd cluster/examples/kubernetes/ceph
 <li>clush ruleにしたがって、平均になるように、replicaされている</li>
 <li>なので、利用されるEBSの数は変わらない。</li>
 </ul>
-<p>結論としては</p>
-<ul>
-<li>read
-<ul>
-<li>3x replicasの方が数%速い。</li>
-<li>2xの方がprimaryの偏りが出る？</li>
-</ul>
-</li>
-<li>writeは結構変わる
-<ul>
-<li>2x replicasの方が数倍速い。</li>
-<li>冗長性をとるか、どうするか。というところ。</li>
-</ul>
-</li>
-</ul>
 
 <div class="embed">
-  <script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="9" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js"></script>
+  <script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="16" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js"></script>
 </div>
 
 <h4 id="まとめ">まとめ</h4>
@@ -692,12 +663,12 @@ cd cluster/examples/kubernetes/ceph
 
 <h4 id="質疑応答-2">質疑応答</h4>
 <blockquote>
-<p>Q. MIN_SIZE（Ceph poolの最小サイズ）は同じにしているのかな？<br>
+<p>Q. MIN_SIZE（Ceph poolの最小サイズ？）は同じにしているのかな？<br>
 A. 同じ一にしています。2xでも死んでも計測し続けられるようにしています。</p>
 </blockquote>
 <blockquote>
 <p>Q. best practiceで、1 SSD 1 device あたり 〇〇OSDに良いみたいな指針をみた気がするのですが。そういう指針に沿うと良いとか有りますか？<br>
-A. 有効に使う 1 SSD に対して、1 OSDにしても、あまりIOがこなければもったいないので、2とか4OSDにした方が良いという話もあります。感覚としては、一旦、1 SSDに対して、1~2 OSDが良いかなと。NVMeみたいに、並列にQueueがバシバシ入るものなら、4,6OSDでも良いかなと。もう、その辺はどの程度の負荷になるか。容量にするか。によって、</p>
+A. 有効に使う 1 SSD に対して、1 OSDにしても、あまりIOがこなければもったいないので、2とか4OSDにした方が良いという話もあります。感覚としては、一旦、1 SSDに対して、1~2 OSDが良いかなと。NVMeみたいに、並列にQueueがバシバシ入るものなら、4,6OSDでも良いかなと。もう、その辺はどの程度の負荷になるか。容量にするか。によって、変えてもらえればと思います。</p>
 </blockquote>
 <h2 id="さいごに">さいごに</h2>
 <p>オンラインイベント初だったが、発表の音声ログなど残っていれば、そんなに問題ないなと思ったりしました。</p>
