@@ -247,8 +247,8 @@ DATE_TIME<span style="color:#f92672">=</span><span style="color:#e6db74">`</span
 hugo new post/$1.md
 image<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>curl <span style="color:#e6db74">&#39;https://pixabay.com/api/?key=${Key}&amp;q=landscape&amp;image_type=photo&amp;pretty=true&#39;</span> | jq -r <span style="color:#e6db74">&#39;.hits[&#39;</span>$num<span style="color:#e6db74">&#39;].webformatURL&#39;</span> | cut -c7-<span style="color:#e6db74">`</span>
 
-gsed -i -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">2i coverImage = \&#34;</span>$image<span style="color:#e6db74">\&#34;</span><span style="color:#e6db74">&#34;</span> content/post/$DATE_TIME.md
-gsed -i -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">2i thumbnailImage = \&#34;</span>$image<span style="color:#e6db74">\&#34;</span><span style="color:#e6db74">&#34;</span> content/post/$DATE_TIME.md
+gsed -i -e <span style="color:#e6db74">&#34;2i coverImage = \&#34;</span>$image<span style="color:#e6db74">\&#34;&#34;</span> content/post/$DATE_TIME.md
+gsed -i -e <span style="color:#e6db74">&#34;2i thumbnailImage = \&#34;</span>$image<span style="color:#e6db74">\&#34;&#34;</span> content/post/$DATE_TIME.md
 </code></pre></div><h4 id="memo-1">memo</h4>
 <ol>
 <li>ランダムで20個生成する感じになっているが、同じ画像が出ることがある。</li>
