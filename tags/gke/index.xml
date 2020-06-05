@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>kubernetes on jkkitakita</title>
-    <link>https://blog.jkkitakita.dev/tags/kubernetes/</link>
-    <description>Recent content in kubernetes on jkkitakita</description>
+    <title>gke on jkkitakita</title>
+    <link>https://blog.jkkitakita.dev/tags/gke/</link>
+    <description>Recent content in gke on jkkitakita</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>(C) &lt;a href=&#34;https://github.com/jkkitakita&#34;&gt;Jun Kitamura&lt;/a&gt; 2020</copyright>
     <lastBuildDate>Fri, 05 Jun 2020 16:35:58 +0900</lastBuildDate>
     
-	<atom:link href="https://blog.jkkitakita.dev/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.jkkitakita.dev/tags/gke/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,15 +19,6 @@
       
       <guid>https://blog.jkkitakita.dev/post/202006051635/</guid>
       <description>概要 k8s と GKE のサポートバージョンの違いに関して調査したメモ モチベーション Kubernetes がサポートするバージョン GKE がサポートするバージョン の違いって何？ まと</description>
-    </item>
-    
-    <item>
-      <title>Kubernetes Meetup Tokyo #27</title>
-      <link>https://blog.jkkitakita.dev/post/202001291937/</link>
-      <pubDate>Wed, 29 Jan 2020 19:37:25 +0900</pubDate>
-      
-      <guid>https://blog.jkkitakita.dev/post/202001291937/</guid>
-      <description>はじめに 「Kubernetes Meetup Tokyo #27」のブログ枠です。 https://k8sjp.connpass.com/event/162343/ 基本的に、meetupのまとめと出てきたキーワードのリファレンスです。 ハッシュタ</description>
     </item>
     
   </channel>
