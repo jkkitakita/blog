@@ -133,51 +133,31 @@
 <h3 id="メリットデメリット">メリット・デメリット</h3>
 <hr>
 <h4 id="-bitrise-gui">◯ bitrise GUI</h4>
-<ul>
-<li>メリット
-<ul>
+<h5 id="-メリット">■ メリット</h5>
+<ol>
 <li>ワークフローが <strong>視覚的に</strong> 確認できる</li>
 <li>GitHub等のソースコード管理ツールの権限を持っていなくても、ワークフローの参照・編集ができる</li>
 <li>bitrise GUIでワークフローの差分管理もできる</li>
-</ul>
-</li>
-<li>デメリット
-<ul>
-<li>bitrise GUIを見に行かないと（権限がないと）、どういうワークフローになっているのかを確認できない。
-<ul>
-<li>そもそもそのリポジトリがなんのCIが動いているのか、リポジトリからは判断できない。</li>
-</ul>
-</li>
+</ol>
+<h5 id="-デメリット">■ デメリット</h5>
+<ol>
+<li>bitrise GUIを見に行かないと（権限がないと）、どういうワークフローになっているのかを確認できない。（そもそもそのリポジトリがなんのCIが動いているのか、リポジトリからは判断できない。）</li>
 <li>他のCI/CDサービス（CircleCI, TravisCI etc&hellip;）は基本的にリポジトリで管理することを前提としているものもまぁまぁ多く、同じノリではいかないので、そういったサービスを使ってた人は、ちょっと戸惑う。</li>
-<li>ワークフローを修正するときに、レビュー・反映するまでのフローが仕組み化されていない。
-<ul>
-<li>Git Flow, GitHub Flowが使えない？</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+<li>ワークフローを修正するときに、レビュー・反映するまでのフローが仕組み化されていない。（Git Flow, GitHub Flowが使えない？）</li>
+</ol>
 <h4 id="-リポジトリで管理">◯ リポジトリで管理</h4>
-<ul>
-<li>メリット
-<ul>
+<h5 id="-メリット-1">■ メリット</h5>
+<ol>
 <li>bitrise GUIを見に行かずに、リポジトリのbitrise.ymlを見れば、ワークフローの流れが確認できる。</li>
 <li>他のCI/CDサービス（CircleCI, TravisCI etc&hellip;）と同じノリで使える。</li>
 <li><strong>Git Flow, GitHub Flowが使える。</strong></li>
-</ul>
-</li>
-<li>デメリット
-<ul>
-<li>GitHubの権限がないと、対象appのワークフローの流れが <code>視覚的に</code> パッとわからない。
-<ul>
-<li>buildのlogを見れば、何がどの順番で実行されているかはまぁわかる。</li>
-</ul>
-</li>
+</ol>
+<h5 id="-デメリット-1">■ デメリット</h5>
+<ol>
+<li>GitHubの権限がないと、対象appのワークフローの流れが <code>視覚的に</code> パッとわからない。（buildのlogを見れば、何がどの順番で実行されているかはまぁわかる。）</li>
 <li>GUIでは、ワークフローの変更はできない。</li>
 <li>ワークフローで変更した内容を反映させて、CIを試したい場合は、都度git commitしないといけないので、少し面倒。かつ、gitが汚くなるかも。</li>
-</ul>
-</li>
-</ul>
+</ol>
 <h2 id="実際にやってみた">実際にやってみた</h2>
 <hr>
 <p>実際にやったこととしては</p>
@@ -197,29 +177,17 @@
 </ol>
 <h4 id="12-bitrise管理画面からワークフローを作成する">1.2. bitrise管理画面からワークフローを作成する</h4>
 <hr>
-<ol>
-<li>ci
-<ul>
-<li><strong>名前はciではなくてもなんでも良いが、リポジトリ内のbitrise.ymlで定義するワークフローと同じ名前に合わせる必要がある。</strong>
-<ul>
-<li>↑ここ、最初みんなハマるかなと思うので、要注意です！！！</li>
-<li>c.f. <a href="https://qiita.com/mqtsuo02/items/a547eab6fa6486613198#%E3%81%AF%E3%81%BE%E3%81%A3%E3%81%9F%E7%82%B9">bitrise.ymlをリポジトリ内で管理するための手引き#はまった点</a></li>
-</ul>
-</li>
-<li>やることとしては、run_from_repoを起動するだけ。</li>
-</ul>
-</li>
-<li>run_from_repo
+<p>やることは、以下の <code>ci</code> と <code>run_from_repo</code> の2つだけです。</p>
+<h5 id="ci">ci</h5>
+<p><strong>名前はciではなくてもなんでも良いが、リポジトリ内のbitrise.ymlで定義するワークフローと同じ名前に合わせる必要がある。</strong><br>
+多分、↑ここ、最初みんなハマるかなと思うので、要注意です！！！やることとしては、<code>run_from_repo</code>を起動するだけ。<br>
+c.f. <a href="https://qiita.com/mqtsuo02/items/a547eab6fa6486613198#%E3%81%AF%E3%81%BE%E3%81%A3%E3%81%9F%E7%82%B9">bitrise.ymlをリポジトリ内で管理するための手引き#はまった点</a></p>
+<h5 id="run_from_repo">run_from_repo</h5>
 <ul>
 <li>対象のリポジトリを <code>git clone</code> する。</li>
-<li>git cloneされたリポジトリ内で管理された <code>bitrise.yml</code> をみて、対象のワークフローを起動する。
-<ul>
-<li>c.f. <code>bitrise run &lt;workflow name&gt;</code></li>
+<li>git cloneされたリポジトリ内で管理された <code>bitrise.yml</code> をみて、対象のワークフローを起動する。<br>
+c.f. <code>bitrise run &lt;workflow name&gt;</code></li>
 </ul>
-</li>
-</ul>
-</li>
-</ol>
 <p>実際のbitrise GUI上から作成するワークフロー（今回の場合は、<code>ci</code>というワークフロー）は、以下の通りです。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">---
 <span style="color:#f92672">format_version</span>: <span style="color:#e6db74">&#39;8&#39;</span>
@@ -267,11 +235,11 @@
 </span><span style="color:#e6db74">            set -ex
 </span><span style="color:#e6db74">            bitrise run &#34;${BITRISE_TRIGGERED_WORKFLOW_ID}&#34;</span>            
 </code></pre></div><p>ただ</p>
-<ul>
+<ol>
 <li>activate-ssh-key</li>
 <li>git-clone</li>
 <li>script</li>
-</ul>
+</ol>
 <p>この部分を <code>run_from_repo</code> というワークフローで <strong>共通化する</strong> ことで、ワークフローの管理を少なくすることができるので基本的には <code>after_run</code>を使った公式ドキュメントのやり方をすることが推奨されているのだと思います。</p>
 <h3 id="2-リポジトリ内のbitriseyml等の設定ファイルを作成する">2. リポジトリ内のbitrise.yml等の設定ファイルを作成する</h3>
 <hr>
@@ -329,10 +297,10 @@
 </span><span style="color:#e6db74">                Message|${BITRISE_GIT_MESSAGE}
 </span><span style="color:#e6db74">                Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}</span>                
 </code></pre></div><h3 id="fastlane">Fastlane</h3>
-<ul>
+<ol>
 <li>Swiftlint</li>
 <li>danger</li>
-</ul>
+</ol>
 <p>を実行するだけ。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">fastlane_version <span style="color:#e6db74">&#34;2.140.0&#34;</span>
 default_platform <span style="color:#e6db74">:ios</span>
@@ -364,21 +332,9 @@ fastlaneも初めて触ったのですが、色々便利だなーと思いまし
 <a href="https://techblog.zozo.com/entry/ios-bitrise-workflow">iOSで構築しているCIのWorkflow紹介</a>の記事の中で紹介しているように、bitriseのワークフローではなく、Fastlaneでメイン部分のワークフローを管理すれば、実質今回やりたかった「ワークフローをgitで管理すること」は満たせる感じはあるので、まずそちらをやってみて、それでもワークフローの管理に課題感を感じたら、本記事のようにbitrise.ymlもgitで管理することも検討してみるといいのかなと思いました。</p>
 <h2 id="参考">参考</h2>
 <ul>
-<li><a href="https://devcenter.bitrise.io/tips-and-tricks/use-bitrise-yml-from-repository/">Using the bitrise.yml from repository</a>
-<ul>
-<li>基本的には公式ドキュメントをみましょう。</li>
-</ul>
-</li>
-<li><a href="https://qiita.com/mqtsuo02/items/a547eab6fa6486613198">bitrise.ymlをリポジトリ内で管理するための手引き</a>
-<ul>
-<li>ちょっと古めでしたが、問題なかったので、こちらも参考になりました！</li>
-</ul>
-</li>
-<li><a href="https://inside.pixiv.blog/kwzr/6190">モバイルアプリのCIをBitriseにして1年が経ちました</a>
-<ul>
-<li>GUIで運用しているとのことだったので、GUIでの運用の参考にしました。</li>
-</ul>
-</li>
+<li><a href="https://devcenter.bitrise.io/tips-and-tricks/use-bitrise-yml-from-repository/">Using the bitrise.yml from repository</a></li>
+<li><a href="https://qiita.com/mqtsuo02/items/a547eab6fa6486613198">bitrise.ymlをリポジトリ内で管理するための手引き</a></li>
+<li><a href="https://inside.pixiv.blog/kwzr/6190">モバイルアプリのCIをBitriseにして1年が経ちました</a></li>
 <li><a href="https://techblog.zozo.com/entry/ios-bitrise-workflow">iOSで構築しているCIのWorkflow紹介</a></li>
 </ul>
 
