@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>(C) &lt;a href=&#34;https://github.com/jkkitakita&#34;&gt;Jun Kitamura&lt;/a&gt; 2020</copyright>
-    <lastBuildDate>Sat, 20 May 2017 18:16:36 +0900</lastBuildDate>
-    
-	<atom:link href="https://blog.jkkitakita.dev/tags/java/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 20 May 2017 18:16:36 +0900</lastBuildDate><atom:link href="https://blog.jkkitakita.dev/tags/java/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Javaがわからないエンジニアが、JJUG CCC行ってみた。</title>
       <link>https://blog.jkkitakita.dev/post/20170520/</link>

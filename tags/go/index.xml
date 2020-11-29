@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>(C) &lt;a href=&#34;https://github.com/jkkitakita&#34;&gt;Jun Kitamura&lt;/a&gt; 2020</copyright>
-    <lastBuildDate>Thu, 23 Jan 2020 19:17:25 +0900</lastBuildDate>
-    
-	<atom:link href="https://blog.jkkitakita.dev/tags/go/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 23 Jan 2020 19:17:25 +0900</lastBuildDate><atom:link href="https://blog.jkkitakita.dev/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>DMM.go #1</title>
       <link>https://blog.jkkitakita.dev/post/202001231917/</link>

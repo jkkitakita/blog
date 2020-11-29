@@ -1,26 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>jkkitakita</title>
     <link>https://blog.jkkitakita.dev/</link>
     <description>Recent content on jkkitakita</description>
-    <generator>Hugo - gohugo.io</generator>
-    <language>en</language>
-    <contact>jkkitakita@gmail.com</contact>
-    <copyright>(C) <a href="https://github.com/jkkitakita">Jun Kitamura</a> 2020</copyright>
-    
-        <atom:link href="https://blog.jkkitakita.dev/index.xml" rel="self" type="application/rss+xml" />
-    
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>(C) &lt;a href=&#34;https://github.com/jkkitakita&#34;&gt;Jun Kitamura&lt;/a&gt; 2020</copyright>
+    <lastBuildDate>Fri, 05 Jun 2020 16:35:58 +0900</lastBuildDate><atom:link href="https://blog.jkkitakita.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>k8sとGKEのサポートバージョンの違いに関するメモ</title>
+      <link>https://blog.jkkitakita.dev/post/202006051635/</link>
+      <pubDate>Fri, 05 Jun 2020 16:35:58 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/202006051635/</guid>
+      <description>概要 k8s と GKE のサポートバージョンの違いに関して調査したメモ モチベーション Kubernetes がサポートするバージョン GKE がサポートするバージョン の違いって何？ まと</description>
+    </item>
     
     <item>
-      <title>Posts</title>
-      <link>https://blog.jkkitakita.dev/post/</link>
-      <pubDate>Fri, 05 Jun 2020 16:35:58 +0900</pubDate>
-      <author>Jun Kitamura</author>
-      <guid>https://blog.jkkitakita.dev/post/</guid>
-      <description></description>
+      <title>Japan Rook Meetup #2</title>
+      <link>https://blog.jkkitakita.dev/post/202003291728/</link>
+      <pubDate>Sun, 29 Mar 2020 17:28:37 +0900</pubDate>
       
-      <content></content>
+      <guid>https://blog.jkkitakita.dev/post/202003291728/</guid>
+      <description>はじめに 今回はリモートでの開催だったJapan Rook Meetup #2に関するブログ枠です。基本的に、意見ほぼなしのまとめです。GlusterFSとかはなん</description>
+    </item>
+    
+    <item>
+      <title>Terraform meetup tokyo#4</title>
+      <link>https://blog.jkkitakita.dev/post/202002051855/</link>
+      <pubDate>Wed, 05 Feb 2020 18:55:37 +0900</pubDate>
       
+      <guid>https://blog.jkkitakita.dev/post/202002051855/</guid>
+      <description>今回は、Terraform meetup tokyo#4に参加してきました。 いつものスタイルと違ったので、ちょっと戸惑いました。。。 アジェンダ 会社紹介 スポ</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Meetup Tokyo #27</title>
+      <link>https://blog.jkkitakita.dev/post/202001291937/</link>
+      <pubDate>Wed, 29 Jan 2020 19:37:25 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/202001291937/</guid>
+      <description>はじめに 「Kubernetes Meetup Tokyo #27」のブログ枠です。 https://k8sjp.connpass.com/event/162343/ 基本的に、meetupのまとめと出てきたキーワードのリファレンスです。 ハッシュタ</description>
+    </item>
+    
+    <item>
+      <title>DMM.go #1</title>
+      <link>https://blog.jkkitakita.dev/post/202001231917/</link>
+      <pubDate>Thu, 23 Jan 2020 19:17:25 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/202001231917/</guid>
+      <description>DMMさんのGoの勉強会に行ってきたので、その時のメモ。 https://dmm.connpass.com/event/157222/ 適宜、スライド追記されたら更新する予定。 タイムスケジュール c.f. DMM.go #1 （スクショがダメだ</description>
+    </item>
+    
+    <item>
+      <title>iOS・SwiftプロジェクトのCI/CDで、bitrise.ymlをリポジトリ内で管理する</title>
+      <link>https://blog.jkkitakita.dev/post/202001191310/</link>
+      <pubDate>Sun, 19 Jan 2020 13:10:43 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/202001191310/</guid>
+      <description>はじめに 普段は、CircleCIをメインで使っていますが、モバイルアプリのCI/CDで流行っているBitriseを少し触ってみて、Circl</description>
+    </item>
+    
+    <item>
+      <title>Goもくもく会（ごもくかい）#23</title>
+      <link>https://blog.jkkitakita.dev/post/202001150046/</link>
+      <pubDate>Tue, 14 Jan 2020 19:00:00 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/202001150046/</guid>
+      <description>エウレカさんの新しいオフィスでのGoのもくもく会に行ってきた。 https://eure.connpass.com/event/159240/ ちょっとこのブログの更新のテスト的な投稿なので あまり内容書く気ないです。笑 も</description>
+    </item>
+    
+    <item>
+      <title>Javaがわからないエンジニアが、JJUG CCC行ってみた。</title>
+      <link>https://blog.jkkitakita.dev/post/20170520/</link>
+      <pubDate>Sat, 20 May 2017 18:16:36 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/20170520/</guid>
+      <description>どうして行こうと思ったか GWに開催されたsoudaiさんのたけともそんに参加させていただいて、そのsoudaiさんが登壇されるということで、</description>
+    </item>
+    
+    <item>
+      <title>Tokyo Atlassian ユーザーグループに行ってみた。</title>
+      <link>https://blog.jkkitakita.dev/post/2017042019/</link>
+      <pubDate>Thu, 20 Apr 2017 19:14:11 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/2017042019/</guid>
+      <description>あのpairsを開発・運営しているeureka, Inc.さんのオフィスにてAtlassianのユーザー会があったので、行ってきました＾＾ 第2</description>
+    </item>
+    
+    <item>
+      <title>「まだ若手社員と言われるうちに知っておきたい「会社の数字」」を読んでみて。</title>
+      <link>https://blog.jkkitakita.dev/post/2017040512/</link>
+      <pubDate>Wed, 05 Apr 2017 00:13:51 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/2017040512/</guid>
+      <description>現在 ITベンチャーでエンジニアとして働かせてもらって 社会人3年目になった。 色々とマネジメントもさせてもらっているのですが その中で 「○○○の金</description>
+    </item>
+    
+    <item>
+      <title>HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。</title>
+      <link>https://blog.jkkitakita.dev/post/2017031302/</link>
+      <pubDate>Sun, 12 Mar 2017 13:39:17 +0900</pubDate>
+      
+      <guid>https://blog.jkkitakita.dev/post/2017031302/</guid>
+      <description>1. 本記事のゴール HugoとGithub Pagesを使って、ブログを開設する 新規投稿時のシェルスクリプトを考える。 2. 前提 私は、新卒二年目（もう</description>
     </item>
     
   </channel>

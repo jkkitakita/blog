@@ -109,13 +109,14 @@
     <div class="subtitle tags is-6 is-pulled-right">
       
       
-<a class="subtitle is-6" href="/tags/cicd">#cicd</a>
+<a class="subtitle is-6" href="/tags/cicd/">#cicd</a>
 
 
 
   
-  | <a class="subtitle is-6" href="/tags/bitrise">#bitrise</a>
+  | <a class="subtitle is-6" href="/tags/bitrise/">#bitrise</a>
   
+
 
       
     </div>
@@ -221,50 +222,50 @@
 </ol>
 <p>実際のbitrise GUI上から作成するワークフロー（今回の場合は、<code>ci</code>というワークフロー）は、以下の通りです。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">---
-<span style="color:#66d9ef">format_version</span>: <span style="color:#e6db74">&#39;8&#39;</span>
-<span style="color:#66d9ef">default_step_lib_source</span>: https://github.com/bitrise-io/bitrise-steplib.git
-<span style="color:#66d9ef">project_type</span>: ios
-<span style="color:#66d9ef">trigger_map</span>:
-- <span style="color:#66d9ef">push_branch</span>: <span style="color:#e6db74">&#34;*&#34;</span>
-  <span style="color:#66d9ef">workflow</span>: ci
-- <span style="color:#66d9ef">pull_request_target_branch</span>: <span style="color:#e6db74">&#34;*&#34;</span>
-  <span style="color:#66d9ef">workflow</span>: ci
-<span style="color:#66d9ef">workflows</span>:
-  <span style="color:#66d9ef">ci</span>:
-    <span style="color:#66d9ef">after_run</span>:
-    - run_from_repo
-  <span style="color:#66d9ef">run_from_repo</span>:
-    <span style="color:#66d9ef">steps</span>:
+<span style="color:#f92672">format_version</span>: <span style="color:#e6db74">&#39;8&#39;</span>
+<span style="color:#f92672">default_step_lib_source</span>: <span style="color:#ae81ff">https://github.com/bitrise-io/bitrise-steplib.git</span>
+<span style="color:#f92672">project_type</span>: <span style="color:#ae81ff">ios</span>
+<span style="color:#f92672">trigger_map</span>:
+- <span style="color:#f92672">push_branch</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+  <span style="color:#f92672">workflow</span>: <span style="color:#ae81ff">ci</span>
+- <span style="color:#f92672">pull_request_target_branch</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+  <span style="color:#f92672">workflow</span>: <span style="color:#ae81ff">ci</span>
+<span style="color:#f92672">workflows</span>:
+  <span style="color:#f92672">ci</span>:
+    <span style="color:#f92672">after_run</span>:
+    - <span style="color:#ae81ff">run_from_repo</span>
+  <span style="color:#f92672">run_from_repo</span>:
+    <span style="color:#f92672">steps</span>:
     <span style="color:#75715e"># git cloneするためのkeyのsetup</span>
-    - <span style="color:#66d9ef">activate-ssh-key</span>:
-        <span style="color:#66d9ef">run_if</span>: <span style="color:#e6db74">&#39;{{getenv &#34;SSH_RSA_PRIVATE_KEY&#34; | ne &#34;&#34;}}&#39;</span>
+    - <span style="color:#f92672">activate-ssh-key</span>:
+        <span style="color:#f92672">run_if</span>: <span style="color:#e6db74">&#39;{{getenv &#34;SSH_RSA_PRIVATE_KEY&#34; | ne &#34;&#34;}}&#39;</span>
     <span style="color:#75715e"># 対象のリポジトリを `git clone` する。</span>
-    - <span style="color:#66d9ef">git-clone</span>: {}
+    - <span style="color:#f92672">git-clone</span>: {}
     <span style="color:#75715e"># git cloneされたリポジトリ内で管理された `bitrise.yml` をみて、対象のワークフローを起動する。</span>
-    - <span style="color:#66d9ef">script</span>:
-        <span style="color:#66d9ef">title</span>: continue from repo
-        <span style="color:#66d9ef">inputs</span>:
-        - <span style="color:#66d9ef">content</span>: |<span style="color:#e6db74">-
-</span><span style="color:#e6db74">            #!/bin/bash</span>
-            set -ex
-            <span style="color:#75715e"># この場合 `bitrise run ci` が実行される。</span>
-            <span style="color:#75715e"># リポジトリ内のbitrise.ymlの ci というワークフローを実行する。</span>
-            bitrise run <span style="color:#e6db74">&#34;${BITRISE_TRIGGERED_WORKFLOW_ID}&#34;</span>
+    - <span style="color:#f92672">script</span>:
+        <span style="color:#f92672">title</span>: <span style="color:#ae81ff">continue from repo</span>
+        <span style="color:#f92672">inputs</span>:
+        - <span style="color:#f92672">content</span>: |-<span style="color:#e6db74">
+</span><span style="color:#e6db74">            #!/bin/bash
+</span><span style="color:#e6db74">            set -ex
+</span><span style="color:#e6db74">            # この場合 `bitrise run ci` が実行される。
+</span><span style="color:#e6db74">            # リポジトリ内のbitrise.ymlの ci というワークフローを実行する。
+</span><span style="color:#e6db74">            bitrise run &#34;${BITRISE_TRIGGERED_WORKFLOW_ID}&#34;</span>            
 </code></pre></div><p>ちなみに余談ですが、公式ドキュメントに合わせて、<code>after_run</code> を使って <code>ci</code> -&gt; <code>run_from_repo</code> と実行するように記載しましたが、試していないのですが、直接指定しても動作としては、問題ないと思います。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#75715e"># e.g. after_runを使わずに、直接指定する場合</span>
-<span style="color:#66d9ef">workflows</span>:
-  <span style="color:#66d9ef">ci</span>:
-    <span style="color:#66d9ef">steps</span>:
-    - <span style="color:#66d9ef">activate-ssh-key</span>:
-        <span style="color:#66d9ef">run_if</span>: <span style="color:#e6db74">&#39;{{getenv &#34;SSH_RSA_PRIVATE_KEY&#34; | ne &#34;&#34;}}&#39;</span>
-    - <span style="color:#66d9ef">git-clone</span>: {}
-    - <span style="color:#66d9ef">script</span>:
-        <span style="color:#66d9ef">title</span>: continue from repo
-        <span style="color:#66d9ef">inputs</span>:
-        - <span style="color:#66d9ef">content</span>: |<span style="color:#e6db74">-
-</span><span style="color:#e6db74">            #!/bin/bash</span>
-            set -ex
-            bitrise run <span style="color:#e6db74">&#34;${BITRISE_TRIGGERED_WORKFLOW_ID}&#34;</span>
+<span style="color:#f92672">workflows</span>:
+  <span style="color:#f92672">ci</span>:
+    <span style="color:#f92672">steps</span>:
+    - <span style="color:#f92672">activate-ssh-key</span>:
+        <span style="color:#f92672">run_if</span>: <span style="color:#e6db74">&#39;{{getenv &#34;SSH_RSA_PRIVATE_KEY&#34; | ne &#34;&#34;}}&#39;</span>
+    - <span style="color:#f92672">git-clone</span>: {}
+    - <span style="color:#f92672">script</span>:
+        <span style="color:#f92672">title</span>: <span style="color:#ae81ff">continue from repo</span>
+        <span style="color:#f92672">inputs</span>:
+        - <span style="color:#f92672">content</span>: |-<span style="color:#e6db74">
+</span><span style="color:#e6db74">            #!/bin/bash
+</span><span style="color:#e6db74">            set -ex
+</span><span style="color:#e6db74">            bitrise run &#34;${BITRISE_TRIGGERED_WORKFLOW_ID}&#34;</span>            
 </code></pre></div><p>ただ</p>
 <ul>
 <li>activate-ssh-key</li>
@@ -286,47 +287,47 @@
 ・・・
 </code></pre></div><h3 id="bitriseyml">bitrise.yml</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">---
-<span style="color:#66d9ef">format_version</span>: <span style="color:#e6db74">&#34;8&#34;</span>
-<span style="color:#66d9ef">default_step_lib_source</span>: https://github.com/bitrise-io/bitrise-steplib.git
-<span style="color:#66d9ef">project_type</span>: ios
-<span style="color:#66d9ef">workflows</span>:
-  <span style="color:#66d9ef">ci</span>:
-    <span style="color:#66d9ef">steps</span>:
+<span style="color:#f92672">format_version</span>: <span style="color:#e6db74">&#34;8&#34;</span>
+<span style="color:#f92672">default_step_lib_source</span>: <span style="color:#ae81ff">https://github.com/bitrise-io/bitrise-steplib.git</span>
+<span style="color:#f92672">project_type</span>: <span style="color:#ae81ff">ios</span>
+<span style="color:#f92672">workflows</span>:
+  <span style="color:#f92672">ci</span>:
+    <span style="color:#f92672">steps</span>:
       <span style="color:#75715e"># fastlaneでSwiftLintを動かしたい場合、事前にInstallしないとダメっぽい？</span>
-      - <span style="color:#66d9ef">script</span>:
-          <span style="color:#66d9ef">title</span>: Install SwiftLint
-          <span style="color:#66d9ef">inputs</span>:
-            - <span style="color:#66d9ef">content</span>: |<span style="color:#e6db74">-
-</span><span style="color:#e6db74">                #!/bin/bash</span>
-                set -ex
-                curl -s -L -O https://github.com/realm/SwiftLint/releases/download/<span style="color:#ae81ff">0.38.2</span>/SwiftLint.pkg &gt; /dev/<span style="color:#66d9ef">null</span>
-                sudo installer -pkg SwiftLint.pkg -target / &gt; /dev/<span style="color:#66d9ef">null</span>
-                rm SwiftLint.pkg
+      - <span style="color:#f92672">script</span>:
+          <span style="color:#f92672">title</span>: <span style="color:#ae81ff">Install SwiftLint</span>
+          <span style="color:#f92672">inputs</span>:
+            - <span style="color:#f92672">content</span>: |-<span style="color:#e6db74">
+</span><span style="color:#e6db74">                #!/bin/bash
+</span><span style="color:#e6db74">                set -ex
+</span><span style="color:#e6db74">                curl -s -L -O https://github.com/realm/SwiftLint/releases/download/0.38.2/SwiftLint.pkg &gt; /dev/null
+</span><span style="color:#e6db74">                sudo installer -pkg SwiftLint.pkg -target / &gt; /dev/null
+</span><span style="color:#e6db74">                rm SwiftLint.pkg</span>                
       <span style="color:#75715e"># fastlaneで、build laneを実行する</span>
-      - <span style="color:#66d9ef">fastlane</span>:
-          <span style="color:#66d9ef">inputs</span>:
-            - <span style="color:#66d9ef">lane</span>: build
+      - <span style="color:#f92672">fastlane</span>:
+          <span style="color:#f92672">inputs</span>:
+            - <span style="color:#f92672">lane</span>: <span style="color:#ae81ff">build</span>
       <span style="color:#75715e"># bitriseに swiftlint の結果を artifact としてuploadする</span>
-      - <span style="color:#66d9ef">deploy-to-bitrise-io</span>:
-          <span style="color:#66d9ef">inputs</span>:
-            - <span style="color:#66d9ef">deploy_path</span>: <span style="color:#e6db74">&#34;swiftlint-output.html&#34;</span>
+      - <span style="color:#f92672">deploy-to-bitrise-io</span>:
+          <span style="color:#f92672">inputs</span>:
+            - <span style="color:#f92672">deploy_path</span>: <span style="color:#e6db74">&#34;swiftlint-output.html&#34;</span>
       <span style="color:#75715e"># 結果をSlack通知</span>
-      - <span style="color:#66d9ef">slack</span>:
-          <span style="color:#66d9ef">inputs</span>:
-            - <span style="color:#66d9ef">title</span>: <span style="color:#e6db74">&#34;&#34;</span>
-            - <span style="color:#66d9ef">emoji</span>: <span style="color:#e6db74">&#34;&#34;</span>
-            - <span style="color:#66d9ef">emoji_on_error</span>: <span style="color:#e6db74">&#34;&#34;</span>
-            - <span style="color:#66d9ef">webhook_url</span>: https://hooks.slack.com/services/xxxxxx/xxxxxx/xxxxxx <span style="color:#75715e"># Slack の incoming webhook url</span>
-            - <span style="color:#66d9ef">channel</span>: <span style="color:#e6db74">&#34;#bitrise-ci&#34;</span>
-            - <span style="color:#66d9ef">message</span>: <span style="color:#e6db74">&#34;&#34;</span>
-            - <span style="color:#66d9ef">message_on_error</span>: <span style="color:#e6db74">&#34;&#34;</span>
-            - <span style="color:#66d9ef">icon_url</span>: https://bitrise-public-content-production.s3.amazonaws.com/slack/bitrise-slack-icon<span style="color:#ae81ff">-128.</span>png
-            - <span style="color:#66d9ef">icon_url_on_error</span>: https://bitrise-public-content-production.s3.amazonaws.com/slack/bitrise-slack-error-icon<span style="color:#ae81ff">-128.</span>png
-            - <span style="color:#66d9ef">fields</span>: <span style="color:#e6db74">|
-</span><span style="color:#e6db74">                App|${BITRISE_APP_TITLE}</span>
-                Branch|${BITRISE_GIT_BRANCH}
-                Message|${BITRISE_GIT_MESSAGE}
-                Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}
+      - <span style="color:#f92672">slack</span>:
+          <span style="color:#f92672">inputs</span>:
+            - <span style="color:#f92672">title</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            - <span style="color:#f92672">emoji</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            - <span style="color:#f92672">emoji_on_error</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            - <span style="color:#f92672">webhook_url</span>: <span style="color:#ae81ff">https://hooks.slack.com/services/xxxxxx/xxxxxx/xxxxxx</span> <span style="color:#75715e"># Slack の incoming webhook url</span>
+            - <span style="color:#f92672">channel</span>: <span style="color:#e6db74">&#34;#bitrise-ci&#34;</span>
+            - <span style="color:#f92672">message</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            - <span style="color:#f92672">message_on_error</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            - <span style="color:#f92672">icon_url</span>: <span style="color:#ae81ff">https://bitrise-public-content-production.s3.amazonaws.com/slack/bitrise-slack-icon-128.png</span>
+            - <span style="color:#f92672">icon_url_on_error</span>: <span style="color:#ae81ff">https://bitrise-public-content-production.s3.amazonaws.com/slack/bitrise-slack-error-icon-128.png</span>
+            - <span style="color:#f92672">fields</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">                App|${BITRISE_APP_TITLE}
+</span><span style="color:#e6db74">                Branch|${BITRISE_GIT_BRANCH}
+</span><span style="color:#e6db74">                Message|${BITRISE_GIT_MESSAGE}
+</span><span style="color:#e6db74">                Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}</span>                
 </code></pre></div><h3 id="fastlane">Fastlane</h3>
 <ul>
 <li>Swiftlint</li>
@@ -408,7 +409,7 @@ fastlaneも初めて触ったのですが、色々便利だなーと思いまし
 var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-156067080-1', 'auto');
+	ga('create', 'G-N3D7WQK4J9', 'auto');
 	
 	ga('send', 'pageview');
 }
