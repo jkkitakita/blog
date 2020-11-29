@@ -3,7 +3,7 @@ languageCode = "ja"
 title = "jkkitakita"
 theme = "kiss"
 copyright = "(C) <a href=\"https://github.com/jkkitakita\">Jun Kitamura</a> 2020"
-googleAnalytics = "G-N3D7WQK4J9"
+googleAnalytics = "UA-156067080-1"
 Paginate = 30 # Number of posts per page
 truncated = false
 enableRobotsTXT = true
