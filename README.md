@@ -29,6 +29,4 @@ hugo server
 
 ### 5. Publish contents
 
-```shell
-./deploy.sh
-```
+Merge to default branch
