@@ -142,23 +142,12 @@
 <iframe src="//www.slideshare.net/slideshow/embed_code/key/8Fiu2FQopxr41n" width="595" height="376" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen></iframe>
 
 <h4 id="そもそもどういう時に利用する物なのか">そもそもどういう時に利用する物なのか</h4>
-<ul>
-<li>Kubernetesで外部ストレージを利用したい時</li>
-</ul>
+<p>Kubernetesで外部ストレージを利用したい時</p>
 <h4 id="解決できること">解決できること</h4>
-<ul>
-<li>k8s上でStorage Operationを実現
-<ul>
-<li>storageは運用が大変だが、その自動化ができる。</li>
-</ul>
-</li>
-</ul>
+<p>k8s上でStorage Operationを実現。storageは運用が大変だが、その自動化ができる。</p>
 <h4 id="rookとは">Rookとは</h4>
-<ul>
-<li>OSS（Apache 2.0）</li>
-<li>CNCF</li>
-<li>Operator + Custom Resouceでk8s拡張可能</li>
-<li>沢山のStorageシステムに対応したフレームワーク
+<p>CNCF。Operator + Custom Resouceでk8s拡張可能。<br>
+また、沢山のStorageシステムに対応したフレームワーク</p>
 <ul>
 <li>Ceph（Stable）</li>
 <li>EdgeFS（Stable）</li>
@@ -168,20 +157,12 @@
 <li>YugabyteDB</li>
 <li>minio</li>
 </ul>
-</li>
-</ul>
 <h4 id="構成要素">構成要素</h4>
 <ul>
-<li>Rook Operator
-<ul>
-<li>実際にストレージのデプロイ・管理をしてくれるもの</li>
-</ul>
-</li>
-<li>Rook Discover
-<ul>
-<li>ストレージノードの変更等を検知して、Operatorに伝える etc&hellip;</li>
-</ul>
-</li>
+<li>Rook Operator<br>
+実際にストレージのデプロイ・管理をしてくれるもの</li>
+<li>Rook Discover<br>
+ストレージノードの変更等を検知して、Operatorに伝える etc&hellip;</li>
 </ul>
 <h4 id="version-up">Version Up</h4>
 <h5 id="rookmajor-version">Rook（major version）</h5>
@@ -234,20 +215,18 @@ health: HEALTH_OK
 </code></pre></div><h5 id="external-cluster">External Cluster</h5>
 <p>既存のCeph Clusterに対して、Rookを用いたk8sとの連携ができる。</p>
 <h6 id="メリット">メリット</h6>
-<ul>
+<ol>
 <li>CSI Driverの運用管理のみをk8sで実施する形になり、k8s側の運用コストを下げつつ、責任分界点を分けられる</li>
 <li>Rook Version Upの際に、Ceph Clusterに与えるサービス影響を完全に排除できる</li>
 <li>k8s networkingによる性能低下の影響をうけなくなる。</li>
-</ul>
+</ol>
 <h6 id="デメリット">デメリット</h6>
-<ul>
+<ol>
 <li>Rookの他に、Cephのデプロイツールの導入をする必要が出てくる</li>
-</ul>
+</ol>
 <h6 id="利用例">利用例</h6>
-<ul>
-<li>Rook + ceph-ansible
-<a href="https://github.com/ceph/ceph-ansible">https://github.com/ceph/ceph-ansible</a></li>
-</ul>
+<p>Rook + ceph-ansible<br>
+<a href="https://github.com/ceph/ceph-ansible">https://github.com/ceph/ceph-ansible</a></p>
 <h4 id="summary">Summary</h4>
 <ul>
 <li>長期的な運用で、Storage Backendだけでなく、Rook Operaotr自体の運用もしなくてはならない。</li>
@@ -281,24 +260,13 @@ A. Ceph OSDのpodを再起動されることになるので、クライアント
 <hr>
 <p>OSDの作成方法には大きく２つの方法があるとのこと</p>
 <h5 id="11-従来の方法">1.1. 従来の方法</h5>
-<ul>
-<li>OSDの設定にノード上のデバイスを直接指定する
+<p>OSDの設定にノード上のデバイスを直接指定する</p>
 <ul>
 <li>これだと、Rook/Ceph cluster管理者にハードウェア構成の知識が必要</li>
 <li>さらに、デバイス名直接指定しているので、自前でclusterを構築する必要がある</li>
 </ul>
-</li>
-</ul>
 <h5 id="12-osd-on-pvc-v11">1.2. OSD on PVC v1.1~</h5>
-<ul>
-<li>OSDの設定にPVC templateを指定する</li>
-<li>それを受けて、CSI driverがPVを作成する
-<ul>
-<li>Cluster管理者はOSD podがどこにあるかを気にしなくて良い</li>
-<li>さらに、デバイスの管理もしなくて良くなる。</li>
-</ul>
-</li>
-</ul>
+<p>OSDの設定にPVC templateを指定する。それを受けて、CSI driverがPVを作成する。Cluster管理者はOSD podがどこにあるかを気にしなくて良いさらに、デバイスの管理もしなくて良くなる。</p>
 <h4 id="2-rook最新安定版の新機能">2. Rook最新安定版の新機能</h4>
 <hr>
 <h5 id="21-osd-on-pvcでlvサポート">2.1. OSD on PVCでLVサポート</h5>
@@ -306,72 +274,49 @@ A. Ceph OSDのpodを再起動されることになるので、クライアント
 <li>OSD on PVCでロジカルボリューム（LV）対応した（サイボウズ作）</li>
 </ul>
 <h6 id="目的背景">目的・背景</h6>
-<ul>
+<ol>
 <li>ローカルのNVMe SSD上にOSDを作成し、OSDを束ねて、Ceph Clusterを構築し、ブロックデバイス（RDB？）を提供したい</li>
-<li>管理コスト削減のため、PVをdynamic provisioningしたい
-<ul>
-<li>pvが欲しくなったら、dynamicなstorageが欲しい。</li>
-</ul>
-</li>
-</ul>
+<li>管理コスト削減のため、PVをdynamic provisioningしたい。pvが欲しくなったら、dynamicなstorageが欲しい。</li>
+</ol>
 <h6 id="既存の課題">既存の課題</h6>
-<ul>
-<li>以下の条件を満たすCSIドライバがない
+<p>以下の条件を満たすCSIドライバがない</p>
 <ul>
 <li>ローカルボリューム</li>
 <li>dynamic provisioning</li>
 <li>実用レベルのものがない</li>
 </ul>
-</li>
-<li>つまり、デバイス追加は手作業でPV作成する必要がある。</li>
-</ul>
+<p>つまり、デバイス追加は手作業でPV作成する必要がある。</p>
 <h6 id="topolvm">TopoLVM</h6>
 <ul>
 <li>PVCの変更を検知して、PVをdynamiv provisioningしてくれるやつ？</li>
 </ul>
 <h5 id="22-従来方式でudev-persistent-nameをサポート">2.2. 従来方式でudev persistent nameをサポート</h5>
-<ul>
-<li>v1.1以前では、/dev直下は気付いたら変わりうる。
-<ul>
-<li>e.g. sda -&gt; sdb</li>
-</ul>
-</li>
-<li>v1.2以降では、新機能devicePathFilter（サイボウズ作）
+<p>v1.1以前では、/dev直下は気付いたら変わりうる。e.g. sda -&gt; sdb<br>
+v1.2以降では、新機能devicePathFilter（サイボウズ作）</p>
 <ul>
 <li>こうすると、/dev直下のdevice nameは変わりうるのだが、by-path名は変更されない</li>
 <li>そのため、データ破壊を防げる</li>
 </ul>
-</li>
-</ul>
 <h5 id="23-その他変更">2.3. その他変更</h5>
-<ul>
-<li>cech-crash collector
+<ol>
+<li>cech-crash collector</li>
+</ol>
 <ul>
 <li>daemonのクラッシュ情報をCephクラスタに保存できるので、トラブルシューティングに効果的</li>
 <li>デフォルトで有効</li>
 </ul>
-</li>
-<li>FileStore OSDがobsolete
-<ul>
-<li>既存のFileStore OSDはサポートし続ける</li>
-</ul>
-</li>
-</ul>
+<ol start="2">
+<li>FileStore OSDがobsolete（既存のFileStore OSDはサポートし続ける）</li>
+</ol>
 <h4 id="3-rook次期安定版の開発状況">3. Rook次期安定版の開発状況</h4>
 <hr>
 <h5 id="31-failure-domainをまたいだosdの均等分散配置">3.1. Failure domainをまたいだOSDの均等分散配置</h5>
-<ul>
-<li>k8sのTopologySpreadConstraints機能のサポート
-<ul>
-<li>OSD on PVCに必須</li>
-</ul>
-</li>
-</ul>
+<p>k8sのTopologySpreadConstraints機能のサポート（OSD on PVCに必須）</p>
 <h6 id="topologyspreadconstraintsの目的">TopologySpreadConstraintsの目的</h6>
-<ul>
+<ol>
 <li>ラック障害耐性</li>
 <li>ノード障害耐性</li>
-</ul>
+</ol>
 <h6 id="これまでの課題">これまでの課題</h6>
 <p>OSD podの偏りが生まれてしまい、ラックの障害耐性がない場合が有り得る。次期安定版から、対応予定で、これでようやくOSD on PVCが使えるものとなると思っている。</p>
 
@@ -380,83 +325,51 @@ A. Ceph OSDのpodを再起動されることになるので、クライアント
 </div>
 
 <h5 id="32-osd-on-lv-backed-pvcのテスト追加">3.2. OSD on LV-backed PVCのテスト追加</h5>
-<ul>
-<li>RookはPRマージ時、テスト全パスが必須。
-<ul>
-<li>（勝手な本ブログの著者の意見なのですが、、）これは、普通なんじゃないかと思ったのだが、OSSってそうでもないプロジェクトもあるんですかね？</li>
-</ul>
-</li>
-<li>しかし、3つの壁が。。。</li>
-</ul>
+<ol>
+<li>RookはPRマージ時、テスト全パスが必須。</li>
+</ol>
+<p>しかし、3つの壁が。。。</p>
 <h6 id="壁1-masterでosd-on-lv-backed-pvcが動かない">壁1: masterでOSD on LV-backed PVCが動かない</h6>
-<ul>
+<ol>
 <li>このPRでリグレッションが発生
-<ul>
-<li><a href="https://github.com/rook/rook/pull/4435">https://github.com/rook/rook/pull/4435</a></li>
-</ul>
-</li>
+<a href="https://github.com/rook/rook/pull/4435">https://github.com/rook/rook/pull/4435</a></li>
 <li>Issue発行
-<ul>
-<li><a href="https://github.com/rook/rook/issues/5075">https://github.com/rook/rook/issues/5075</a></li>
-</ul>
-</li>
-<li>CI重要！！！！
-<ul>
-<li>本来は、リグレッションさせた奴が、直せ！っていうのが筋だが、まぁ自分たちでやるかって感じになってるとのこと。笑</li>
-<li>まぁ、CIとかテストをちゃんと先に書いておかないとってことでもあるんですかね。</li>
-</ul>
-</li>
-</ul>
+<a href="https://github.com/rook/rook/issues/5075">https://github.com/rook/rook/issues/5075</a></li>
+<li>CI重要！！！！</li>
+</ol>
 <h6 id="壁2-テストがテスト環境を破壊">壁2: テストがテスト環境を破壊</h6>
-<ul>
+<ol>
 <li>テスト冒頭で全LV/VG/PVを強制削除</li>
 <li>PRマージ待ち
-<ul>
-<li><a href="https://github.com/rook/rook/pull/4966">https://github.com/rook/rook/pull/4966</a></li>
-</ul>
-</li>
-</ul>
+<a href="https://github.com/rook/rook/pull/4966">https://github.com/rook/rook/pull/4966</a></li>
+</ol>
 <h6 id="壁3-ローカル環境でテストがパスしない">壁3: ローカル環境でテストがパスしない</h6>
-<ul>
-<li>調査中</li>
-</ul>
+<p>調査中</p>
 <h5 id="33-filestoreの新規作成が不可能に">3.3. FileStoreの新規作成が不可能に</h5>
-<ul>
-<li>obsoluteではなく、不可能へ。</li>
-</ul>
+<p>obsoluteではなく、不可能へ。</p>
 <h5 id="34-ストレージプロバイダ">3.4. ストレージプロバイダ</h5>
-<ul>
+<ol>
 <li>新しいストレージプロバイダなし</li>
-<li>minioのコードが削除
-<ul>
-<li>メンテされていないから。</li>
-</ul>
-</li>
-</ul>
+<li>minioのコードが削除（メンテされていないから。）</li>
+</ol>
 <h5 id="35-その他の課題">3.5. その他の課題</h5>
-<ul>
-<li>コア部分と前ストレージプロバイダが同じリポジトリ管理しているので、開発がしにくい
+<p>コア部分と前ストレージプロバイダが同じリポジトリ管理しているので、開発がしにくい</p>
 <ul>
 <li>kubernetesとstorage pluginを別リポジトリを分けた話と同じ感じ。</li>
 </ul>
-</li>
-</ul>
 <h5 id="36-今後の貢献予定">3.6. 今後の貢献予定</h5>
-<ul>
+<ol>
 <li>テストの充実化</li>
 <li>暗号化デバイス上のOSD</li>
 <li>バグ解決</li>
-</ul>
+</ol>
 <h4 id="4-rookを取り巻く状況">4. Rookを取り巻く状況</h4>
 <hr>
 <h5 id="41-プロジェクトの成熟度">4.1. プロジェクトの成熟度</h5>
 <ul>
 <li>現在は、Incubating</li>
 <li>もうちょっとで、卒業するかも？
-<ul>
-<li><a href="https://github.com/cncf/toc/pull/366">https://github.com/cncf/toc/pull/366</a></li>
-</ul>
-</li>
+<a href="https://github.com/cncf/toc/pull/366">https://github.com/cncf/toc/pull/366</a></li>
 </ul>
 <h5 id="42-rookcephを使う製品">4.2. Rook/Cephを使う製品</h5>
 <ul>
@@ -477,12 +390,12 @@ A. Ceph OSDのpodを再起動されることになるので、クライアント
 </ul>
 <h4 id="質疑応答-1">質疑応答</h4>
 <blockquote>
-<p>Q. TopoLVMに関して、LVMのレイヤーをdeclaretiveなやり方で、VG？を作ってくれるものという認識であっていますでしょうか？<br>
-A. はい。その通りです。Storage ClassでTopoLVMのものを指定していただければ、LVを勝手に切ってくれて、それをブロックデバイス、ないし、ファイルシステムとして利用できるものです。</p>
+<p>Q. TopoLVMに関して、LVMのレイヤーをdeclaretiveなやり方で、VG？を作ってくれるものという認識であっていますでしょうか？</p>
+<p>A. はい。その通りです。Storage ClassでTopoLVMのものを指定していただければ、LVを勝手に切ってくれて、それをブロックデバイス、ないし、ファイルシステムとして利用できるものです。</p>
 </blockquote>
 <blockquote>
-<p>Q. FileStoreがobsoluteになって、BlueStoreへの移行がこれから出てくると思うのだが、マイグレーションパスの開発は進んでいるのでしょうか？<br>
-A. 現在、ドキュメント整備中です。基本的には、そのドキュメントがみてやっていただければ良いようになっていく予定です。</p>
+<p>Q. FileStoreがobsoluteになって、BlueStoreへの移行がこれから出てくると思うのだが、マイグレーションパスの開発は進んでいるのでしょうか？</p>
+<p>A. 現在、ドキュメント整備中です。基本的には、そのドキュメントがみてやっていただければ良いようになっていく予定です。</p>
 </blockquote>
 <h3 id="rook-cephでexternal-clusterを利用する-futa_0203httpstwittercomfuta_0203">Rook-CephでExternal Clusterを利用する <a href="https://twitter.com/FUTA_0203">@FUTA_0203</a></h3>
 <hr>
@@ -499,25 +412,22 @@ A. 現在、ドキュメント整備中です。基本的には、そのドキ�
 </ol>
 <h5 id="1-rook-ceph-external-clusterの概要">1. Rook-Ceph External Clusterの概要</h5>
 <hr>
-<ul>
-<li>Rook-Cephを構築したクラスター外に存在する、Cephクラスターのストレージリソースを利用すること
+<p>Rook-Cephを構築したクラスター外に存在する、Cephクラスターのストレージリソースを利用すること</p>
 <ul>
 <li>local: k8s（Rook） cluster</li>
 <li>external: Ceph cluster</li>
 </ul>
-</li>
-</ul>
 <h6 id="本機能の背景">本機能の背景</h6>
-<ul>
+<ol>
 <li>Rook ver 1.1から利用可能</li>
 <li>基本的には、k8s内のstorageを利用する想定だった</li>
-<li>しかし、そうではない、ユースケースもあったため。
+<li>しかし、そうではない、ユースケースもあったため。</li>
+</ol>
+<p>そうではないユースケースとは&hellip;</p>
 <ul>
 <li>既存Ceph Clusterが存在する</li>
 <li>1つのCephクラスターのリソースを複数k8sで利用したい</li>
 <li>単純にstorageを分離したい</li>
-</ul>
-</li>
 </ul>
 <h6 id="rook-cephクラスター構築通常">Rook-Cephクラスター構築（通常）</h6>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># e.g. v1.2</span>
@@ -571,11 +481,7 @@ cd cluster/examples/kubernetes/ceph
 <hr>
 <ul>
 <li>1番気をつけた方がいいのは、Cephバージョンかな？</li>
-<li>configmapの修正が必要なのは、嫌だね。
-<ul>
-<li>いずれに、新しく最新versionを構築する場合は関係なさそう。</li>
-</ul>
-</li>
+<li>configmapの修正が必要なのは、嫌だね。（いずれに、新しく最新versionを構築する場合は関係なさそう。）</li>
 </ul>
 
 <div class="embed">
@@ -613,17 +519,18 @@ cd cluster/examples/kubernetes/ceph
 </div>
 
 <h5 id="遊び方">遊び方</h5>
-<ul>
-<li>FIO 3.13
+<ol>
+<li>FIO 3.13</li>
+</ol>
 <ul>
 <li><a href="https://kubestone.io/en/latest/benchmarks/fio/">kubestone fio</a></li>
 <li>fioのCustome Resouceが便利</li>
 <li>ここの<a href="https://kubestone.io/en/latest/quickstart/">Quick Start</a>通りにやればokってことかな？</li>
 </ul>
-</li>
+<ol start="2">
 <li>fioのpodから100GBをマウント</li>
 <li>時間の都合で、4K random read, 4K random writeのみ</li>
-</ul>
+</ol>
 <h5 id="何を測るか">何を測るか</h5>
 <ol>
 <li>素のEBS（gp2）vs Rook-Ceph 3x replica RBD</li>
@@ -664,12 +571,12 @@ cd cluster/examples/kubernetes/ceph
 
 <h4 id="質疑応答-2">質疑応答</h4>
 <blockquote>
-<p>Q. MIN_SIZE（Ceph poolの最小サイズ？）は同じにしているのかな？<br>
-A. 同じ一にしています。2xでも死んでも計測し続けられるようにしています。</p>
+<p>Q. MIN_SIZE（Ceph poolの最小サイズ？）は同じにしているのかな？</p>
+<p>A. 同じ一にしています。2xでも死んでも計測し続けられるようにしています。</p>
 </blockquote>
 <blockquote>
-<p>Q. best practiceで、1 SSD 1 device あたり 〇〇OSDに良いみたいな指針をみた気がするのですが。そういう指針に沿うと良いとか有りますか？<br>
-A. 有効に使う 1 SSD に対して、1 OSDにしても、あまりIOがこなければもったいないので、2とか4OSDにした方が良いという話もあります。感覚としては、一旦、1 SSDに対して、1~2 OSDが良いかなと。NVMeみたいに、並列にQueueがバシバシ入るものなら、4,6OSDでも良いかなと。もう、その辺はどの程度の負荷になるか。容量にするか。によって、変えてもらえればと思います。</p>
+<p>Q. best practiceで、1 SSD 1 device あたり 〇〇OSDに良いみたいな指針をみた気がするのですが。そういう指針に沿うと良いとか有りますか？</p>
+<p>A. 有効に使う 1 SSD に対して、1 OSDにしても、あまりIOがこなければもったいないので、2とか4OSDにした方が良いという話もあります。感覚としては、一旦、1 SSDに対して、1~2 OSDが良いかなと。NVMeみたいに、並列にQueueがバシバシ入るものなら、4,6OSDでも良いかなと。もう、その辺はどの程度の負荷になるか。容量にするか。によって、変えてもらえればと思います。</p>
 </blockquote>
 <h2 id="さいごに">さいごに</h2>
 <p>オンラインイベント初だったが、発表の音声ログなど残っていれば、そんなに問題ないなと思ったりしました。</p>
