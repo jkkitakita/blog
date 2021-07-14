@@ -2,31 +2,28 @@
 
 <https://blog.jkkitakita.dev/>
 
-## How to use
+## Getting Started
 
-### 1. Clone and add themes as submodules
+1. Install Hugo
 
-```shell
-git clone git@github.com:jkkitakita/blog.git
-git submodule add https://github.com/jkkitakita/kiss.git themes/kiss
-```
+    ```sh
+    brew install hugo
+    ```
 
-### 2. Add Some Content
+1. Update a submodule
 
-```shell
-hugo new post/YYYYMMDD.md
-```
+    ```sh
+    git submodule update -i
+    ```
 
-### 3. Start the Hugo server
+1. Add Some Content
 
-<http://localhost:1313>
+    ```shell
+    hugo new post/YYYYMMDD.md
+    ```
 
-```shell
-hugo server
-```
+1. Start the Hugo server
 
-### 4. Edit contents and git push
-
-### 5. Publish contents
-
-Merge to default branch
+    ```shell
+    hugo server
+    ```
