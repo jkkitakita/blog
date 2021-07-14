@@ -1,0 +1,65 @@
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "arial", YuGothic, "ヒラギノ角ゴ Pro",
+    "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, sans-serif;
+}
+
+hr {
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  border-top-color: #d3d6db;
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.content {
+  font-size: 1.00em;
+  line-height: 1.5;
+}
+
+.content h1:not(:first-child),
+.content h2:not(:first-child),
+.content h3:not(:first-child),
+.content h4:not(:first-child),
+.content h5:not(:first-child),
+.content h6:not(:first-child),
+article+article {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+    color: gray;
+    font-weight: bold;
+}
+
+.content h3:not(:first-child),
+.content h4:not(:first-child),
+.content h5:not(:first-child),
+.content h6:not(:first-child),
+article+article {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.content li pre,
+.content li table {
+  margin-bottom: 1em;
+}
+
+.content ol:not(:last-child),
+.content p:not(:last-child),
+.content pre:not(:last-child),
+.content table:not(:last-child),
+.content ul:not(:last-child) {
+  margin-bottom: 1em;
+}
