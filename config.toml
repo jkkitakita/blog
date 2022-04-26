@@ -1,60 +1,33 @@
 baseurl = "https://blog.jkkitakita.dev"
-languageCode = "ja"
 title = "jkkitakita"
 theme = "etch"
-copyright = "(C) <a href=\"https://github.com/jkkitakita\">Jun Kitamura</a> 2020"
-googleAnalytics = "UA-156067080-1"
-Paginate = 30 # Number of posts per page
-truncated = false
-enableRobotsTXT = true
+languageCode = "ja"
+enableInlineShortcodes = true
+pygmentsCodeFences = true
+pygmentsUseClasses = true
 
-[params.rss] # Adding this tag enables RSS feed
-includeContent = true # Includes whole content in rss
-authorName = "Jun Kitamura" # Author full name
-authorEmail = "jkkitakita@gmail.com" # Author email
+[params]
+  copyright = "Copyright © 2020 Jun Kitamura"
+  dark = "auto"
+  highlight = true
 
-[params.assets]
-customCSS = ["css/custom.css"]
+[menu]
+  [[menu.main]]
+    identifier = "posts"
+    name = "posts"
+    title = "posts"
+    url = "/"
+    weight = 10
 
-[params.info]
-adsense = "" # Adsense ID (ID only, without ca-pub-)
-enableSocial = true # Adds OpenGraph and Twitter cards
-homeTitle = "" # Title for home page
-poweredby = false # Adds powered by hugo and kiss below Copyright
-related = true # Includes related articles at the bottom of the article
-codeCopy = true # Add copy button above code blocks
+  [[menu.main]]
+    identifier = "about"
+    name = "about"
+    title = "about"
+    url = "/about/"
+    weight = 20
 
-[params.features]
-disqusOnDemand = false  # Load Disqus comments on click
+[permalinks]
+  posts = "/:title/"
 
-
-[params.opengraph.facebook]
-admins = [] # array of Facebook IDs
-appID = ""
-pageID = ""
-
-[params.opengraph.twitter]
-page = "jkkitakita" # Twitter Page username. If not set, params.social.twitter will be used.
-
-[params.social]
-twitter = "jkkitakita"
-github = "jkkitakita"
-email = "jkkitakita@gmail.com"
-linkedin = "jkkitakita"
-facebook = "jkkitakita"
-instagram = "jkkitakita"
-codepen = ""
-rss = "index.xml" # Add this to show RSS button in social.
-
-[params.social.config]
-platforms = ["github","facebook","twitter","instagram","email","codepen","linkedin"]
-
-[params.matomoAnalytics]
-siteID = 1
-rootURL = "//matomo.example.com/"
-
-[taxonomies]
-tag ="tags"
-
-[blackfriday]
-hrefTargetBlank = true
+[markup.goldmark.renderer]
+  unsafe = true
