@@ -1,1 +1,2493 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>agile on jkkitakita</title><link>https://blog.jkkitakita.dev/tags/agile/</link><description>Recent content in agile on jkkitakita</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>(C) &lt;a href="https://github.com/jkkitakita">Jun Kitamura&lt;/a> 2020</copyright><lastBuildDate>Thu, 20 Apr 2017 19:14:11 +0900</lastBuildDate><atom:link href="https://blog.jkkitakita.dev/tags/agile/index.xml" rel="self" type="application/rss+xml"/><item><title>Tokyo Atlassian ユーザーグループに行ってみた。</title><link>https://blog.jkkitakita.dev/post/2017042019/</link><pubDate>Thu, 20 Apr 2017 19:14:11 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/2017042019/</guid><description>あのpairsを開発・運営している eureka, Inc.さんのオフィスにて Atlassian のユーザー会があったので、行ってきました＾＾ 第 21 回 Tokyo Atlassian ユーザーグループ(AU</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>agile on jkkitakita</title><link>https://blog.jkkitakita.dev/tags/agile/</link><description>Recent content in agile on jkkitakita</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>(C) &lt;a href="https://github.com/jkkitakita">Jun Kitamura&lt;/a> 2020</copyright><lastBuildDate>Thu, 20 Apr 2017 19:14:11 +0900</lastBuildDate><atom:link href="https://blog.jkkitakita.dev/tags/agile/index.xml" rel="self" type="application/rss+xml"/><item><title>puppet bolt のディレクトリ構成</title><link>https://blog.jkkitakita.dev/post/202012160020/</link><pubDate>Wed, 16 Dec 2020 00:20:36 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202012160020/</guid><description>&lt;p>この記事は &lt;a href="https://qiita.com/advent-calendar/2020/puppet">Puppet Advent Calendar 2020 16 日目&lt;/a> の記事です。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">はじめに&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#puppet-bolt-%E3%81%AE%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E6%A7%8B%E6%88%90">puppet bolt のディレクトリ構成&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%90%84%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">各ディレクトリ・ファイルについて&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#modules">.modules&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#resource_types">.resource_types&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#puppetfile">Puppetfile&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#bolt-debuglog">bolt-debug.log&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#bolt-projectyaml">bolt-project.yaml&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#data">data&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#hierayaml">hiera.yaml&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#inventoryyaml">inventory.yaml&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#tasks">tasks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#site-modules">site-modules&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#files">files&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#templates">templates&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#plans">plans&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#%E3%81%95%E3%81%84%E3%81%94%E3%81%AB">さいごに&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%8F%82%E8%80%83">参考&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="はじめに">はじめに&lt;/h2>
+&lt;p>まず、本記事を書こうと思ったモチベーションは&lt;/p>
+&lt;ul>
+&lt;li>puppet bolt に関する記事が足りない！！&lt;/li>
+&lt;li>あったとしても、1,2 年前の日本語の記事で、かつ、なんか最近の bolt と違う感じがする！！&lt;/li>
+&lt;li>じゃあ、公式ドキュメントだ！と思っても、実際やろうと思うと、かゆいところまでは、手が届いていない感！！&lt;/li>
+&lt;li>というか、puppet bolt 自体が発展途上で、そもそも色々足りない！！&lt;/li>
+&lt;li>puppet bolt を使いたいけど、まず、何すればいいの？&lt;/li>
+&lt;li>このツールの全体感がわからない。&lt;/li>
+&lt;/ul>
+&lt;p>です。もし私と同様に puppet bolt を触ろうと思っている方が&lt;/p>
+&lt;ul>
+&lt;li>「あーはいはい。そんな感じで使えばいいのね。雰囲気わかった。」&lt;/li>
+&lt;/ul>
+&lt;p>って状態になっていただければ、幸いです。&lt;/p>
+&lt;p>ただし、前置きすると、上記に記載した通り、「まだまだ発展途上感がある」と感じているため、この記事を目にした時点で、だいぶ変わっている可能性もあると思っていますので、そこのところは、ご留意ください。&lt;/p>
+&lt;h2 id="puppet-bolt-のディレクトリ構成">puppet bolt のディレクトリ構成&lt;/h2>
+&lt;p>本記事で説明する puppet bolt のディレクトリ構成は以下の通りです。それぞれに関して、簡単にですが、解説して行きたいと思います。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ tree -a -L &lt;span style="color:#ae81ff">3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── .modules
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── chocolatey
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── .resource_types
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── Puppetfile
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── README.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── bolt-debug.log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── bolt-project.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── data
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── common.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── local.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── production.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── staging.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── hiera.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── inventory.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── site-modules
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── mymodule
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── files
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── motd.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── check_server.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── plans
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── planA.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── planB.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── templates
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── env.epp
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── tasks
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ├── download_from_gcs.json
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> └── download_from_gcs.rb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="各ディレクトリファイルについて">各ディレクトリ・ファイルについて&lt;/h2>
+&lt;h3 id="modules">.modules&lt;/h3>
+&lt;p>&lt;a href="https://forge.puppet.com/">Puppet Forge&lt;/a>の puppet modules が install されるディレクトリです。node.js でいうと node_modules 的なディレクトリです。基本的には、ここのディレクトリは、変更しない方針であることが前提で、gitignore しても問題ありません。もし修正した場合は、.gitignore しないで、含めた方がいいと思います。ちなみにここに関しては、puppet bolt を利用する上では、知らなくても、まぁなんとかなります。&lt;/p>
+&lt;h3 id="resource_types">.resource_types&lt;/h3>
+&lt;p>&lt;a href="https://forge.puppet.com/">Puppet Forge&lt;/a>の puppet modules に関連する &lt;a href="https://puppet.com/docs/puppet/7.0/type.html">Resource Type&lt;/a> が install されるディレクトリ。基本的には、このディレクトリは、変更しない方針であることが前提で、gitignore しても問題ない。また、puppet bolt を利用する上では、知らなくても、基本問題ありません。
+「&lt;code>Resource Type&lt;/code> とはなんぞや？」というところを理解したい場合は、まずは「&lt;code>Resource&lt;/code> とはなんぞや？」というところから、調べてみることをオススメします。&lt;/p>
+&lt;p>ref.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://qiita.com/takeuchikzm/items/cfa012571fdedcf0792b#resource---puppet%E3%81%AB%E3%82%88%E3%82%8B%E6%A7%8B%E6%88%90%E7%AE%A1%E7%90%86%E3%81%AE%E6%9C%80%E5%B0%8F%E5%8D%98%E4%BD%8D">Resource - Puppet による構成管理の最小単位&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://puppet.com/docs/puppet/7.0/lang_resources.html">Resources&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://puppet.com/docs/puppet/7.0/type.html">Resource Type Reference&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="puppetfile">Puppetfile&lt;/h3>
+&lt;p>&lt;a href="https://forge.puppet.com/">Puppet Forge&lt;/a>の puppet modules を「初めて」 install した時に、作成されるファイル。基本的には、このファイルは、手で修正しない方針であることが前提（Do not edit）。このファイルをベースに、&lt;code>.modules&lt;/code> を install するため、基本的には、gitignore はしない方がいいと個人的には思っています。ファイル名的には、&lt;code>Gemfile&lt;/code> っぽいファイルと思いきや、&lt;code>Gemfile.lock&lt;/code>のようなファイル。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ruby" data-lang="ruby">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># This Puppetfile is managed by Bolt. Do not edit.&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># For more information, see https://pup.pt/bolt-modules&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># The following directive installs modules to the managed moduledir.&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>moduledir &lt;span style="color:#e6db74">&amp;#39;.modules&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mod &lt;span style="color:#e6db74">&amp;#34;puppetlabs-chocolatey&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;5.1.1&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">・・・&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="bolt-debuglog">bolt-debug.log&lt;/h3>
+&lt;p>Bolt コマンドを実行時、デバッグレベルのログが出力されるログファイルです。&lt;code>bolt plan&lt;/code>などの実行ログが書き込まれます。ログの形式は以下の通りです。特に何も指定しなければ、実行毎に recreate されるため、過去のログは残らなさそうです。基本的には、&lt;code>.gitignore&lt;/code>などで、git からは除外することが多いと思います。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-txt" data-lang="txt">&lt;span style="display:flex;">&lt;span>2020-12-02T18:44:46.273566 INFO [event-publisher] [Bolt::Outputter::Logger] Starting: plan mymodule::planA
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2020-12-02T18:44:46.291736 INFO [event-publisher] [Bolt::Outputter::Logger] Finished: plan mymodule::planA in 0.02 sec
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ref. &lt;a href="https://puppet.com/docs/bolt/latest/logs.html#the-bolt-debuglog-file">The bolt-debug.log file&lt;/a>&lt;/p>
+&lt;h3 id="bolt-projectyaml">bolt-project.yaml&lt;/h3>
+&lt;p>project 単位（リポジトリ単位？）で、bolt の設定を管理する時に用意するファイル。ansible でいうところの ansible.cfg みたいなもの。今までは、&lt;code>bolt.yaml&lt;/code>を使っていたみたいですが、そちらは非推奨になっています。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># bolt project の作成（ project_name に、ハイフンは含められない。）&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ bolt project init myproject
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ls
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bolt-project.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cat bolt-project.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>name: myproject
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ref. &lt;a href="https://puppet.com/docs/bolt/latest/bolt_project_reference.html">bolt-project.yaml options&lt;/a>&lt;/p>
+&lt;h3 id="data">data&lt;/h3>
+&lt;p>bolt で利用する変数などを管理するディレクトリ。一般的には、OS や環境毎や構成管理ツール毎などの yaml ファイルを格納しておくことが多いです。後述する hiera の機能で、その変数等を読み込む優先順位を定義します。格納できるファイルは、YAML or JSON or HOCON（Human-Optimized Config Object Notation）が利用できます。ディレクトリ名は &lt;code>data&lt;/code> である必要はありませんが、大体、 &lt;code>data&lt;/code> とすることが多いようです。簡単な yaml の例を記載するとすると以下のような形で、普通の yaml として定義するだけです。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># staging.yaml&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">gcp_project_id&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;gcp_project_staging&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># production.yaml&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">gcp_project_id&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;gcp_project_production&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ref. &lt;a href="https://puppet.com/docs/puppet/7.1/hiera_merging.html">Creating and editing data&lt;/a>&lt;/p>
+&lt;h3 id="hierayaml">hiera.yaml&lt;/h3>
+&lt;p>&lt;code>data&lt;/code> ディレクトリに格納した変数ファイルの読み込む優先順位などを定義するファイル。 &lt;code>hierarchy&lt;/code> に、ハッシュの配列形式で読み込む順番（優先順位）を定義する。上から下に、優先順位が下がっていきます。そのため基本的には、最後に、&lt;code>common.yaml&lt;/code> とかを記載することが多いです。ansible だと、&lt;code>group_vars&lt;/code> とか &lt;code>host_vars&lt;/code> とか暗黙的な変数定義ルールがある印象ですが、多分？、puppet bolt の変数定義ルールはここに全て記載する必要があるような気がしています。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">version&lt;/span>: &lt;span style="color:#ae81ff">5&lt;/span> &lt;span style="color:#75715e"># hiera の ver 指定する。bolt は ver 5のみ対応している。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">defaults&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">datadir&lt;/span>: &lt;span style="color:#ae81ff">data&lt;/span> &lt;span style="color:#75715e"># 変数ファイルを、hiera.yaml ファイルからみた相対パスで指定する&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">data_hash&lt;/span>: &lt;span style="color:#ae81ff">yaml_data&lt;/span> &lt;span style="color:#75715e"># 変数ファイルの形式を指定する。e.g. yaml, json, HOCON&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">hierarchy&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># bolt 実行時に、env を渡すとそれぞれの変数ファイルを読み込む&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 上から優先順位が高い。そのため基本的には、最後に、common.yamlとかを記載することが多い。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;environment data&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">path&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;%{env}.yaml&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;common data&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">path&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;common.yaml&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上記 hiera.yaml を定義した場合、下記のように bolt plan 実行時に、引数に&lt;code>env&lt;/code>実行すると、各環境の変数ファイルを読み込むことが可能です。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 引数 env=staging -&amp;gt; data/staging.yaml を読み込む&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ bolt plan run mymodule::planA env&lt;span style="color:#f92672">=&lt;/span>staging --targets webservers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 引数 env=production -&amp;gt; data/production.yaml を読み込む&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ bolt plan run mymodule::planA env&lt;span style="color:#f92672">=&lt;/span>production --targets webservers
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ref.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://qiita.com/takeuchikzm/items/e04e6cbe84a185eb1f26">私と Puppet ベストプラクティス編 その 3 (Hiera で世界が変わる?)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://puppet.com/docs/puppet/7.0/hiera_config_yaml_5.html">Configuring Hiera&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="inventoryyaml">inventory.yaml&lt;/h3>
+&lt;p>対象ホストを管理するファイルです。ansbible の inventory ファイルと同様の役割をするファイルです。&lt;a href="https://puppet.com/docs/bolt/latest/inventory_file_v2.html">Inventory files&lt;/a>にある、一部の例を下記に転記しました。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">groups&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># e.g. linux の webserver via ssh&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">ssh_nodes&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">groups&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">webservers&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">targets&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">192.168.100.179&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">192.168.100.180&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">memcached&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">targets&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">192.168.101.50&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">config&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ssh&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">user&lt;/span>: &lt;span style="color:#ae81ff">root&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">config&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">transport&lt;/span>: &lt;span style="color:#ae81ff">ssh&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ssh&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">user&lt;/span>: &lt;span style="color:#ae81ff">centos&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">private-key&lt;/span>: &lt;span style="color:#ae81ff">~/.ssh/id_rsa&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">host-key-check&lt;/span>: &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># e.g. windows の webservers via winrm&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">win_nodes&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">groups&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">apiservers&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">targets&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">192.168.110.10&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">testservers&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">targets&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">172.16.219.20&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">config&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">transport&lt;/span>: &lt;span style="color:#ae81ff">winrm&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">winrm&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">user&lt;/span>: &lt;span style="color:#ae81ff">DOMAIN\opsaccount&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">password&lt;/span>: &lt;span style="color:#ae81ff">S3cretP@ssword&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ssl&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ここの例では、まず、接続方式が、「ssh」か「&lt;a href="https://qiita.com/asterisk9101/items/46d45c30a1141b1e6115">winrm&lt;/a>」かで group を分けています。その後、それぞれで、複数対象ホストが存在する場合は、さらに、groups で入れ子にして、対象ホストを指定します。config には、接続方式とその認証情報を記載します。そして、bolt コマンド実行時の &lt;code>--targets&lt;/code> の引数として、groups を指定するように、下記のようなコマンドを実行します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># ssh_nodes,win_nodes 両方に実行する場合&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ bolt command run &lt;span style="color:#e6db74">&amp;#39;echo hello&amp;#39;&lt;/span> --targets ssh_nodes,win_nodes
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># ssh_nodes のみに実行する場合&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ bolt command run &lt;span style="color:#e6db74">&amp;#39;echo hello&amp;#39;&lt;/span> --targets ssh_nodes
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># webservers,testservers のみに実行する場合&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ bolt command run &lt;span style="color:#e6db74">&amp;#39;echo hello&amp;#39;&lt;/span> --targets webservers,testservers
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>そうすると、inventory から指定された targets への接続方法・情報を判断して、それぞれに対して、接続し、コマンドを実行します。ただし、この指定の仕方の場合、&lt;code>targets&lt;/code>に対して、IP アドレスなどを指定しなければならないため、対象ホストが増えてくると管理が煩雑になっていきます。もし設計段階で、そのような状況になりそうであれば、AWS や GCP などのクラウドを使っているのであれば、いわゆる &lt;a href="https://puppet.com/docs/bolt/latest/inventory_file_v2.html#plugins">Dynamic Inventory&lt;/a> のような plugin 機能を利用するのは簡単にできそうなため、試してみるのが良いかなと思います。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># ref. https://forge.puppet.com/modules/puppetlabs/aws_inventory&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># inventory.yaml&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">groups&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">aws&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">targets&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">_plugin&lt;/span>: &lt;span style="color:#ae81ff">aws_inventory&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">profile&lt;/span>: &lt;span style="color:#ae81ff">user1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">region&lt;/span>: &lt;span style="color:#ae81ff">us-west-1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">filters&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">tag:Owner&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">values&lt;/span>: [&lt;span style="color:#ae81ff">Devs]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">instance-type&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">values&lt;/span>: [&lt;span style="color:#ae81ff">t2.micro, c5.large]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">target_mapping&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">public_dns_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">uri&lt;/span>: &lt;span style="color:#ae81ff">public_ip_address&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">config&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ssh&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">host&lt;/span>: &lt;span style="color:#ae81ff">public_dns_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">config&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ssh&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">user&lt;/span>: &lt;span style="color:#ae81ff">ec2-user&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">private-key&lt;/span>: &lt;span style="color:#ae81ff">~/.aws/private-key.pem&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">host-key-check&lt;/span>: &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ref. &lt;a href="https://puppet.com/docs/bolt/latest/inventory_file_v2.html">Inventory files&lt;/a>&lt;/p>
+&lt;h3 id="tasks">tasks&lt;/h3>
+&lt;p>task は、対象ホストで実行する puppet bolt の中で最もシンプルなアクションの単位です。タスクは、Bash、Python、Ruby など、対象ホスト似て、実行できる任意のプログラミング言語でタスクを記述できます。デフォルトでは、下記のようなタスクが用意されています。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ bolt task show
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apt Allows you to perform apt functions
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>facts Gather system facts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>http_request Make a HTTP or HTTPS request.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>package Manage and inspect the state of packages
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pkcs7::secret_createkeys Create a key pair
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pkcs7::secret_decrypt Encrypt sensitive data with pkcs7
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pkcs7::secret_encrypt Encrypt sensitive data with pkcs7
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>puppet_agent::install Install the Puppet agent package
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>puppet_agent::version Get the version of the Puppet agent package installed. Returns nothing &lt;span style="color:#66d9ef">if&lt;/span> none present.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>puppet_conf Inspect puppet agent configuration settings
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot Reboots a machine
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot::last_boot_time Gets the last boot time of a Linux or Windows system
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>service Manage and inspect the state of services
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>terraform::apply Apply an HCL manifest
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>terraform::destroy Destroy resources managed with Terraform
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>terraform::initialize Initialize a Terraform project directory
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>terraform::output JSON representation of Terraform outputs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>例えば、package のタスクの使い方としては、以下のコマンドを実行することで、対象ホスト（webservers）の Apache の status を確認することができます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>bolt task run package action&lt;span style="color:#f92672">=&lt;/span>status name&lt;span style="color:#f92672">=&lt;/span>apache2 --targets webservers
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>カスタムタスクの例として、ruby で記載した GCS からファイルをダウンロードするタスクを紹介します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>・・・
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── tasks
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ├── download_from_gcs.json &lt;span style="color:#75715e"># タスクのメタデータ&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> └── download_from_gcs.rb &lt;span style="color:#75715e"># タスクを定義する実行スクリプト&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ファイルとしては、「タスクのメタデータ」の json と「タスクを定義する実行スクリプト」を準備します。そして、それぞれのファイルを以下のように記述します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// download_from_gcs.json
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;description&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Download file from google cloud storage locally&amp;#34;&lt;/span>, &lt;span style="color:#75715e">// タスクの説明
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#f92672">&amp;#34;input_method&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;stdin&amp;#34;&lt;/span>, &lt;span style="color:#75715e">// タスクのインプット方法 e.g. environment（環境変数）, stdin（標準入力）, powershell（？？）
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#f92672">&amp;#34;parameters&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;bucket_name&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;description&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Bucket of google cloud storage&amp;#34;&lt;/span>, &lt;span style="color:#75715e">// パラメータの説明
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#f92672">&amp;#34;type&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;String[1]&amp;#34;&lt;/span> &lt;span style="color:#75715e">// パラメータのデータ型の指定 e.g. 空ではない文字列
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;object_path&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;description&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Object path of google cloud storage&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;type&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;String[1]&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;tmp_dir&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;description&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;tmp path&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;type&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;String[1]&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;files&amp;#34;&lt;/span>: [&lt;span style="color:#e6db74">&amp;#34;ruby_task_helper/files/task_helper.rb&amp;#34;&lt;/span>] &lt;span style="color:#75715e">// タスク実行時に利用するファイルの指定。基本、ヘルパーライブラリが多いかも。
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ruby" data-lang="ruby">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#!/usr/bin/env ruby&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>require_relative &lt;span style="color:#e6db74">&amp;#39;../../ruby_task_helper/files/task_helper&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>require &lt;span style="color:#e6db74">&amp;#39;google/cloud/storage&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">DownloadFileFromGCS&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#66d9ef">TaskHelper&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># GCSの指定バケット・オブジェクトパスを指定tmpディレクトリにダウンロードするタスク&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">task&lt;/span>(&lt;span style="color:#e6db74">bucket_name&lt;/span>: &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#e6db74">object_path&lt;/span>: &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#e6db74">tmp_dir&lt;/span>: &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#f92672">**&lt;/span>_kwargs)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> storage &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">Google&lt;/span>&lt;span style="color:#f92672">::&lt;/span>&lt;span style="color:#66d9ef">Cloud&lt;/span>&lt;span style="color:#f92672">::&lt;/span>&lt;span style="color:#66d9ef">Storage&lt;/span>&lt;span style="color:#f92672">.&lt;/span>new
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> bucket &lt;span style="color:#f92672">=&lt;/span> storage&lt;span style="color:#f92672">.&lt;/span>bucket bucket_name
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> object &lt;span style="color:#f92672">=&lt;/span> bucket&lt;span style="color:#f92672">.&lt;/span>file object_path
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> object&lt;span style="color:#f92672">.&lt;/span>download tmp_dir &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;/&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> object_path
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> puts &lt;span style="color:#e6db74">&amp;#34;Success to download &lt;/span>&lt;span style="color:#e6db74">#{&lt;/span>object&lt;span style="color:#f92672">.&lt;/span>name&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74"> to &lt;/span>&lt;span style="color:#e6db74">#{&lt;/span>tmp_dir&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">DownloadFileFromGCS&lt;/span>&lt;span style="color:#f92672">.&lt;/span>run &lt;span style="color:#66d9ef">if&lt;/span> __FILE__ &lt;span style="color:#f92672">==&lt;/span> $0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上記カスタムタスクは、&lt;code>ruby_task_helper&lt;/code>を利用しています。名前の通り、ruby でカスタムタスクを作成する際に、いい感じにしてくれる、ruby のヘルパーライブラリです。ざっくりいうと、メタデータにパラメータを指定して、スクリプトの方で、メソッドを定義すればよい。それだけと言えばそれだけです。&lt;/p>
+&lt;p>ref. &lt;a href="https://puppet.com/docs/bolt/latest/writing_tasks.html#common-task-data-types">利用できるタスクのデータ型&lt;/a>&lt;/p>
+&lt;p>タスクの詳細は以下のように確認することもできます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ bolt task show myproject::download_from_gcs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>myproject::download_from_gcs - Download file from google cloud storage locally
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>USAGE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bolt task run --targets &amp;lt;node-name&amp;gt; myproject::download_from_gcs bucket_name&lt;span style="color:#f92672">=&lt;/span>&amp;lt;value&amp;gt; object_path&lt;span style="color:#f92672">=&lt;/span>&amp;lt;value&amp;gt; tmp_dir&lt;span style="color:#f92672">=&lt;/span>&amp;lt;value&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>PARAMETERS:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>- bucket_name: String&lt;span style="color:#f92672">[&lt;/span>1&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Bucket of google cloud storage
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>- object_path: String&lt;span style="color:#f92672">[&lt;/span>1&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Object path of google cloud storage
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>- tmp_dir: String&lt;span style="color:#f92672">[&lt;/span>1&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp path
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/Users/jkkitakita/myproject
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>あとは、定義した task を直接使う、または、plan から呼び出せば ok です。&lt;/p>
+&lt;p>ref. &lt;a href="https://puppet.com/docs/bolt/latest/tasks.html">Making on-demand changes with tasks&lt;/a>&lt;/p>
+&lt;h3 id="site-modules">site-modules&lt;/h3>
+&lt;p>最後に、site-modules を紹介します。site-modules は、プロジェクト毎の custom modules です。（ドキュメントがいまいちないので、合ってるか不明。私の認識です。）&lt;a href="https://forge.puppet.com/">Puppet Forge&lt;/a>の puppet modules は、&lt;code>.modules&lt;/code> に格納されると上述しましたが、それでは不十分である、または、プロダクト固有の modules を作成したい場合に用意します。その際には、&lt;code>site-modules&lt;/code> ディレクトリを作成します。シンプルな plan を実行したいだけであれば、 bolt project のルートディレクトリに &lt;code>plan&lt;/code> ディレクトリを作成するだけで十分かもしれません。が、個人的には、ちゃんと今後の保守・運用も考慮するのであれば、単純な plan を実行するだけでも &lt;code>site-modules&lt;/code> ディレクトリを作成した方がいいと思います。ansible でいうと、&lt;code>modules&lt;/code> を &lt;code>roles&lt;/code> に読み替えると良いかもしません。&lt;code>Puppet Forge&lt;/code> は &lt;code>Ansible Galaxy&lt;/code>的な立ち位置なので、ansible に慣れている方は、そのイメージです。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># puppet bolt の site-modules のディレクトリ構成&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── site-modules
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── mymodule
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── files
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── plans
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── templates
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># ref. ansible の場合の roles のディレクトリ構成&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── roles
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── myrole
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── files
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── tasks
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── templates
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ただし、実際に使ってみた感覚から言うと、ansible の roles よりも、もう少し柔軟な（悪くいうと、フワッとした）custom modules を定義できる印象があります。具体的には&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># puppet bolt の site-modules のディレクトリ構成&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── site-modules
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── mymodule
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── plans
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── planA.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── planB.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>と定義した場合&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># planA を実行したい場合&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ bolt plan run mymodule::planA --targets webservers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># planB を実行したい場合&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ bolt plan run mymodule::planB --targets webservers
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>のような形で、指定できるため、ざっくりと、サービス単位とかで、custom modules を設計することも可能です。何が言いたいかというと、ansible の場合、tasks を実行する際、 &lt;code>tasks/main.yaml&lt;/code> から実行される縛りがあるのですが、その縛りはないということです。ただ、一般的に他の puppet bolt のリポジトリを見た感じだと、ansible の roles と同様に、&lt;code>nginx&lt;/code>とか&lt;code>deploy&lt;/code>とかの単位で分けているところが多そうには感じました。下記のリポジトリなどが参考になるかもしれません。&lt;/p>
+&lt;p>&lt;a href="https://github.com/puppetlabs-seteam/control-repo">https://github.com/puppetlabs-seteam/control-repo&lt;/a>&lt;/p>
+&lt;p>以下、site-modules 配下の &lt;code>files&lt;/code>、&lt;code>plans&lt;/code>、&lt;code>templates&lt;/code>の 3 つのディレクトリに関してのみ解説しようと思います。その他に関しては、&lt;a href="https://puppet.com/docs/bolt/latest/module_structure.html">Module structure&lt;/a>を参考にしてください。&lt;br>
+※ ただし、上記、&lt;code>Module structure&lt;/code>で紹介されているディレクトリ・ファイルが、&lt;code>site-modules&lt;/code>が対応しているかどうかは調べていません。全然 &lt;code>site-modules&lt;/code> に関するドキュメントがない。。）&lt;/p>
+&lt;p>ref. &lt;a href="https://puppet.com/docs/bolt/latest/writing_plans.html#plan-location">Plan location&lt;/a> の一部に &lt;code>site-modules&lt;/code> に関して記述されています。&lt;/p>
+&lt;h4 id="files">files&lt;/h4>
+&lt;p>plan 実行時に、「対象ホストに、静的ファイルを upload する」「対象ホスト上で、静的スクリプトを実行する」などの場合に、その静的ファイル・スクリプトを格納するディレクトリです。ansible でも同様に &lt;code>files&lt;/code> ディレクトリを使っていますが、それと使い方は同じです。実際の bolt の plan ファイルの syntax は下記のような形になります。&lt;code>site-modules&lt;/code>や&lt;code>files&lt;/code>などは無視して、&lt;code>mymodule/motd.txt&lt;/code>と指定するところが少しややこしさがあるかもしれません。が、一応、他 modules の files も指定できますよ。ってことなのかなと思っています。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">steps&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># motd.txt を対象ホストに upload する&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">upload&lt;/span>: &lt;span style="color:#ae81ff">mymodule/motd.txt&lt;/span> &lt;span style="color:#75715e"># ref. site-modules/mymodule/files/motd.txt&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">destination&lt;/span>: &lt;span style="color:#ae81ff">/etc/motd&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">targets&lt;/span>: &lt;span style="color:#ae81ff">$targets&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">description&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Upload motd to the webservers&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># check_server.sh を対象ホスト上で実行する&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># e.g. ./check_server.sh /index.html 60&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">script&lt;/span>: &lt;span style="color:#ae81ff">mymodule/check_server.sh&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">targets&lt;/span>: &lt;span style="color:#ae81ff">$targets&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">description&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Run mymodule/files/check_server.sh on the webservers&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">arguments&lt;/span>: &lt;span style="color:#75715e"># Optional&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#e6db74">&amp;#34;/index.html&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">60&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ref.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://puppet.com/docs/bolt/latest/writing_yaml_plans.html#script-step">Writing plans in YAML#Script step&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://puppet.com/docs/bolt/latest/writing_yaml_plans.html#file-download-step">Writing plans in YAML#File download step&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://puppet.com/docs/bolt/latest/writing_yaml_plans.html#file-upload-step">Writing plans in YAML#File upload step&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="templates">templates&lt;/h4>
+&lt;p>templates は、files と違い、動的に変数等を代入して、最終的にレンダリングされたファイルを生成したいファイルを管理するディレクトリです。こちらも ansible の templates と同様の用途です。ansible の場合は、python 製のため、基本的に jinja2 がテンプレートエンジンとして利用されていますが、Puppet の場合は、&lt;a href="https://puppet.com/docs/puppet/5.5/lang_template_epp.html">Embedded Puppet（EPP）&lt;/a>、もしくは、&lt;a href="https://puppet.com/docs/puppet/5.5/lang_template_erb.html">Embedded Ruby (ERB)&lt;/a>で記述する必要があります。以下、結論を記載します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-pp" data-lang="pp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># mymodules/templates/env.epp&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span>&lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">%&lt;/span>&lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#f92672">|&lt;/span> &lt;span style="color:#a6e22e">String&lt;/span> $env,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">String&lt;/span> $gcp_project_id,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span>&lt;span style="color:#f92672">|&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">%&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span>&lt;span style="color:#a6e22e">ENV&lt;/span>&lt;span style="color:#f92672">=&amp;lt;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">%&lt;/span>&lt;span style="color:#f92672">=&lt;/span> $env &lt;span style="color:#960050;background-color:#1e0010">%&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span>&lt;span style="color:#a6e22e">GCP_PROJECT_ID&lt;/span>&lt;span style="color:#f92672">=&amp;lt;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">%&lt;/span>&lt;span style="color:#f92672">=&lt;/span> $gcp_project_id &lt;span style="color:#960050;background-color:#1e0010">%&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-pp" data-lang="pp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># mymodules/plans/planB.pp
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#/tmp/.env ファイルを更新する plan
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># @param targets The targets to configure
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># @param env The environment
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># @param tmp_dir The tmp directory for download destination&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span>&lt;span style="color:#a6e22e">plan&lt;/span> &lt;span style="color:#a6e22e">mymodule&lt;/span>::&lt;span style="color:#a6e22e">planB&lt;/span>(&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">TargetSpec&lt;/span> $targets,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">String&lt;/span>[&lt;span style="color:#ae81ff">1&lt;/span>] $env,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">String&lt;/span>[&lt;span style="color:#ae81ff">1&lt;/span>] $tmp_dir &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;/tmp&amp;#39;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span>) {&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">apply&lt;/span>($targets) {&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#66d9ef">file&lt;/span> { &lt;span style="color:#e6db74">&amp;#34;${tmp_dir}/.env&amp;#34;&lt;/span>:&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">content&lt;/span> &lt;span style="color:#f92672">=&amp;gt;&lt;/span> &lt;span style="color:#a6e22e">epp&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;mymodules/env.epp&amp;#39;&lt;/span>, {&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#39;env&amp;#39;&lt;/span> &lt;span style="color:#f92672">=&amp;gt;&lt;/span> $env,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#39;gcp_project_id&amp;#39;&lt;/span> &lt;span style="color:#f92672">=&amp;gt;&lt;/span> &lt;span style="color:#a6e22e">lookup&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;gcp_project_id&amp;#39;&lt;/span>),&lt;span style="color:#75715e"> # hiera の data を取得&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> }),&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> }&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> }&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span>}&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上記は、それぞれ &lt;code>mymodules/templates/env.epp&lt;/code> と &lt;code>mymodules/plans/planB.pp&lt;/code> で記載した template と plan（Puppet 言語）です。これで、下記コマンドを実行してみると&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>bolt plan run mymodules::planB env&lt;span style="color:#f92672">=&lt;/span>staging --targets webservers
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>centos@192.168.100.179$ cat /tmp/.env
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ENV&lt;span style="color:#f92672">=&lt;/span>staging
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GCP_PROJECT_ID&lt;span style="color:#f92672">=&lt;/span>gcp_project_staging
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>となります。この際、&lt;code>lookup('gcp_project_id')&lt;/code>と指定して、&lt;code>gcp_project_staging&lt;/code>が代入されています。これは puppet の build-in function &lt;a href="https://puppet.com/docs/puppet/7.1/function.html#lookup">lookup&lt;/a> を使うことで、hiera data として定義した変数を取得することができるためです。&lt;/p>
+&lt;p>ref.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://puppet.com/docs/puppet/5.5/lang_template.html">Language: Using templates&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://puppet.com/docs/bolt/latest/applying_manifest_blocks.html#using-hiera-data-in-a-manifest-block">Applying Puppet code#Using Hiera data in a manifest block&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="plans">plans&lt;/h4>
+&lt;p>bolt の plan を格納するディレクトリです。plan は、複数のタスクを一まとまりにした単位のことを呼びます。実行したタスクの入力の値を計算したり、別のタスクの結果に基づいて特定のタスクを実行したりするなど、複雑なタスクを実行できます。plan は、yaml（not .yml） or puppet（pp）で記述することが可能です。それぞれ同じで、同じタスクを記述すると&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># yaml の場合（site-modules/mymodule/plans/planA.yaml）&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">parameters&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">targets&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">type&lt;/span>: &lt;span style="color:#ae81ff">TargetSpec&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">bucket_name&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">type&lt;/span>: &lt;span style="color:#ae81ff">String[1]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">object_path&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">type&lt;/span>: &lt;span style="color:#ae81ff">String[1]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">tmp_dir&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">type&lt;/span>: &lt;span style="color:#ae81ff">String[1]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">default&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/tmp&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">steps&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># motd.txt を対象ホストに upload する&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">upload&lt;/span>: &lt;span style="color:#ae81ff">mymodule/motd.txt&lt;/span> &lt;span style="color:#75715e"># ref. site-modules/mymodule/files/motd.txt&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">destination&lt;/span>: &lt;span style="color:#ae81ff">/etc/motd&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">targets&lt;/span>: &lt;span style="color:#ae81ff">$targets&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">description&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Upload motd to the webservers&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># check_server.sh を対象ホスト上で実行する&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># e.g. ./check_server.sh /index.html 60&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">script&lt;/span>: &lt;span style="color:#ae81ff">mymodule/check_server.sh&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">targets&lt;/span>: &lt;span style="color:#ae81ff">$targets&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">description&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Run mymodule/files/check_server.sh on the webservers&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">arguments&lt;/span>: &lt;span style="color:#75715e"># Optional&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#e6db74">&amp;#34;/index.html&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">60&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">task&lt;/span>: &lt;span style="color:#ae81ff">myproject::download_from_gcs&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">targets&lt;/span>: &lt;span style="color:#ae81ff">$targets&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">description&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Download file from gcs&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">parameters&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">bucket_name&lt;/span>: &lt;span style="color:#ae81ff">$bucket_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">object_path&lt;/span>: &lt;span style="color:#ae81ff">$object_path&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">tmp_dir&lt;/span>: &lt;span style="color:#ae81ff">$tmp_dir&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-pp" data-lang="pp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># puppuet の場合（site-modules/mymodule/plans/planA.pp）
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># @param targets The targets to configure
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># @param bucket_name The bucket name
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># @param object_path The object path
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># @param tmp_dir The tmp directory for download destination&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span>&lt;span style="color:#a6e22e">plan&lt;/span> &lt;span style="color:#a6e22e">mymodule&lt;/span>::&lt;span style="color:#a6e22e">planA&lt;/span>(&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">TargetSpec&lt;/span> $targets,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">String&lt;/span>[&lt;span style="color:#ae81ff">1&lt;/span>] $bucket_name,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">String&lt;/span>[&lt;span style="color:#ae81ff">1&lt;/span>] $object_path,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">String&lt;/span>[&lt;span style="color:#ae81ff">1&lt;/span>] $tmp_dir &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;/tmp&amp;#39;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span>) {&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">upload_file&lt;/span>(&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#39;mymodule/motd.txt&amp;#39;&lt;/span>,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#39;/etc/motd&amp;#39;&lt;/span>,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> $targets,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Upload motd to the webservers&amp;#34;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> )&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">run_script&lt;/span>(&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#39;mymodule/check_server.sh&amp;#39;&lt;/span>,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> $targets,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Run mymodule/files/check_server.sh on the webservers&amp;#34;&lt;/span>,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> {&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#39;arguments&amp;#39;&lt;/span> &lt;span style="color:#f92672">=&amp;gt;&lt;/span> [&lt;span style="color:#e6db74">&amp;#34;/index.html&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">60&lt;/span>]&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> }&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> )&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#a6e22e">run_task&lt;/span>(&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#39;myproject::download_from_gcs&amp;#39;&lt;/span>,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> $targets,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#39;Download file from gcs&amp;#39;&lt;/span>,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> {&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#39;bucket_name&amp;#39;&lt;/span> &lt;span style="color:#f92672">=&amp;gt;&lt;/span> $bucket_name,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#39;object_path&amp;#39;&lt;/span> &lt;span style="color:#f92672">=&amp;gt;&lt;/span> $object_path,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> &lt;span style="color:#e6db74">&amp;#39;tmp_dir&amp;#39;&lt;/span> &lt;span style="color:#f92672">=&amp;gt;&lt;/span> $tmp_dir,&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> },&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span> )&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">&lt;/span>}&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>となります。上記 2 つの plan は同じ plan です。細かい箇所の説明は省きますが、上記のように記述したのち&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>bolt plan run mymodule::planA env&lt;span style="color:#f92672">=&lt;/span>staging bucket_name&lt;span style="color:#f92672">=&lt;/span>mybucket object_path&lt;span style="color:#f92672">=&lt;/span>myobject.txt --targets webservers
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>のコマンドを実行することで、対象ホスト（targets）に対して、plan を実行することができます。ちなみに余談ですが、下記コマンドを実行すると、&lt;code>yaml -&amp;gt; pp&lt;/code> への変換ができます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>bolt plan convert site-modules/mymodule/plans/planA.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>そこで次に考えるのは、&lt;code>yaml&lt;/code>と&lt;code>pp&lt;/code>どっちで書こう問題なのですが、「やっぱり yaml の方が慣れてる人多いし、puppet 独自の DSL とか学習コスト高そうだし、やっぱり yaml で書こう！」と、Puppet 言語に慣れていないほとんどの人が思うところかなと思うのですが、ここで割と大事な個人的な見解としては、&lt;code>「（現時点では）ちゃんと本番環境で利用とするのであれば、多少苦労してでも、Puppet言語で記述した方がいい」&lt;/code>です。なぜかというと、&lt;code>yaml だと、まだ動かないこと結構多いです。&lt;/code>最も致命的なのは、&lt;code>templateがいまいち使えない&lt;/code>ことです。（ref. &lt;a href="https://github.com/puppetlabs/bolt/issues/2301">Support Templates from yaml #2301&lt;/a>） やはり、前身となるのが Puppet 言語なので、現段階では、「今まで、Puppet 言語で作られてきたものを YAML でも書けるようにするために色々頑張ってる」という印象が強いです。そのため現段階での個人的な見解としては、あまり yaml で記述することをお勧めしません。&lt;/p>
+&lt;h2 id="さいごに">さいごに&lt;/h2>
+&lt;p>他の構成管理ツールを使ったことがある方なら、やはりディレクトリ構成も似ていたりするので、割と取っつきやすい部分もありますが、「独自言語であること」「落とし穴がある」「ドキュメント・ナレッジが少ない」の 3 つがやはりネックになってきます。上記記載したことを参考にしていただきなら、まずは、触ってみる。その中で、全体のコンセプトを掴んでもらい、設計 -&amp;gt; 実装とやると良いかなと思います。今後はもっと、Puppet Bolt が流行ってくることを期待したいです。&lt;/p>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://puppet.com/docs/bolt/latest/bolt.html">Welcome to Bolt&lt;/a>&lt;/li>
+&lt;li>その他に関しては、各項目毎の &lt;code>ref&lt;/code> を参考にしてください。&lt;/li>
+&lt;/ul></description></item><item><title>puppet bolt とは</title><link>https://blog.jkkitakita.dev/post/202012012340/</link><pubDate>Tue, 01 Dec 2020 23:40:01 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202012012340/</guid><description>&lt;p>この記事は &lt;a href="https://qiita.com/advent-calendar/2020/puppet">Puppet Advent Calendar 2020 1 日目&lt;/a> の記事です。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="#puppet-bolt-%E3%81%A8%E3%81%AF">puppet bolt とは&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#puppet-bolt-%E3%81%AE%E7%89%B9%E5%BE%B4">puppet bolt の特徴&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E4%BD%BF%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%A6%E3%82%88%E3%81%8B%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%84%E3%81%BE%E3%81%84%E3%81%A1%E3%81%A0%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8">使ってみてよかったこと・いまいちだったこと&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="#%E3%82%88%E3%81%8B%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8">よかったこと&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E3%81%84%E3%81%BE%E3%81%84%E3%81%A1%E3%81%A0%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8">いまいちだったこと&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="#%E7%B5%90%E8%AB%96">結論&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#%E5%8F%82%E8%80%83">参考&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="puppet-bolt-とは">puppet bolt とは&lt;/h2>
+&lt;p>Puppet 及び Puppet Labs が開発している puppet の仲間みたいな構成管理ツールです。&lt;/p>
+&lt;p>&lt;a href="https://puppet.com/docs/bolt/latest/bolt.html">https://puppet.com/docs/bolt/latest/bolt.html&lt;/a>&lt;/p>
+&lt;h2 id="puppet-bolt-の特徴">puppet bolt の特徴&lt;/h2>
+&lt;p>puppet は、エージェント型の構成管理ツールに該当するのに対して、puppet bolt は、Ansible とかと同様に、エージェントレス型です。Ruby 製。
+puppet では、独自の DSL を記述する必要がありましたが、puppet bolt はそこを意識しなくても、簡単なものなら、yaml で記述できるようになっていることが売りみたいです。
+また、他の構成ツールに比べて、Unix だけではなく、Windows にも対応しているのが特徴です。
+最近は、Ansible も Windows 対応してきているものの、いくつか制約はあります。&lt;/p>
+&lt;ul>
+&lt;li>「Windows SSH の設定」はまだ、本番環境では使えない。
+&lt;a href="https://docs.ansible.com/ansible/2.9_ja/user_guide/windows_setup.html#windows-ssh">https://docs.ansible.com/ansible/2.9_ja/user_guide/windows_setup.html#windows-ssh&lt;/a>&lt;/li>
+&lt;li>Ansible の実行環境として、Windows は使えません。
+&lt;a href="https://docs.ansible.com/ansible/2.9_ja/user_guide/windows_faq.html#ansible-windows">https://docs.ansible.com/ansible/2.9_ja/user_guide/windows_faq.html#ansible-windows&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>一方、puppet bolt は、他と同様 Unix の方が機能・ドキュメントとしても充実してはいるものの、Windows を実行環境とすることが可能です。&lt;/p>
+&lt;h2 id="使ってみてよかったこといまいちだったこと">使ってみてよかったこと・いまいちだったこと&lt;/h2>
+&lt;h3 id="よかったこと">よかったこと&lt;/h3>
+&lt;ul>
+&lt;li>思ったよりは、puppet bolt のメンテナンスがされていること。
+&lt;ul>
+&lt;li>2 週間毎くらいに、minor version up（ひたすら minor が、上がっていく。）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>最悪、ruby かけば、なんとかなる（気がする）。&lt;/li>
+&lt;li>ruby とか Ansible に慣れている人なら、慣れれば、いける。&lt;/li>
+&lt;li>Ansible Galaxy みたいな感じで &lt;a href="https://forge.puppet.com/">Puppet forge&lt;/a> があって、ここから、modules を簡単に download してさくっと、設定できるのはよかった。&lt;/li>
+&lt;/ul>
+&lt;h3 id="いまいちだったこと">いまいちだったこと&lt;/h3>
+&lt;ul>
+&lt;li>英語でもドキュメントが見つかりづらい。日本語はほぼない or 古すぎて、基本的なことしかわからない。&lt;/li>
+&lt;li>日本人、ちゃんと使っている人いるのか疑問レベル。&lt;/li>
+&lt;li>yaml で書けるって聞いてたのに、対応していない時があって、ハマる。&lt;/li>
+&lt;li>Puppet DSL 意識しないでいいって聞いたのに、割と puppet のドキュメントをみる。&lt;/li>
+&lt;/ul>
+&lt;h2 id="結論">結論&lt;/h2>
+&lt;ul>
+&lt;li>Windows Server などの構成管理をする時に、&lt;a href="https://docs.microsoft.com/ja-jp/powershell/scripting/dsc/overview/decisionmaker">Powershell DSC&lt;/a>とかが重かったら、puppet bolt も検討してみてもいいと思う。&lt;/li>
+&lt;li>普通に、生きて入れば、Ansible で十分。&lt;/li>
+&lt;/ul>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/puppetlabs/bolt">https://github.com/puppetlabs/bolt&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://puppet.com/docs/bolt/latest/bolt.html">Welcome to Bolt&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://knowledge.sakura.ad.jp/22188/">Puppet が開発した新たな構成管理ツール「Bolt」を使ってみる&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://qiita.com/takeuchikzm/items/fb9d1701ea19be337131">私と Puppet 概念編&lt;/a>
+&lt;ul>
+&lt;li>この記事、bolt ではないが、まとまってて非常に、よかった。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>k8sとGKEのサポートバージョンの違いに関するメモ</title><link>https://blog.jkkitakita.dev/post/202006051635/</link><pubDate>Fri, 05 Jun 2020 16:35:58 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202006051635/</guid><description>&lt;h2 id="概要">概要&lt;/h2>
+&lt;p>k8s と GKE のサポートバージョンの違いに関して調査したメモ&lt;/p>
+&lt;h2 id="モチベーション">モチベーション&lt;/h2>
+&lt;ul>
+&lt;li>Kubernetes がサポートするバージョン&lt;/li>
+&lt;li>GKE がサポートするバージョン&lt;/li>
+&lt;/ul>
+&lt;p>の違いって何？&lt;/p>
+&lt;h2 id="まとめ">まとめ&lt;/h2>
+&lt;ul>
+&lt;li>kubernetes の version は過去 3 マイナーバージョンまで。&lt;/li>
+&lt;li>現在の最新 k8s version は 1.18（2020 年 3 月 24 日リリース）&lt;/li>
+&lt;li>Kubernetes がサポートしている k8s version は 1.16 / 1.17 / 1.18 のみ。&lt;/li>
+&lt;li>とはいえ、Cloud Providor として個別にサポートしている k8s version は「別」としてある。
+&lt;ul>
+&lt;li>Kubernetes: 1.14.10&lt;/li>
+&lt;li>GKE: 1.14.10-gke.36&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>現在新しく GKE を立ち上げようとすると「1.14.10-gke.36」がデフォルトになっており、基本、GKE への反映は少し遅れる。&lt;/li>
+&lt;li>GKE としては、本番レベルでの品質保証はしていないが、現時点で、1.17.5 まで構築できるようにはなっている。&lt;/li>
+&lt;li>基本的に、1.14 系は、1.14.10 が最新 version ですが、「Cloud Providor としては、ある程度サポート（-gke.## という形で、セキュリティ更新とバグ修正）」はする、が、「k8s コミュニティとしてはサポートしない」ので、patch version release はされない（1.14.11 が release されることはない）&lt;/li>
+&lt;/ul>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://semver.org/">セマンティック バージョニング&lt;/a>
+&lt;ul>
+&lt;li>x.y.z
+&lt;ul>
+&lt;li>x: major&lt;/li>
+&lt;li>y: minior&lt;/li>
+&lt;li>z: patch&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://kubernetes.io/ja/docs/setup/release/version-skew-policy/">Kubernetes バージョンとバージョンスキューサポートポリシー&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://cloud.google.com/kubernetes-engine/versioning-and-upgrades?hl=ja#versioning_scheme">GKE・バージョニングとアップグレード#バージョニング体系&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Japan Rook Meetup #2</title><link>https://blog.jkkitakita.dev/post/202003291728/</link><pubDate>Sun, 29 Mar 2020 17:28:37 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202003291728/</guid><description>&lt;h2 id="はじめに">はじめに&lt;/h2>
+&lt;p>今回はリモートでの開催だった&lt;a href="https://rook.connpass.com/event/160657/">Japan Rook Meetup #2&lt;/a>に関するブログ枠です。基本的に、意見ほぼなしのまとめです。GlusterFS とかはなんとなく触ったことがあるのですが、Rook とか Ceph とかはほぼ触ったことがなかったので、新鮮に勉強させていただきました。何かここが違うなど問題があれば、twitter 等でご指摘いただければと思います。&lt;/p>
+&lt;h2 id="アジェンダ">アジェンダ&lt;/h2>
+&lt;p>&lt;img src="https://blog.jkkitakita.dev/images/agenda_rook_meetup_2.png" alt="agenda_rook_meetup_2">&lt;/p>
+&lt;h2 id="ハッシュタグ">ハッシュタグ&lt;/h2>
+&lt;p>&lt;a href="https://twitter.com/search?q=%23k8sjp">#k8sjp&lt;/a>&lt;/p>
+&lt;h2 id="youtube">Youtube&lt;/h2>
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe src="https://www.youtube.com/embed/xSLIrfkBKv4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
+&lt;/div>
+&lt;h2 id="内容">内容&lt;/h2>
+&lt;h3 id="rook-基礎バージョンアップ-rev4thttpstwittercomrev4t">Rook 基礎・バージョンアップ &lt;a href="https://twitter.com/rev4t">@rev4t&lt;/a>&lt;/h3>
+&lt;hr>
+&lt;iframe src="//www.slideshare.net/slideshow/embed_code/key/8Fiu2FQopxr41n" width="595" height="376" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>&lt;/iframe>
+&lt;h4 id="そもそもどういう時に利用する物なのか">そもそもどういう時に利用する物なのか&lt;/h4>
+&lt;p>Kubernetes で外部ストレージを利用したい時&lt;/p>
+&lt;h4 id="解決できること">解決できること&lt;/h4>
+&lt;p>k8s 上で Storage Operation を実現。storage は運用が大変だが、その自動化ができる。&lt;/p>
+&lt;h4 id="rook-とは">Rook とは&lt;/h4>
+&lt;p>CNCF。Operator + Custom Resouce で k8s 拡張可能。&lt;br>
+また、沢山の Storage システムに対応したフレームワーク&lt;/p>
+&lt;ul>
+&lt;li>Ceph（Stable）&lt;/li>
+&lt;li>EdgeFS（Stable）&lt;/li>
+&lt;li>CockroachDB&lt;/li>
+&lt;li>Cassandra&lt;/li>
+&lt;li>NFS&lt;/li>
+&lt;li>YugabyteDB&lt;/li>
+&lt;li>minio&lt;/li>
+&lt;/ul>
+&lt;h4 id="構成要素">構成要素&lt;/h4>
+&lt;ul>
+&lt;li>Rook Operator&lt;br>
+実際にストレージのデプロイ・管理をしてくれるもの&lt;/li>
+&lt;li>Rook Discover&lt;br>
+ストレージノードの変更等を検知して、Operator に伝える etc&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;h4 id="version-up">Version Up&lt;/h4>
+&lt;h5 id="rookmajor-version">Rook（major version）&lt;/h5>
+&lt;ol>
+&lt;li>前提として、Ceph が正常に起動していることを確認&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># cephのステータス確認&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ceph status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
+&lt;li>Rook の Control plane が正常に稼働していることを確認&lt;/li>
+&lt;li>CRD と RBAC の更新&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># e.g.&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># https://github.com/rook/rook/blob/v1.2.0/cluster/examples/kubernetes/ceph/upgrade-from-v1.1-apply.yaml&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl apply -f upgrade-from-v1.1-apply.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
+&lt;li>fuse or rdb-ndb を使っている場合、Cephfs plugin。rdb plugin の update strategy を onDelete に変更&lt;/li>
+&lt;li>Rook operator の update&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># e.g. v1.2.5へ&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl -n $ROOK_SYSTEM_NAMESPACE set image deploy/rook-ceph-oeprator rook-ceph-operator&lt;span style="color:#f92672">=&lt;/span>rook/ceph:v1.2.5
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="6">
+&lt;li>更新されるまで、しばらく待つ&lt;/li>
+&lt;li>fuse or rdb-ndb を使っている場合、CSI driver の pod を delete することで更新させる&lt;/li>
+&lt;li>最後に、CRD を更新&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># e.g.&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># https://github.com/rook/rook/blob/v1.2.0/cluster/examples/kubernetes/ceph/upgrade-from-v1.1-crds.yaml&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl apply -f upgrade-from-v1.1-crds.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h5 id="rookminor-version">Rook（minor version）&lt;/h5>
+&lt;ol>
+&lt;li>image の version を更新するだけ。&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># e.g. v1.2.5へ&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl -n $ROOK_SYSTEM_NAMESPACE set image deploy/rook-ceph-oeprator rook-ceph-operator&lt;span style="color:#f92672">=&lt;/span>rook/ceph:v1.2.5
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>（注）Ceph の delete/create が伴う場合があるそう。&lt;/p>
+&lt;p>&lt;img src="https://image.slidesharecdn.com/rook-meetup-2-sogabe-rev1-200327104438/95/rook-31-638.jpg?cb=1585306044" alt="rook-minor-upgrade">&lt;/p>
+&lt;h5 id="cephv1424---v1427">Ceph（v14.2.4 -&amp;gt; v14.2.7）&lt;/h5>
+&lt;ol>
+&lt;li>image の version を更新する。（image を更新すれば、あとは Rook Operator がやってくれる。）&lt;/li>
+&lt;li>完了するまで待つ。&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># cephのステータス確認して、HEALTH_OKかどうか&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ceph status
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cluster: id: 3casefd74-edfg-2352-b54j-51jk12tj10
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>health: HEALTH_OK
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h5 id="external-cluster">External Cluster&lt;/h5>
+&lt;p>既存の Ceph Cluster に対して、Rook を用いた k8s との連携ができる。&lt;/p>
+&lt;h6 id="メリット">メリット&lt;/h6>
+&lt;ol>
+&lt;li>CSI Driver の運用管理のみを k8s で実施する形になり、k8s 側の運用コストを下げつつ、責任分界点を分けられる&lt;/li>
+&lt;li>Rook Version Up の際に、Ceph Cluster に与えるサービス影響を完全に排除できる&lt;/li>
+&lt;li>k8s networking による性能低下の影響をうけなくなる。&lt;/li>
+&lt;/ol>
+&lt;h6 id="デメリット">デメリット&lt;/h6>
+&lt;ol>
+&lt;li>Rook の他に、Ceph のデプロイツールの導入をする必要が出てくる&lt;/li>
+&lt;/ol>
+&lt;h6 id="利用例">利用例&lt;/h6>
+&lt;p>Rook + ceph-ansible&lt;br>
+&lt;a href="https://github.com/ceph/ceph-ansible">https://github.com/ceph/ceph-ansible&lt;/a>&lt;/p>
+&lt;h4 id="summary">Summary&lt;/h4>
+&lt;ul>
+&lt;li>長期的な運用で、Storage Backend だけでなく、Rook Operaotr 自体の運用もしなくてはならない。&lt;/li>
+&lt;li>Ceph の version がすごく楽になる。&lt;/li>
+&lt;li>k8s 側の運用をシンプルにしたい場合は、ceph-ansible + Rook external cluster が良さそう。&lt;/li>
+&lt;/ul>
+&lt;h4 id="質疑応答">質疑応答&lt;/h4>
+&lt;blockquote>
+&lt;p>Q. Ceph OSD の update で、node を変更しない以外のパターン以外で、新規の node に migration をかけることは可能か？&lt;br>
+A. 検証していないが、多分できると思っている。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>Q. Control Plan の upgrade する時に、実際にデータアクセスに影響があるということでしょうか？&lt;br>
+A. Ceph OSD の pod を再起動されることになるので、クライアントからのリクエストの latency が高くなるだろうと思っている。影響の少ない時間帯で実施するなどの対応が必要だろうと思っている。&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="rookceph-upstream-最新状況-satoru_takeuchihttpstwittercomsatoru_takeuchi">Rook/Ceph upstream 最新状況 &lt;a href="https://twitter.com/satoru_takeuchi">@satoru_takeuchi&lt;/a>&lt;/h3>
+&lt;hr>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="a2fc007ecacd49d882d04677392176a2" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h4 id="目次">目次&lt;/h4>
+&lt;ol>
+&lt;li>前提知識: OSD 作成方法&lt;/li>
+&lt;li>Rook 最新安定版の新機能&lt;/li>
+&lt;li>Rook 次期安定版の開発状況&lt;/li>
+&lt;li>Rook を取り巻く状況&lt;/li>
+&lt;/ol>
+&lt;h4 id="1-前提知識-osd-作成方法">1. 前提知識: OSD 作成方法&lt;/h4>
+&lt;hr>
+&lt;p>OSD の作成方法には大きく２つの方法があるとのこと&lt;/p>
+&lt;h5 id="11-従来の方法">1.1. 従来の方法&lt;/h5>
+&lt;p>OSD の設定にノード上のデバイスを直接指定する&lt;/p>
+&lt;ul>
+&lt;li>これだと、Rook/Ceph cluster 管理者にハードウェア構成の知識が必要&lt;/li>
+&lt;li>さらに、デバイス名直接指定しているので、自前で cluster を構築する必要がある&lt;/li>
+&lt;/ul>
+&lt;h5 id="12-osd-on-pvc-v11">1.2. OSD on PVC v1.1~&lt;/h5>
+&lt;p>OSD の設定に PVC template を指定する。それを受けて、CSI driver が PV を作成する。Cluster 管理者は OSD pod がどこにあるかを気にしなくて良いさらに、デバイスの管理もしなくて良くなる。&lt;/p>
+&lt;h4 id="2-rook-最新安定版の新機能">2. Rook 最新安定版の新機能&lt;/h4>
+&lt;hr>
+&lt;h5 id="21-osd-on-pvc-で-lv-サポート">2.1. OSD on PVC で LV サポート&lt;/h5>
+&lt;ul>
+&lt;li>OSD on PVC でロジカルボリューム（LV）対応した（サイボウズ作）&lt;/li>
+&lt;/ul>
+&lt;h6 id="目的背景">目的・背景&lt;/h6>
+&lt;ol>
+&lt;li>ローカルの NVMe SSD 上に OSD を作成し、OSD を束ねて、Ceph Cluster を構築し、ブロックデバイス（RDB？）を提供したい&lt;/li>
+&lt;li>管理コスト削減のため、PV を dynamic provisioning したい。pv が欲しくなったら、dynamic な storage が欲しい。&lt;/li>
+&lt;/ol>
+&lt;h6 id="既存の課題">既存の課題&lt;/h6>
+&lt;p>以下の条件を満たす CSI ドライバがない&lt;/p>
+&lt;ul>
+&lt;li>ローカルボリューム&lt;/li>
+&lt;li>dynamic provisioning&lt;/li>
+&lt;li>実用レベルのものがない&lt;/li>
+&lt;/ul>
+&lt;p>つまり、デバイス追加は手作業で PV 作成する必要がある。&lt;/p>
+&lt;h6 id="topolvm">TopoLVM&lt;/h6>
+&lt;ul>
+&lt;li>PVC の変更を検知して、PV を dynamiv provisioning してくれるやつ？&lt;/li>
+&lt;/ul>
+&lt;h5 id="22-従来方式で-udev-persistent-name-をサポート">2.2. 従来方式で udev persistent name をサポート&lt;/h5>
+&lt;p>v1.1 以前では、/dev 直下は気付いたら変わりうる。e.g. sda -&amp;gt; sdb&lt;br>
+v1.2 以降では、新機能 devicePathFilter（サイボウズ作）&lt;/p>
+&lt;ul>
+&lt;li>こうすると、/dev 直下の device name は変わりうるのだが、by-path 名は変更されない&lt;/li>
+&lt;li>そのため、データ破壊を防げる&lt;/li>
+&lt;/ul>
+&lt;h5 id="23-その他変更">2.3. その他変更&lt;/h5>
+&lt;ol>
+&lt;li>cech-crash collector&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>daemon のクラッシュ情報を Ceph クラスタに保存できるので、トラブルシューティングに効果的&lt;/li>
+&lt;li>デフォルトで有効&lt;/li>
+&lt;/ul>
+&lt;ol start="2">
+&lt;li>FileStore OSD が obsolete（既存の FileStore OSD はサポートし続ける）&lt;/li>
+&lt;/ol>
+&lt;h4 id="3-rook-次期安定版の開発状況">3. Rook 次期安定版の開発状況&lt;/h4>
+&lt;hr>
+&lt;h5 id="31-failure-domain-をまたいだ-osd-の均等分散配置">3.1. Failure domain をまたいだ OSD の均等分散配置&lt;/h5>
+&lt;p>k8s の TopologySpreadConstraints 機能のサポート（OSD on PVC に必須）&lt;/p>
+&lt;h6 id="topologyspreadconstraints-の目的">TopologySpreadConstraints の目的&lt;/h6>
+&lt;ol>
+&lt;li>ラック障害耐性&lt;/li>
+&lt;li>ノード障害耐性&lt;/li>
+&lt;/ol>
+&lt;h6 id="これまでの課題">これまでの課題&lt;/h6>
+&lt;p>OSD pod の偏りが生まれてしまい、ラックの障害耐性がない場合が有り得る。次期安定版から、対応予定で、これでようやく OSD on PVC が使えるものとなると思っている。&lt;/p>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="a2fc007ecacd49d882d04677392176a2" data-slide="20" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h5 id="32-osd-on-lv-backed-pvc-のテスト追加">3.2. OSD on LV-backed PVC のテスト追加&lt;/h5>
+&lt;ol>
+&lt;li>Rook は PR マージ時、テスト全パスが必須。&lt;/li>
+&lt;/ol>
+&lt;p>しかし、3 つの壁が。。。&lt;/p>
+&lt;h6 id="壁-1-master-で-osd-on-lv-backed-pvc-が動かない">壁 1: master で OSD on LV-backed PVC が動かない&lt;/h6>
+&lt;ol>
+&lt;li>この PR でリグレッションが発生
+&lt;a href="https://github.com/rook/rook/pull/4435">https://github.com/rook/rook/pull/4435&lt;/a>&lt;/li>
+&lt;li>Issue 発行
+&lt;a href="https://github.com/rook/rook/issues/5075">https://github.com/rook/rook/issues/5075&lt;/a>&lt;/li>
+&lt;li>CI 重要！！！！&lt;/li>
+&lt;/ol>
+&lt;h6 id="壁-2-テストがテスト環境を破壊">壁 2: テストがテスト環境を破壊&lt;/h6>
+&lt;ol>
+&lt;li>テスト冒頭で全 LV/VG/PV を強制削除&lt;/li>
+&lt;li>PR マージ待ち
+&lt;a href="https://github.com/rook/rook/pull/4966">https://github.com/rook/rook/pull/4966&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h6 id="壁-3-ローカル環境でテストがパスしない">壁 3: ローカル環境でテストがパスしない&lt;/h6>
+&lt;p>調査中&lt;/p>
+&lt;h5 id="33-filestore-の新規作成が不可能に">3.3. FileStore の新規作成が不可能に&lt;/h5>
+&lt;p>obsolute ではなく、不可能へ。&lt;/p>
+&lt;h5 id="34-ストレージプロバイダ">3.4. ストレージプロバイダ&lt;/h5>
+&lt;ol>
+&lt;li>新しいストレージプロバイダなし&lt;/li>
+&lt;li>minio のコードが削除（メンテされていないから。）&lt;/li>
+&lt;/ol>
+&lt;h5 id="35-その他の課題">3.5. その他の課題&lt;/h5>
+&lt;p>コア部分と前ストレージプロバイダが同じリポジトリ管理しているので、開発がしにくい&lt;/p>
+&lt;ul>
+&lt;li>kubernetes と storage plugin を別リポジトリを分けた話と同じ感じ。&lt;/li>
+&lt;/ul>
+&lt;h5 id="36-今後の貢献予定">3.6. 今後の貢献予定&lt;/h5>
+&lt;ol>
+&lt;li>テストの充実化&lt;/li>
+&lt;li>暗号化デバイス上の OSD&lt;/li>
+&lt;li>バグ解決&lt;/li>
+&lt;/ol>
+&lt;h4 id="4-rook-を取り巻く状況">4. Rook を取り巻く状況&lt;/h4>
+&lt;hr>
+&lt;h5 id="41-プロジェクトの成熟度">4.1. プロジェクトの成熟度&lt;/h5>
+&lt;ul>
+&lt;li>現在は、Incubating&lt;/li>
+&lt;li>もうちょっとで、卒業するかも？
+&lt;a href="https://github.com/cncf/toc/pull/366">https://github.com/cncf/toc/pull/366&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h5 id="42-rookceph-を使う製品">4.2. Rook/Ceph を使う製品&lt;/h5>
+&lt;ul>
+&lt;li>&lt;a href="https://blog.openshift.com/introducing-openshift-container-storage-4-2/">Red Hat OpenShift Container Storage4（GA・2020-01-15）&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.suse.com/c/ceph-on-kubernetes-tech-preview/">Containerized SUSE Enterprise Storage on CaaSP（Tecknical preview）&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="5-参考リンク">5. 参考リンク&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://blog.cybozu.io/entry/2019/12/03/114746">ストレージオーケストレーター Rook へのサイボウズのコミット方針&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.cybozu.io/entry/2019/11/08/090000">Kubernetes でローカルストレージを有効活用しよう&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.google.com/presentation/d/1mMPYMDC4JMGWhoL3FzFgeasSLJepNwYMfwQD-T_gET4/edit#slide=id.g3a79217937_0_104">Rook - Graduation Proposal&lt;/a>&lt;/li>
+&lt;li>賢く「散らす」ための Topology Spread Constraints
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="61215f14bf534bce8ee5726a2ce243dd" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="質疑応答-1">質疑応答&lt;/h4>
+&lt;blockquote>
+&lt;p>Q. TopoLVM に関して、LVM のレイヤーを declaretive なやり方で、VG？を作ってくれるものという認識であっていますでしょうか？&lt;/p>
+&lt;p>A. はい。その通りです。Storage Class で TopoLVM のものを指定していただければ、LV を勝手に切ってくれて、それをブロックデバイス、ないし、ファイルシステムとして利用できるものです。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>Q. FileStore が obsolute になって、BlueStore への移行がこれから出てくると思うのだが、マイグレーションパスの開発は進んでいるのでしょうか？&lt;/p>
+&lt;p>A. 現在、ドキュメント整備中です。基本的には、そのドキュメントがみてやっていただければ良いようになっていく予定です。&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="rook-ceph-で-external-cluster-を利用する-futa_0203httpstwittercomfuta_0203">Rook-Ceph で External Cluster を利用する &lt;a href="https://twitter.com/FUTA_0203">@FUTA_0203&lt;/a>&lt;/h3>
+&lt;hr>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="5f8ed15c3bcf4136a53d04ad4d74b9e6" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h4 id="本日お話しすること">本日お話しすること&lt;/h4>
+&lt;ol>
+&lt;li>Rook-Ceph External Cluster の概要&lt;/li>
+&lt;li>Rook-Ceph External Cluster の利用方法&lt;/li>
+&lt;li>Rook-Ceph External Cluster 利用時の注意点&lt;/li>
+&lt;/ol>
+&lt;h5 id="1-rook-ceph-external-cluster-の概要">1. Rook-Ceph External Cluster の概要&lt;/h5>
+&lt;hr>
+&lt;p>Rook-Ceph を構築したクラスター外に存在する、Ceph クラスターのストレージリソースを利用すること&lt;/p>
+&lt;ul>
+&lt;li>local: k8s（Rook） cluster&lt;/li>
+&lt;li>external: Ceph cluster&lt;/li>
+&lt;/ul>
+&lt;h6 id="本機能の背景">本機能の背景&lt;/h6>
+&lt;ol>
+&lt;li>Rook ver 1.1 から利用可能&lt;/li>
+&lt;li>基本的には、k8s 内の storage を利用する想定だった&lt;/li>
+&lt;li>しかし、そうではない、ユースケースもあったため。&lt;/li>
+&lt;/ol>
+&lt;p>そうではないユースケースとは&amp;hellip;&lt;/p>
+&lt;ul>
+&lt;li>既存 Ceph Cluster が存在する&lt;/li>
+&lt;li>1 つの Ceph クラスターのリソースを複数 k8s で利用したい&lt;/li>
+&lt;li>単純に storage を分離したい&lt;/li>
+&lt;/ul>
+&lt;h6 id="rook-ceph-クラスター構築通常">Rook-Ceph クラスター構築（通常）&lt;/h6>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># e.g. v1.2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git clone --single-branch --branch release-1.2 https://github.com/rook/rook.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd cluster/examples/kubernetes/ceph
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>1. kubectl create -f common.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2. kubectl create -f operator.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>3. kubectl create -f cluster-test.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a href="https://rook.io/docs/rook/v1.2/ceph-quickstart.html">https://rook.io/docs/rook/v1.2/ceph-quickstart.html&lt;/a>&lt;/p>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="5f8ed15c3bcf4136a53d04ad4d74b9e6" data-slide="9" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h6 id="rook-ceph-クラスター構築external-cluster">Rook-Ceph クラスター構築（external cluster）&lt;/h6>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># e.g. v1.2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git clone --single-branch --branch release-1.2 https://github.com/rook/rook.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd cluster/examples/kubernetes/ceph
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>1. kubectl create -f common.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2. kubectl create -f operator.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>3. kubectl create -f common-external.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>4. ConfigMap/Secretリソースに外部のCeph clusterの情報としていれる
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - namespace
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - FSID
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - client admin
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - monitor endpoint
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>5. kubectl create -f cluster-external.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>クラスター構築後は&lt;/p>
+&lt;ul>
+&lt;li>local: OSD / MON / MGR は存在しない&lt;/li>
+&lt;li>External: State が、Created ではなく、Connected の状態になる&lt;/li>
+&lt;/ul>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="5f8ed15c3bcf4136a53d04ad4d74b9e6" data-slide="12" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h5 id="2-rook-ceph-external-cluster-の利用方法">2. Rook-Ceph External Cluster の利用方法&lt;/h5>
+&lt;hr>
+&lt;ul>
+&lt;li>ストレージリソースを用意する際、local cluster 側の操作のみで完結できるのはよき。&lt;/li>
+&lt;/ul>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="5f8ed15c3bcf4136a53d04ad4d74b9e6" data-slide="13" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h5 id="3-rook-ceph-external-cluster-利用時の注意点">3. Rook-Ceph External Cluster 利用時の注意点&lt;/h5>
+&lt;hr>
+&lt;ul>
+&lt;li>1 番気をつけた方がいいのは、Ceph バージョンかな？&lt;/li>
+&lt;li>configmap の修正が必要なのは、嫌だね。（いずれに、新しく最新 version を構築する場合は関係なさそう。）&lt;/li>
+&lt;/ul>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="5f8ed15c3bcf4136a53d04ad4d74b9e6" data-slide="14" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h5 id="参考リンク">参考リンク&lt;/h5>
+&lt;ul>
+&lt;li>&lt;a href="https://rook.io/docs/rook/v1.2/ceph-cluster-crd.html#external-cluster">Rook Doc - Ceph Cluster CRD #External Cluster&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/rook/rook/blob/master/design/ceph/ceph-external-cluster.md">GitHub - Rook and External Ceph Clusters&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/rook/rook/issues/4816">GitHub Issues - External cluster details are not populated to configmap rook-ceph-csi-config&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="rook-ceph-でいろいろベンチマークとってみる-japan_rookhttpstwittercomjapan_rook">Rook-Ceph でいろいろベンチマークとってみる &lt;a href="https://twitter.com/japan_rook">@japan_rook&lt;/a>&lt;/h3>
+&lt;hr>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h4 id="rook-ceph-で-io-計測をする">Rook Ceph で IO 計測をする&lt;/h4>
+&lt;h5 id="モチベーション">モチベーション&lt;/h5>
+&lt;ul>
+&lt;li>IO 測るの楽しい！笑&lt;/li>
+&lt;li>ストレージ直と Rook-Ceph を挟むとどれくらい変わるか&lt;/li>
+&lt;li>構成変更による IO の変化&lt;/li>
+&lt;/ul>
+&lt;h5 id="環境">環境&lt;/h5>
+&lt;ul>
+&lt;li>worker は、Rook-Ceph と IO をかけるが同居するため、割と強めにしている。&lt;/li>
+&lt;li>一応、現時点で最新 version の組み合わせ。&lt;/li>
+&lt;/ul>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="5" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h5 id="遊び方">遊び方&lt;/h5>
+&lt;ol>
+&lt;li>FIO 3.13&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>&lt;a href="https://kubestone.io/en/latest/benchmarks/fio/">kubestone fio&lt;/a>&lt;/li>
+&lt;li>fio の Custom Resource が便利&lt;/li>
+&lt;li>ここの&lt;a href="https://kubestone.io/en/latest/quickstart/">Quick Start&lt;/a>通りにやれば ok ってことかな？&lt;/li>
+&lt;/ul>
+&lt;ol start="2">
+&lt;li>fio の pod から 100GB をマウント&lt;/li>
+&lt;li>時間の都合で、4K random read, 4K random write のみ&lt;/li>
+&lt;/ol>
+&lt;h5 id="何を測るか">何を測るか&lt;/h5>
+&lt;ol>
+&lt;li>素の EBS（gp2）vs Rook-Ceph 3x replica RBD&lt;/li>
+&lt;li>Ceph クラスタの OSD 数&lt;/li>
+&lt;li>レプリカ数（一般的に、3x の replicas だが。）&lt;/li>
+&lt;/ol>
+&lt;h6 id="1-素の-ebsgp2vs-rook-ceph-3x-replica-rbd">1. 素の EBS（gp2）vs Rook-Ceph 3x replica RBD&lt;/h6>
+&lt;ul>
+&lt;li>負荷が低い時の write は結構違う。EBS の方が速い&lt;/li>
+&lt;li>個人的には、それぞれ OSD を 3 つつけていて、並列に read ができるので、1 個の EBS から read するのと、3 個の EBS から読み込むよりも有利なので、Rook-Ceph の方が役に立つ（read 強い。）&lt;/li>
+&lt;/ul>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="10" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h6 id="2-ceph-クラスタの-osd-数">2. Ceph クラスタの OSD 数&lt;/h6>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="13" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h6 id="3-レプリカ数">3. レプリカ数&lt;/h6>
+&lt;ul>
+&lt;li>clush rule にしたがって、平均になるように、replica されている&lt;/li>
+&lt;li>なので、利用される EBS の数は変わらない。&lt;/li>
+&lt;/ul>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="16" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h4 id="まとめ">まとめ&lt;/h4>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="815886a2378d49d6a10ae5bf29600e36" data-slide="17" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h4 id="質疑応答-2">質疑応答&lt;/h4>
+&lt;blockquote>
+&lt;p>Q. MIN_SIZE（Ceph pool の最小サイズ？）は同じにしているのかな？&lt;/p>
+&lt;p>A. 同じ一にしています。2x でも死んでも計測し続けられるようにしています。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>Q. best practice で、1 SSD 1 device あたり 〇〇 OSD に良いみたいな指針をみた気がするのですが。そういう指針に沿うと良いとか有りますか？&lt;/p>
+&lt;p>A. 有効に使う 1 SSD に対して、1 OSD にしても、あまり IO がこなければもったいないので、2 とか 4OSD にした方が良いという話もあります。感覚としては、一旦、1 SSD に対して、1~2 OSD が良いかなと。NVMe みたいに、並列に Queue がバシバシ入るものなら、4,6OSD でも良いかなと。もう、その辺はどの程度の負荷になるか。容量にするか。によって、変えてもらえればと思います。&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="さいごに">さいごに&lt;/h2>
+&lt;p>オンラインイベント初だったが、発表の音声ログなど残っていれば、そんなに問題ないなと思ったりしました。&lt;/p></description></item><item><title>Terraform meetup tokyo#4</title><link>https://blog.jkkitakita.dev/post/202002051855/</link><pubDate>Wed, 05 Feb 2020 18:55:37 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202002051855/</guid><description>&lt;p>今回は、&lt;a href="https://terraform-jp.connpass.com/event/163197/">Terraform meetup tokyo#4&lt;/a>に参加してきました。
+いつものスタイルと違ったので、ちょっと戸惑いました。。。&lt;/p>
+&lt;h2 id="アジェンダ">アジェンダ&lt;/h2>
+&lt;ul>
+&lt;li>会社紹介&lt;/li>
+&lt;li>スポンサーセッション&lt;/li>
+&lt;li>ワールド・カフェに関して&lt;/li>
+&lt;/ul>
+&lt;h2 id="会社紹介">会社紹介&lt;/h2>
+&lt;ul>
+&lt;li>「これからの食卓・これからの〇〇」&lt;/li>
+&lt;li>Oisix + らでぃっしゅぼーや + 大地を守る会
+&lt;ul>
+&lt;li>オイシックス・ラ・大地&lt;/li>
+&lt;li>Purple Carrot&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>ミールキット「Kit Oisix」が人気です。&lt;/li>
+&lt;li>エンジニアの会場は誰でも借りれます！&lt;/li>
+&lt;li>エンジニアは内製している。&lt;/li>
+&lt;li>Kubernetes, Terraform etc&amp;hellip;使ってます。&lt;/li>
+&lt;/ul>
+&lt;p>誰でも借りれるって行っていたので、機会があれば、是非使いたい！が、ちょっと大崎というのが個人的にはアクセスがあまり。。。笑&lt;/p>
+&lt;h2 id="スポンサーセッション">スポンサーセッション&lt;/h2>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="7bd0ae3815d84def8bd22e72ab3db4e2" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h2 id="ワールドカフェに関して">ワールド・カフェに関して&lt;/h2>
+&lt;p>下記スライド参照。&lt;br>
+&lt;a href="https://docs.google.com/presentation/d/1mjuzsWV2Pl8barIM9ZG1xVao6AeTP93U5p7PgR0wQlo/edit#slide=id.p">https://docs.google.com/presentation/d/1mjuzsWV2Pl8barIM9ZG1xVao6AeTP93U5p7PgR0wQlo/edit#slide=id.p&lt;/a>&lt;/p>
+&lt;h2 id="hashicorp-japan-さんから">Hashicorp Japan さんから&lt;/h2>
+&lt;ul>
+&lt;li>Hashicorp 「Japan」でも、GitHub を持ってます。
+&lt;a href="https://github.com/hashicorp-japan">https://github.com/hashicorp-japan&lt;/a>&lt;/li>
+&lt;li>Vault の紹介
+&lt;ul>
+&lt;li>アプリが必要な時に、Vault 側で DB の credentials とかを generate できる。&lt;/li>
+&lt;li>TTL が設定されるので、テンポラリーな credentials にできる。
+&lt;a href="https://github.com/hashicorp-japan/vault-workshop">https://github.com/hashicorp-japan/vault-workshop&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>こんなスライドもあるのかと思った。
+&lt;a href="https://docs.google.com/presentation/d/14YmrOLYirdWbDg5AwhuIEqJSrYoroQUQ8ETd6qwxe6M/edit">https://docs.google.com/presentation/d/14YmrOLYirdWbDg5AwhuIEqJSrYoroQUQ8ETd6qwxe6M/edit&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="さて本題">さて、本題&lt;/h2>
+&lt;p>以下、「その場で上がっていた課題感」とその「対策」に関して、ざっくりまとめてみました。&lt;/p>
+&lt;h3 id="その場で上がっていた課題感">その場で上がっていた課題感&lt;/h3>
+&lt;hr>
+&lt;ul>
+&lt;li>ワークスペース利用するかどうか&lt;/li>
+&lt;li>どうディレクトリを切ったらいいのか&lt;/li>
+&lt;li>本番適用するのはどこから適用するか
+&lt;ul>
+&lt;li>手動か？CI/CD サービスなどのツールからか？&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>terraform の OSS に PR を出したいが、リポジトリが大きくて、どこから手を出していいかわからない&lt;/li>
+&lt;li>terraform の artifact を他のツール（ansible etc&amp;hellip;）とかの input にしたい場合はどうすれば良いか&lt;/li>
+&lt;/ul>
+&lt;h3 id="対策">対策&lt;/h3>
+&lt;hr>
+&lt;h4 id="ワークスペース利用するかどうか">ワークスペース利用するかどうか&lt;/h4>
+&lt;hr>
+&lt;p>結論としては、「使わなくていいんじゃない？」って人が多かったように思う。理由としては&lt;/p>
+&lt;ul>
+&lt;li>分けることのメリットがあまりない。&lt;/li>
+&lt;li>hashicorp 側でも「環境毎にワークスペースを分けて~」「環境毎に分けないで~」など、公式の best practice がバラバラ？&lt;/li>
+&lt;/ul>
+&lt;p>２つ目の理由に関しては、公式ドキュメントにある通り、複数ワークスペースを利用する場合は、例えば「本番環境をデプロイする前に、同等の環境のコピーを用意する場合に利用する」と記載されているため、そうではない場合は、ワークスペースではなく、そもそも別のものとして分けるのが良いを私は信じたい。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>In particular, organizations commonly want to create a strong separation
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>between multiple deployments of the same infrastructure serving different
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>development stages (e.g. staging vs. production) or different internal teams.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>In this case, the backend used for each deployment often belongs to that deployment,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>with different credentials and access controls.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Named workspaces are not a suitable isolation mechanism for this scenario.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>c.f. &lt;a href="https://www.terraform.io/docs/state/workspaces.html#when-to-use-multiple-workspaces">https://www.terraform.io/docs/state/workspaces.html#when-to-use-multiple-workspaces&lt;/a>&lt;/p>
+&lt;h4 id="どうディレクトリを切ったらいいのか">どうディレクトリを切ったらいいのか&lt;/h4>
+&lt;hr>
+&lt;p>これは、結局「サービスレイヤー」と「環境レイヤー」のどっちを上に置くべきかという話がメインの課題だったように感じた。これに関しては、その場でも明確な結論は出ていなかったように思う。理由としては、おそらくシステムアーキテクチャ・組織構造（e.g. マイクロサービスかどうか。どの単位でチームが構成されているか）と密接に絡むため、どっちがいいとかがなかったからかと思う。個人的には、最近の潮流を鑑みると mercari さんの構成が良きかなと思っている。ただ terraform 導入フェーズから完璧にこの構成にする必要はないと思っているため、色々なフェーズに合わせて、構成は柔軟に変更したらいいかなと思う。&lt;/p>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="a5a56261e3b14115807d0c1320741550" data-slide="21" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;p>ベースとなる構成は、ここのサイトが参考になるかなと思う。
+&lt;a href="https://www.terraform-best-practices.com/examples/terraform">https://www.terraform-best-practices.com/examples/terraform&lt;/a>&lt;/p>
+&lt;h4 id="本番適用するのはどこから適用するか">本番適用するのはどこから適用するか&lt;/h4>
+&lt;hr>
+&lt;p>この課題は、「証跡・履歴」と「アクセスコントロール」の話。基本的には、CircleCI とか Jenkins とかとかから実行するのがベストかと思われる。これに関しては、特に異論はなかったように思う。&lt;/p>
+&lt;h4 id="terraform-の-oss-に-pr-を出したいがリポジトリが大きくてどこから手を出していいかわからない">terraform の OSS に PR を出したいが、リポジトリが大きくて、どこから手を出していいかわからない&lt;/h4>
+&lt;hr>
+&lt;p>これは、OSS の活動をしたことがないので、困った。笑&lt;br>
+&lt;a href="https://github.com/hashicorp/terraform">https://github.com/hashicorp/terraform&lt;/a>&lt;br>
+確かに、大きそうには見えるが、完全に何がしたいか次第かなと思ったりもした。根本のところの修正をしようとすると確かに、キャッチアップが必要かもしれないが、↓ の PR のように、puppet の provisioner を追加するだけなら、まぁなんかいけなくもないかなと感じた。笑（PR にめっちゃ突っ込んでくれて、suggest を出してくれて、直してくれてる雰囲気を感じた笑）&lt;/p>
+&lt;p>&lt;a href="https://github.com/hashicorp/terraform/pull/18851">https://github.com/hashicorp/terraform/pull/18851&lt;/a>&lt;/p>
+&lt;h4 id="terraform-の-artifact-を他のツールansible-etcとかの-input-にしたい場合はどうすれば良いか">terraform の artifact を他のツール（ansible etc&amp;hellip;）とかの input にしたい場合はどうすれば良いか&lt;/h4>
+&lt;p>これは私がちょこちょこ聞いていた質問だが、回答としては、&lt;/p>
+&lt;ul>
+&lt;li>AWS なら、EC2 の tag を使うことで、間接的に、連携できる。&lt;/li>
+&lt;li>AWS の parameter store を利用する。
+&lt;a href="https://docs.aws.amazon.com/ja_jp/kms/latest/developerguide/services-parameter-store.html">https://docs.aws.amazon.com/ja_jp/kms/latest/developerguide/services-parameter-store.html&lt;/a>&lt;/li>
+&lt;li>null resource 使って、local file として吐き出す。&lt;/li>
+&lt;/ul>
+&lt;p>1 つ目に関しては、よくやる手かなと思った。&lt;br>
+2 つ目に関しては、AWS ならではという感じですが、なるほど。&lt;br>
+3 つ目に関しては、あまり使う機会も少ないですが、null resource x provisioner（local-exec）の組み合わせをすればいいという話。resource が単位で provisioner を設定するのがオーソドックスかもしれないが、null resource を使えば、まとめて実行できそうですし、ファイルを吐き出すだけじゃなくても、local-exec で script を実行すれば、まぁ確かに、なんでもできそう。あまりやらないので、今度そういう機会があれば、やってみようと思った。&lt;/p>
+&lt;p>c.f. &lt;a href="https://www.terraform.io/docs/providers/null/resource.html#example-usage">https://www.terraform.io/docs/providers/null/resource.html#example-usage&lt;/a>&lt;/p>
+&lt;h2 id="さいごに">さいごに&lt;/h2>
+&lt;p>今回は、「ワールドカフェ」という自分の中では、新しいスタイルでした。就活のグループディスカッションを思い出しました。笑&lt;/p></description></item><item><title>Kubernetes Meetup Tokyo #27</title><link>https://blog.jkkitakita.dev/post/202001291937/</link><pubDate>Wed, 29 Jan 2020 19:37:25 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202001291937/</guid><description>&lt;h2 id="はじめに">はじめに&lt;/h2>
+&lt;p>「Kubernetes Meetup Tokyo #27」のブログ枠です。&lt;br>
+&lt;a href="https://k8sjp.connpass.com/event/162343/">https://k8sjp.connpass.com/event/162343/&lt;/a>&lt;/p>
+&lt;p>基本的に、meetup のまとめと出てきたキーワードのリファレンスです。&lt;/p>
+&lt;h2 id="ハッシュタグ">ハッシュタグ&lt;/h2>
+&lt;p>&lt;a href="https://twitter.com/search?q=%23k8sjp">#k8sjp&lt;/a>&lt;/p>
+&lt;h2 id="講演">講演&lt;/h2>
+&lt;hr>
+&lt;h3 id="1-amazon-eks-によるスケーラブルな-ctr-予測システムを導入した話-30min-ysdtsyhttpswwwfacebookcomysdtsy">1. Amazon EKS によるスケーラブルな CTR 予測システムを導入した話 (30min) &lt;a href="https://www.facebook.com/ysdtsy">ysdtsy&lt;/a>&lt;/h3>
+&lt;iframe src="//www.slideshare.net/slideshow/embed_code/key/3c0YkPZPV5s00s" width="595" height="376" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>&lt;/iframe>
+&lt;h4 id="やりたいこと">やりたいこと&lt;/h4>
+&lt;ul>
+&lt;li>キャリア配信予約は、日次予約をする&lt;/li>
+&lt;li>その配信に合わせて日次で、CTR を予測をしたい。
+&lt;ul>
+&lt;li>c.f. &lt;a href="https://anagrams.jp/blog/what-is-ctr/">CTR(クリック率)とは&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="課題">課題&lt;/h4>
+&lt;ul>
+&lt;li>CTR 処理は、1 時間くらいで処理したいが、10 億レコードで 10 時間程度かかってしまっていた。（1 instance）&lt;/li>
+&lt;li>予測対象レコードは今後増え続ける&lt;/li>
+&lt;/ul>
+&lt;h4 id="目標">目標&lt;/h4>
+&lt;ul>
+&lt;li>10 億レコード、1 時間。&lt;/li>
+&lt;/ul>
+&lt;h4 id="そこでなぜk8s-を採用したのか">そこで、なぜ、k8s を採用したのか。&lt;/h4>
+&lt;ol>
+&lt;li>機械学習システムの特有の問題があったため。&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>環境の差異が大きい&lt;br>
+→ &lt;strong>container の高い再現性&lt;/strong>&lt;/li>
+&lt;li>継続的な学習・デプロイが必要&lt;br>
+→ &lt;strong>インフラ導入しやすさ（helm etc..）&lt;/strong>&lt;/li>
+&lt;li>学習と推論の要求リソースを柔軟にしたい&lt;br>
+→ &lt;strong>リソースを無駄なく、共有可能&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;h4 id="処理の流れ">処理の流れ&lt;/h4>
+&lt;ul>
+&lt;li>S3 の Notification で SNS-&amp;gt;SQS へ mesage を送る&lt;/li>
+&lt;li>SQS PodScaler で、SQS を監視して、Cluster AutoScaler が Pod を配置する
+&lt;ul>
+&lt;li>Scale down はその逆。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>担当のパーティションとなっている特徴量ファイルを pod たちがそれぞれ処理し始める。&lt;/li>
+&lt;/ul>
+&lt;h4 id="構成に関して">構成に関して&lt;/h4>
+&lt;h5 id="ノードグループ">ノードグループ&lt;/h5>
+&lt;p>ライフサイクル、要求リソースが異なる毎に、ノードグループを分けている。&lt;br>
+e.g. 学習用, 推論用 etc&amp;hellip;&lt;/p>
+&lt;h5 id="構成検討">構成検討&lt;/h5>
+&lt;h6 id="不採用">不採用&lt;/h6>
+&lt;p>Kubernetes Job&lt;/p>
+&lt;ul>
+&lt;li>クラスター外から job をキックする必要がある&lt;/li>
+&lt;li>Parallelism がいまいち？&lt;/li>
+&lt;/ul>
+&lt;h6 id="採用">採用&lt;/h6>
+&lt;p>pub/sub 構成&lt;/p>
+&lt;ul>
+&lt;li>job のキックが受動的になる。&lt;/li>
+&lt;/ul>
+&lt;h5 id="auto-sacler">Auto Sacler&lt;/h5>
+&lt;p>pod&lt;/p>
+&lt;ul>
+&lt;li>Terminated Graceful Period Seconds&lt;/li>
+&lt;li>勝手に終了すると、リスタートしてしまうので、SIGKILL を待つようにしている。&lt;/li>
+&lt;/ul>
+&lt;p>node（cluster）&lt;/p>
+&lt;ul>
+&lt;li>処理時以外は、capacity=0&lt;/li>
+&lt;li>ASG の max node でチューニング&lt;/li>
+&lt;/ul>
+&lt;h5 id="その他">その他&lt;/h5>
+&lt;ul>
+&lt;li>Config は、外出しして helm で一元管理&lt;/li>
+&lt;li>どのように Model を管理するか
+&lt;ul>
+&lt;li>外部ストレージ管理にした&lt;/li>
+&lt;li>ただし、ビジネス要求次第で、コンテナ内に入れても良いかも。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>EMR で前処理して、S3 に特徴量データが吐き出される。&lt;/li>
+&lt;/ul>
+&lt;h4 id="おわりに">おわりに&lt;/h4>
+&lt;p>再学習したモデルがヤバかったら、切り戻すみたいな感じになっている。事前にヤバイかどうかがわからないことが現在の課題。&lt;/p>
+&lt;h3 id="2-azure-kubernetes-service-で実現する超低予算ほぼフルマネージド本格的な-wordpress-環境-noriyukitakeihttpstwittercomnoriyukitakei">2. Azure Kubernetes Service で実現する超低予算＆(ほぼ)フルマネージド＆本格的な WordPress 環境 &lt;a href="https://twitter.com/noriyukitakei">@noriyukitakei&lt;/a>&lt;/h3>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="88b9a719b4db446fab05f914e1275b02" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h4 id="概要">概要&lt;/h4>
+&lt;p>&lt;a href="https://tech-lab.sios.jp/archives/18794">Azure Kubernetes Service で実現する超低予算＆(ほぼ)フルマネージド＆本格的な WordPress 環境&lt;/a>&lt;/p>
+&lt;p>上記ブログに関する講演でした。
+ただの VM から AKS へ移行した話。&lt;/p>
+&lt;h4 id="システム構成">システム構成&lt;/h4>
+&lt;h5 id="移行前">移行前&lt;/h5>
+&lt;ul>
+&lt;li>VM x 2&lt;/li>
+&lt;/ul>
+&lt;h5 id="移行後">移行後&lt;/h5>
+&lt;ul>
+&lt;li>Kubernetes
+&lt;ul>
+&lt;li>フロントエンド用 node x 2&lt;/li>
+&lt;li>バックエンド用 node x 2&lt;/li>
+&lt;li>NFS&lt;/li>
+&lt;li>Azure Database for MySQL&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="内容">内容&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://ja.wordpress.org/plugins/wp-super-cache/">WP Super cache&lt;/a>を使っている。&lt;/li>
+&lt;li>label によって、配置する pod をどこの node に配置するか振り分けている
+&lt;ul>
+&lt;li>フロントエンド用 node: label=user&lt;/li>
+&lt;li>バックエンド用 node: label=admin&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://docs.microsoft.com/ja-jp/azure/load-balancer/load-balancer-overview">Azure Load Balancer&lt;/a>を使っている&lt;/li>
+&lt;li>&lt;a href="https://azure.microsoft.com/ja-jp/services/container-registry/">Azure Container Registory&lt;/a>を使っている。
+&lt;ul>
+&lt;li>基本的には、Wordpress は公式 docker image を使えば良い。&lt;/li>
+&lt;li>しかし、一部 plugin が pod が再起動すると消えていたので、docker の entrypoint を変更したものを使うため、ACR を使っている。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>ライフサイクル
+&lt;ul>
+&lt;li>preStop の時に、apache の graceful-stop をすることで、ユーザーのリクエストを中断されないようにしている。&lt;/li>
+&lt;li>c.f.&lt;/li>
+&lt;li>&lt;a href="https://kubernetes.io/ja/docs/concepts/containers/container-lifecycle-hooks/">コンテナライフサイクルフック&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://qiita.com/superbrothers/items/3ac78daba3560ea406b2">Kubernetes: 詳解 Pods の終了&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-terminating-with-grace">Kubernetes best practices: terminating with grace&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>deployment.yaml には、Wordpress の環境変数がいっぱい。&lt;/li>
+&lt;li>Wordpress で使う画像・plugin は、mount している NFS サーバーに格納している。&lt;/li>
+&lt;li>NFS が一番苦労した。
+&lt;ol>
+&lt;li>&lt;a href="https://docs.microsoft.com/ja-jp/azure/storage/files/storage-files-introduction">Azure Files&lt;/a>を使ってみた。&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>レイテンシが高かった。1 ページ開くのに、8s 程度。&lt;/li>
+&lt;li>print デバッグしまくった。&lt;/li>
+&lt;li>php のプラグインを読み取るところが原因だった。&lt;/li>
+&lt;/ul>
+&lt;ol start="2">
+&lt;li>&lt;a href="https://azure.microsoft.com/ja-jp/services/netapp/">Azure NetApp Files&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>エンタープライズ向け。&lt;/li>
+&lt;li>レイテンシが低下して、よかった！&lt;/li>
+&lt;li>しかし、、、2 日間で 4 万円かかっていた。。なぜ。。&lt;/li>
+&lt;li>課金対象は、ボリュームではなく、容量プールだったことに気づく。&lt;/li>
+&lt;li>最低 4TiB から課金されるらしい。&lt;/li>
+&lt;/ul>
+&lt;ol start="3">
+&lt;li>&lt;a href="https://docs.microsoft.com/ja-jp/azure/aks/azure-nfs-volume">VM 上に NFS サーバーを構築&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>解決！（パフォーマンスもコストも）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>気になるお値段！？
+&lt;ul>
+&lt;li>35,398 円/月&lt;/li>
+&lt;li>色々使っている割には、安いなと思っています笑&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="質疑応答">質疑応答&lt;/h4>
+&lt;blockquote>
+&lt;p>Q. nginx-controller ではなく、&lt;a href="https://azure.microsoft.com/ja-jp/services/application-gateway/">Azure Application Gateway&lt;/a> ではダメか？&lt;br>
+A. 乗り換えを実施していた前後に、Azure Application Gateway の Update があって、改善された？ので、今後そうしようと思っています！&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>Q. NFS が障害発生した場合どうしようと考えていますか？&lt;br>
+A. とりあえず、VM 自体のバックアップをとって、何かあったらバックアップしようと思っています。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>Q. Wordpress は攻撃対象になりがちですが、WAF とかの対応はどうしていますか？&lt;br>
+A. 今後検討予定です。&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="lt-大会">LT 大会&lt;/h2>
+&lt;hr>
+&lt;h3 id="1-kubernetes-の-leader-election---ponde_mhttpstwittercomponde_m">1. Kubernetes の Leader Election - &lt;a href="https://twitter.com/ponde_m">@ponde_m&lt;/a>&lt;/h3>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="6aa22d2c4ff34536bc52461feacb2be5" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;p>c.f. blog: &lt;a href="https://d-kuro.github.io/posts/kubernetes-leader-election/">Kubernetes Leader Election in Depth&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>リーダー選挙は分散システム内の、、、まぁよくわからないと。
+&lt;ul>
+&lt;li>c.f. &lt;a href="https://github.com/operator-framework/operator-sdk/blob/master/doc/user-guide.md#leader-election">Leader election&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>非同期のアーキテクチャ
+&lt;ul>
+&lt;li>Reconciliation Loop
+&lt;ul>
+&lt;li>宣⾔した状態を維持するための仕組み。&lt;/li>
+&lt;li>e.g. Deployment Controller&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>2 つの controller が動いている場合
+&lt;ul>
+&lt;li>もう一方が作ろうとすると、すでに作成しているので、AlreadyExists となる。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>そこで、いずれかに Leader を設ける。
+&lt;ul>
+&lt;li>それによって、競合を避けつつ、可用性を担保する&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>パターンは２つ
+&lt;ul>
+&lt;li>&lt;a href="https://godoc.org/github.com/operator-framework/operator-sdk/pkg/leader">Leader-for-life&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/leaderelection">Leader-with-lease&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Kubernetes では Object で分散ロックをしている
+&lt;ul>
+&lt;li>Configmap, Endpoints&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-cloudrun-が素敵すぎる件---takuyatezukahttpsconnpasscomusertakuyatezuka">2. CloudRun が素敵すぎる件 - &lt;a href="https://connpass.com/user/TakuyaTezuka/">TakuyaTezuka&lt;/a>&lt;/h3>
+&lt;iframe src="//www.slideshare.net/slideshow/embed_code/key/GTJNnkNZQe7ZGL" width="595" height="376" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>&lt;/iframe>
+&lt;ul>
+&lt;li>色々な Cloud が辛い件
+&lt;ul>
+&lt;li>k8s/istio の version up 問題が辛い&lt;/li>
+&lt;li>稀に引くバグ
+&lt;ul>
+&lt;li>CNI とか。Istio とか。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>セキュリティを考えると、Cloud Resource をちゃんと面倒みないとダメ。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>もう疲れてきました。（パトラッシュ！）&lt;/li>
+&lt;li>そこで、&lt;a href="https://cloud.google.com/run/?hl=ja">Cloud Run&lt;/a>
+&lt;ul>
+&lt;li>Knative のサーバーレス環境&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>使い方
+&lt;ol>
+&lt;li>GCR のイメージを選択&lt;/li>
+&lt;li>プラットフォームとリージョン設定&lt;/li>
+&lt;li>認証設定&lt;/li>
+&lt;li>リビジョン設定&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>メリット
+&lt;ul>
+&lt;li>インフラみなくて楽！&lt;/li>
+&lt;li>デプロイめっちゃ楽！&lt;/li>
+&lt;li>リクエストに応じて自動スケーリング！
+&lt;ul>
+&lt;li>最小数が 0 になるので、そこだけ気をつける。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>StackDriver Logging も自動連携してくれる！&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>課題
+&lt;ul>
+&lt;li>MemoryStore とか GCE などの VPC リソースには接続できない。&lt;a href="https://cloud.google.com/sql/docs/mysql/connect-run?hl=ja">CloudSQL はできる&lt;/a>。&lt;/li>
+&lt;li>コールドスタート問題
+&lt;ul>
+&lt;li>c.f. &lt;a href="https://medium.com/google-cloud-jp/cloud-run%E3%82%92%E3%82%B3%E3%83%BC%E3%83%AB%E3%83%89%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%88%E3%81%8B%E3%82%89%E3%83%AC%E3%82%B9%E3%83%9D%E3%83%B3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%A0%E3%81%8C%E5%AE%89%E5%AE%9A%E5%8C%96%E3%81%95%E3%82%8C%E3%82%8B%E3%81%BE%E3%81%A7%E3%81%A9%E3%81%AE%E3%81%90%E3%82%89%E3%81%84%E3%81%8B%E3%81%8B%E3%82%8B%E3%81%8B-abdb9bbc84bf?source=collection_home---4------0-----------------------">Cloud Run をコールドスタートからレスポンスタイムが安定化されるまでどのぐらいかかるか&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://cloud.google.com/appengine/docs/flexible/?hl=ja">GAE flexible&lt;/a>と何が、ちゃうねんん説？&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>最近の技術選定するときの優先順位
+&lt;ul>
+&lt;li>1 位: Cloud Run&lt;/li>
+&lt;li>2 位: GAE&lt;/li>
+&lt;li>3 位: GKE&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-aks-の-disk-io-の-issue-の紹介と-chaos-mesh-の紹介---genbokuhttpstwittercomssssssshhhhhh4">3. AKS の Disk I/O の Issue の紹介と chaos-mesh の紹介 - &lt;a href="https://twitter.com/SSSSSSSHHHHHH4">@genboku&lt;/a>&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/Azure/AKS/issues/1373">取り上げる AKS の Issue&lt;/a>の説明。
+&lt;ul>
+&lt;li>AKS のワーカノードにユーザーが意図しない形で IOPS の上限値を「500」が設定されてしまう。&lt;/li>
+&lt;li>NotReady になったり、、、&lt;/li>
+&lt;li>Istio や Operator のパフォーマンス悪化と不安定&lt;/li>
+&lt;li>ワーカーノード-他の Azure サービス間のネットワークレイテンシの低下 etc&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Issue としてあがっている解決策は
+&lt;ul>
+&lt;li>札束で殴る or&lt;/li>
+&lt;li>Observability は重要という話。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>とはいえ、複合的な原因の場合も多く、かつ、結果、プロバイダー側の問題ってなることがほとんどじゃね？
+&lt;ul>
+&lt;li>そんなの Observability を向上させたところで、解決できるわけないじゃないか。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>そこで、&lt;a href="https://github.com/pingcap/chaos-mesh">Chaos-Mesh&lt;/a>
+&lt;ul>
+&lt;li>TiDB と同じところが開発。&lt;a href="https://github.com/pingcap">PingCAP&lt;/a>&lt;/li>
+&lt;li>カオスエンジニアリングのツール。&lt;/li>
+&lt;li>Pod-kill&lt;/li>
+&lt;li>Pod-failure etc&amp;hellip;&lt;/li>
+&lt;li>&lt;a href="https://pingcap.com/blog/chaos-mesh-your-chaos-engineering-solution-for-system-resiliency-on-kubernetes/">Chaos Mesh の紹介&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="4-今から始めるオンプレミス-k8skind--ipv6---kazushige_takeuchihttpsconnpasscomusertakeuchi-kzspresentation">4. 今から始めるオンプレミス k8s(Kind + IPv6) - &lt;a href="https://connpass.com/user/takeuchi-kzs/presentation/">@Kazushige_TAKEUCHI&lt;/a>&lt;/h3>
+&lt;ul>
+&lt;li>今&lt;a href="https://ja.wikipedia.org/wiki/IPv6">IPv6&lt;/a>がアツい！&lt;/li>
+&lt;li>&lt;a href="https://github.com/kubernetes-sigs/kind">Kind（Kubernetes in Docker）&lt;/a>が IPv6 が部分的にサポートした。
+&lt;ul>
+&lt;li>c.f. &lt;a href="https://speakerdeck.com/masayaaoyama/cloudnativejp-09-kubernetes-in-docker-kind">Kubernetes in Docker で始めるお手軽 Kubernetes 環境&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>新卒の開発環境もこれで動いている。&lt;/li>
+&lt;li>楽になったこと
+&lt;ul>
+&lt;li>マルチノードクラスタを使ってスムーズに開発 etc&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>つらいこと
+&lt;ul>
+&lt;li>ネットワーク知識が多少必要&lt;/li>
+&lt;li>OSS の外部 LB がない etc&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="5-kubernetes-を利用したエッジクラスタロボティクス分散システムの構築---fujitatomoyahttpsconnpasscomuserfujitatomoyapresentation">5. Kubernetes を利用したエッジクラスタロボティクス分散システムの構築 - &lt;a href="https://connpass.com/user/FujitaTomoya/presentation/">@FujitaTomoya&lt;/a>&lt;/h3>
+&lt;iframe src="//www.slideshare.net/slideshow/embed_code/key/181DX4LdWJostk" width="595" height="376" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>&lt;/iframe>
+&lt;ul>
+&lt;li>ロボットの話。&lt;/li>
+&lt;li>&lt;a href="https://www.ros.org">Robotics Operating System&lt;/a>
+&lt;ul>
+&lt;li>ロボットやる人はだいたい知っているもの。OSS が盛ん。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>基本的な動きは、センシングデータをもらって、リフレクションする&lt;/li>
+&lt;li>ロボット間でダイナミックに繋がるようにしたい！？&lt;/li>
+&lt;li>node discovery
+&lt;ul>
+&lt;li>ロボット動くので、wifi 圏外になったりするので、discovery が必要。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="さいごに">さいごに&lt;/h2>
+&lt;p>すいません。後半の LT ちょいちょいわからないところもあって、うまくまとめられなかったです。。。特に Sony の方の ROS のやつとかちゃんと理解したかったが、あまり理解できていないです。。笑&lt;br>
+LT の方々の発表もどれもすごく面白かったです！スライドが公開されたら更新します。&lt;/p></description></item><item><title>DMM.go #1</title><link>https://blog.jkkitakita.dev/post/202001231917/</link><pubDate>Thu, 23 Jan 2020 19:17:25 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202001231917/</guid><description>&lt;p>DMM さんの Go の勉強会に行ってきたので、その時のメモ。&lt;/p>
+&lt;p>&lt;a href="https://dmm.connpass.com/event/157222/">https://dmm.connpass.com/event/157222/&lt;/a>&lt;/p>
+&lt;p>適宜、スライド追記されたら更新する予定。&lt;/p>
+&lt;h2 id="タイムスケジュール">タイムスケジュール&lt;/h2>
+&lt;p>&lt;img src="https://blog.jkkitakita.dev/images/dmm_go_01.png" alt="dmm_go_01">&lt;/p>
+&lt;p>c.f. &lt;a href="https://dmm.connpass.com/event/157222/">DMM.go #1&lt;/a>
+（スクショがダメだったら、削除します。）&lt;/p>
+&lt;h2 id="内容">内容&lt;/h2>
+&lt;h3 id="オープニング開催趣旨-i35_267httpstwittercomi35_267">オープニング・開催趣旨 &lt;a href="https://twitter.com/i35_267">@i35_267&lt;/a>&lt;/h3>
+&lt;ul>
+&lt;li>会場案内&lt;/li>
+&lt;li>DMM グループの Go の勉強会です
+&lt;ul>
+&lt;li>&lt;a href="https://www.dmm.com/">DMM.com&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://games.dmm.com/">DMM GAMES&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://picappinc.jp/">PicApp&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="cloud-native-な時代に考える-monorepo-y_matsuwitterhttpstwittercomy_matsuwitter">Cloud Native な時代に考える monorepo &lt;a href="https://twitter.com/y_matsuwitter">@y_matsuwitter&lt;/a>&lt;/h3>
+&lt;h4 id="cloud-native-時代の開発と現状">Cloud Native 時代の開発と現状&lt;/h4>
+&lt;ul>
+&lt;li>マイクロサービスが前提になってきている&lt;/li>
+&lt;li>組織戦略とも絡んでくるよね。ってなって monorepo をテーマにしようと思った。&lt;/li>
+&lt;/ul>
+&lt;h4 id="改めてcloud-native-とは">改めて、Cloud Native とは&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/cncf/toc/blob/master/DEFINITION.md#%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88">CNCF が出している Cloud Native の定義&lt;/a>の紹介&lt;/li>
+&lt;li>Cloud の利点を適切に理解して、使う必要があるよね。&lt;/li>
+&lt;/ul>
+&lt;h4 id="cloud-native-時代の基盤の選択肢">Cloud Native 時代の基盤の選択肢&lt;/h4>
+&lt;ul>
+&lt;li>Kubernetes&lt;/li>
+&lt;li>Container as a Service&lt;/li>
+&lt;li>FaaS&lt;/li>
+&lt;li>Managed Service&lt;/li>
+&lt;li>とかとか、いろいろなユースケースがあって&lt;/li>
+&lt;li>アーキテクチャは、チームと寄り添いながら、運営していく必要がある。&lt;/li>
+&lt;/ul>
+&lt;h4 id="そこでなんで-monorepo-なのか">そこで、なんで monorepo なのか？&lt;/h4>
+&lt;ul>
+&lt;li>アプリケーションが色々散らばっている。&lt;/li>
+&lt;li>かつ、そのプロトコルも複数ある。&lt;/li>
+&lt;li>特に Managed Service は、プロトコルが決まっていて、それぞれ使わないといけないプロトコルが決まっていたりする。&lt;/li>
+&lt;li>monorepo という選択肢がいいんじゃないか。&lt;/li>
+&lt;/ul>
+&lt;h4 id="monorepo-とは">monorepo とは？&lt;/h4>
+&lt;ul>
+&lt;li>Package 間の interface を一括管理できる&lt;/li>
+&lt;/ul>
+&lt;h4 id="なぜ-monorepo">なぜ monorepo？&lt;/h4>
+&lt;ul>
+&lt;li>パッケージ間の interface を 1 つのリポジトリに集約する&lt;/li>
+&lt;li>仕組みの共有が容易。&lt;/li>
+&lt;/ul>
+&lt;h4 id="go-と-bazel-で-cloud-native-な-monorepo-運用">Go と bazel で Cloud Native な monorepo 運用&lt;/h4>
+&lt;h5 id="課題">課題&lt;/h5>
+&lt;ul>
+&lt;li>全サービスのソースコードが集まる
+&lt;ul>
+&lt;li>全体をビルドしテストするコストは、サービスが拡大するごとに増える&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>ビルド方法の多様化
+&lt;ul>
+&lt;li>様々な基盤に合わせたツールが必要になる&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h5 id="対策">対策&lt;/h5>
+&lt;ul>
+&lt;li>賢いビルドツール
+&lt;ul>
+&lt;li>依存関係の解析&lt;/li>
+&lt;li>依存グラフから再ビルド・再テスト&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="そこでbazelhttpsbazelbuildの登場">そこで、&lt;a href="https://bazel.build/">bazel&lt;/a>の登場&lt;/h4>
+&lt;h5 id="特徴">特徴&lt;/h5>
+&lt;ul>
+&lt;li>依存関係に応じて、影響する部分を特定ビルド&lt;/li>
+&lt;li>ビルド結果のキャッシュにより、不要なビルドを行わない&lt;/li>
+&lt;li>キャッシュはローカルだけではなく、リモート環境も指定可能。&lt;/li>
+&lt;li>様々な言語に対応している。&lt;/li>
+&lt;/ul>
+&lt;h4 id="go-と-bazel-で-monorepo">Go と bazel で monorepo&lt;/h4>
+&lt;h5 id="gazellehttpsgithubcombazelbuildbazel-gazelle">&lt;a href="https://github.com/bazelbuild/bazel-gazelle">Gazelle&lt;/a>&lt;/h5>
+&lt;ul>
+&lt;li>ビルド対象・依存関係を細かく指定する必要がない。
+&lt;ul>
+&lt;li>依存関係を自動生成してくれる。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>bazel を運用するには、ほぼ必須（？）&lt;/li>
+&lt;/ul>
+&lt;h5 id="bazel-の課題">bazel の課題&lt;/h5>
+&lt;ul>
+&lt;li>依存関係を全て記述する必要がある
+&lt;ul>
+&lt;li>各言語&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>bazel 自体の機能が豊富すぎる
+&lt;ul>
+&lt;li>学習コストが高め&lt;/li>
+&lt;li>bazel の面倒をみる。DevOps 的なチームが必要。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h5 id="各ツールとの組み合わせ">各ツールとの組み合わせ&lt;/h5>
+&lt;ul>
+&lt;li>protobuf との相性
+&lt;ul>
+&lt;li>bazel 側機能を利用すると都度 go コードを生成してしまう。
+&lt;ul>
+&lt;li>生成結果もコミットしたい場合は、bazel を使わない必要がある？&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>ほとんどの生成過程を bazel のキャッシュディレクトリで実施する必要がある。&lt;/li>
+&lt;/ul>
+&lt;h3 id="practical-distributed-tracing-hatsunemiku3939httpsgithubcomhatsunemiku3939">PRACTICAL DISTRIBUTED TRACING &lt;a href="https://github.com/HatsuneMiku3939">@HatsuneMiku3939&lt;/a>&lt;/h3>
+&lt;div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
+&lt;iframe src="//docs.google.com/presentation/d/1HVSQaEU1rsycka--QYKaODJHO1eNPNlmk0tz_ON_YYM" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0">&lt;/iframe>
+&lt;/div>
+&lt;p>&lt;a href="https://docs.google.com/presentation/d/1HVSQaEU1rsycka--QYKaODJHO1eNPNlmk0tz_ON_YYM/edit#slide=id.g33148270ac_0_143">PRACTICAL DISTRIBUTED TRACING&lt;/a>&lt;/p>
+&lt;h4 id="マイクロサービスで出てくる分散トレーシングの話">マイクロサービスで出てくる。分散トレーシングの話。&lt;/h4>
+&lt;ul>
+&lt;li>分散アプリの性能を計測する仕組み。&lt;/li>
+&lt;li>従来の APM と何が違う？
+&lt;ul>
+&lt;li>1 リクエスト（従来の APM） -&amp;gt; 複数バックエンド（分散トレーシング）&lt;/li>
+&lt;li>個々のサービスを測定（従来の APM） -&amp;gt; 全体は把握できない。（分散トレーシング）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>リクエスト全体の「処理の流れ」を把握するモノ。
+&lt;ul>
+&lt;li>処理の単位は、Trace と Span に分かれている&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="trace">Trace&lt;/h4>
+&lt;ul>
+&lt;li>システムを貫通するリクエストの集合体&lt;/li>
+&lt;/ul>
+&lt;h4 id="span">Span&lt;/h4>
+&lt;ul>
+&lt;li>作業の単位&lt;/li>
+&lt;li>1 Trace は 1 以上の Span で構成される&lt;/li>
+&lt;li>前後がわかるように親子関係を持っている&lt;/li>
+&lt;/ul>
+&lt;h4 id="基本はあるサービスの-outbound-は他のサービスの-inbound">基本は、「あるサービスの Outbound は、他のサービスの Inbound。」&lt;/h4>
+&lt;h5 id="inbound-するとき">Inbound するとき&lt;/h5>
+&lt;ul>
+&lt;li>とりあえず、新しい Span を生成&lt;/li>
+&lt;li>親子関係を作成する&lt;/li>
+&lt;li>TraceID がなかったら、作る&lt;/li>
+&lt;/ul>
+&lt;h5 id="outbound-するとき">Outbound するとき&lt;/h5>
+&lt;ul>
+&lt;li>Span ID 伝搬する。
+&lt;ul>
+&lt;li>基本は Header。（ダメなら、body？）
+&lt;ul>
+&lt;li>gRPC, kafka etc&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="opencensus">OpenCensus&lt;/h4>
+&lt;h5 id="opencensus-とは">OpenCensus とは。&lt;/h5>
+&lt;ul>
+&lt;li>問題は、ソリューションがいっぱいあって、SDK がそれぞれ異なるが、これを選んだ。&lt;/li>
+&lt;li>一番しっかりできていると思っている。&lt;/li>
+&lt;li>いろいろな機能があるが、主な目的は、分散トレーシング。&lt;/li>
+&lt;li>StackDriver とか X-ray とかにも export することができる。
+&lt;ul>
+&lt;li>c.f. &lt;a href="https://opencensus.io/exporters/">https://opencensus.io/exporters/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h5 id="やるべき-3-つのこと">やるべき 3 つのこと&lt;/h5>
+&lt;ul>
+&lt;li>Exporter の初期化
+&lt;ul>
+&lt;li>Jaeger の例を出してますが、ほぼコピペで行ける。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Inbound トレーシング&lt;/li>
+&lt;li>Outbound トレーシング&lt;/li>
+&lt;/ul>
+&lt;p>基本的にこれだけ。&lt;/p>
+&lt;h5 id="他にも機能がいっぱい">他にも機能がいっぱい！&lt;/h5>
+&lt;ul>
+&lt;li>gRPC tracing&lt;/li>
+&lt;li>Server Clent metric&lt;/li>
+&lt;li>DB Integration etc&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;h5 id="実戦運用">実戦運用&lt;/h5>
+&lt;ul>
+&lt;li>小規模なら Agent なし
+&lt;ul>
+&lt;li>直接 backend に送れば ok! e.g. X-ray, Datadog
+&lt;ul>
+&lt;li>コピペで行ける&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>大規模なら Agent あり
+&lt;ul>
+&lt;li>各 instance に OpenCensus Agent を用意して、各種サービスから Agent に送る
+&lt;ul>
+&lt;li>Kubernetes なら、daemonset で用意する。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>一度 Agent が受けて、その後、backend に送れば ok.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="最後に">最後に&lt;/h4>
+&lt;ul>
+&lt;li>ただ、OpenCensus は OpenTracing と統合されて、OpenTelementary になる。&lt;/li>
+&lt;/ul>
+&lt;h3 id="vcr-in-goモック自動生成で楽しちゃう話-yyh_glhttpstwittercomyyh_gl">VCR in Go：モック自動生成で楽しちゃう話 &lt;a href="https://twitter.com/yyh_gl">@yyh_gl&lt;/a>&lt;/h3>
+&lt;div class="embed">
+&lt;script async class="speakerdeck-embed" data-id="e03f7c5484e84f7eac649202ea4c2327" data-slide="" data-ratio="1.77777777777777" src="//speakerdeck.com/assets/embed.js">&lt;/script>
+&lt;/div>
+&lt;h4 id="はじめに">はじめに&lt;/h4>
+&lt;ul>
+&lt;li>皆さんテスト書いてますか？&lt;/li>
+&lt;li>外部システムをモック化したい&lt;/li>
+&lt;li>モック管理あるある
+&lt;ul>
+&lt;li>ただ、「モックだから動けばいっか？」みたいなことが多いはず。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>モックを手動で作成する時点でもうきつい。&lt;/li>
+&lt;li>なので、モックコードを自動生成する
+&lt;ul>
+&lt;li>OpenAPI（Swagger）&lt;/li>
+&lt;li>Video Cassette Recorder&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="vcr">VCR&lt;/h4>
+&lt;ul>
+&lt;li>大事なのは、確実に、実際のレスポンスをモック化できること&lt;/li>
+&lt;li>紹介するのは、&lt;a href="https://github.com/dnaeon/go-vcr">dnaeon/go-vcr&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/vcr/vcr">vcr/vcr&lt;/a>の Go バージョン&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h5 id="基本的な要素は２つ">基本的な要素は２つ&lt;/h5>
+&lt;h6 id="recorder">Recorder&lt;/h6>
+&lt;ul>
+&lt;li>レスポンスを記録するやつ&lt;/li>
+&lt;li>実態は、構造体&lt;/li>
+&lt;/ul>
+&lt;h6 id="casete">Casete&lt;/h6>
+&lt;ul>
+&lt;li>保存したレスポンス&lt;/li>
+&lt;li>yaml&lt;/li>
+&lt;/ul>
+&lt;h5 id="特徴と運用方法">特徴と運用方法&lt;/h5>
+&lt;ul>
+&lt;li>リクエストの同一性について
+&lt;ul>
+&lt;li>デフォルトでは、下記パラメータが同じであれば、同一リクエストとして判定&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>保存内容を修正したいときは、cassette を消せば ok!
+&lt;ul>
+&lt;li>yaml を直接修正は、おすすめしない。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>運用方法
+&lt;ul>
+&lt;li>STG 環境のレスポンスを保存&lt;/li>
+&lt;li>テスト関数ごとにカセットを用意&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h5 id="メリットデメリット">メリット・デメリット&lt;/h5>
+&lt;ul>
+&lt;li>メリット
+&lt;ul>
+&lt;li>モックと実システム間の仕様のズレがなくなり。&lt;/li>
+&lt;li>HTTP ではなく、ファイルの読み込みでよくなって、早くなる。&lt;/li>
+&lt;li>「ローカルでは動いたのに、、、」が減る！&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>デメリット
+&lt;ul>
+&lt;li>アクセストークンの再取得&lt;/li>
+&lt;li>カセット単位でレスポンス&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="チャット小説アプリ-teller-を支える-gaego-tomoemonhttpstwittercomtomoemon">チャット小説アプリ TELLER を支える GAE/Go &lt;a href="https://twitter.com/tomoemon">@tomoemon&lt;/a>&lt;/h3>
+&lt;h4 id="はじめに-1">はじめに&lt;/h4>
+&lt;ul>
+&lt;li>Go よりかは、プロダクト寄りの話多め。&lt;/li>
+&lt;li>チャット型小説アプリ TELLER の紹介&lt;/li>
+&lt;li>パッケージ依存関係 CI
+&lt;ul>
+&lt;li>クリーンアーキテクチャに変えてみたが、どこからどこへ依存して良いのか、何をどこに書くべきかわからないメンバーもいた。&lt;/li>
+&lt;li>Golang のパッケージ依存関係チェックツールを作って、CI
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/tomoemon/impas">https://github.com/tomoemon/impas&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="di-自動化したい">DI 自動化したい&lt;/h4>
+&lt;ul>
+&lt;li>DI 自動化したい。&lt;a href="https://github.com/google/wire">wire&lt;/a>入れよう！&lt;/li>
+&lt;li>後々ジョインするメンバーの参入障壁があがる？&lt;/li>
+&lt;li>詳細的に言語機能との差異が生まれて負債にならないか？&lt;/li>
+&lt;/ul>
+&lt;h4 id="課題と対策">課題と対策&lt;/h4>
+&lt;ul>
+&lt;li>広告で見たストーリーを見つけられない
+&lt;ul>
+&lt;li>2 年前は検索機能がなかった。&lt;/li>
+&lt;li>色々検索サービスを検討した
+&lt;ul>
+&lt;li>Elasticsearch&lt;/li>
+&lt;li>GAE Search&lt;/li>
+&lt;li>Algolia&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>機能の学習コスト等の観点から、結局、Algolia にした&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Algolia
+&lt;ul>
+&lt;li>ソートの癖がすごい。&lt;/li>
+&lt;li>料金プランが 1 年スパンでどんどん変わる
+&lt;ul>
+&lt;li>使い始めて、1 年後には、無料だったものに、従量課金されてた。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>インデックスしたはずが Algolia 上にない
+&lt;ul>
+&lt;li>問い合わせたら、再インデックスしてくれと言われる&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Redis でランキング集計つらい
+&lt;ul>
+&lt;li>Redis -&amp;gt; BigQuery に変えた。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>ストーリー更新をトリガーにして色々したい
+&lt;ul>
+&lt;li>イベント駆動にした。Cloud Tasks を使って解決できた。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>アダルト画像を上げまくるユーザーをどうにかしたい。
+&lt;ul>
+&lt;li>&lt;a href="http://e-words.jp/w/CGM.html">CGM&lt;/a>あるある。&lt;/li>
+&lt;li>元々は、外注して、人力目視チェック。&lt;/li>
+&lt;li>&lt;a href="https://cloud.google.com/vision/?hl=ja&amp;amp;utm_source=google&amp;amp;utm_medium=cpc&amp;amp;utm_campaign=japac-JP-all-ja-dr-bkws-all-all-trial-e-dr-1008074&amp;amp;utm_content=text-ad-none-none-DEV_c-CRE_285865410190-ADGP_Hybrid+%7C+AW+SEM+%7C+BKWS+~+T1+%7C+EXA+%7C+ML+%7C+M:1+%7C+JP+%7C+ja+%7C+Vision+%7C+General+%7C+en-KWID_43700016101235133-kwd-203288729047&amp;amp;userloc_1009310&amp;amp;utm_term=KW_cloud%20vision%20api&amp;amp;gclid=Cj0KCQiApaXxBRDNARIsAGFdaB_G25M6NkjchBaI210iZ8crRUvX8i70dRlKe_vhCRMbatl0CX6P4NYaAhA4EALw_wcB">Cloud Vision API&lt;/a>を使えばよくね？
+&lt;ul>
+&lt;li>サツマイモの画像でも、Violence な画像と判定されてしまうなどの精度の問題があった。&lt;/li>
+&lt;li>最終的には、一次切り分けとして Cloud Vision API を利用することとした。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>ユーザ権限管理
+&lt;ul>
+&lt;li>Role interface を実装 e.g. func CanXXXX() bool&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.cncf.io/">CNCF&lt;/a>&lt;/li>
+&lt;li>Bazel 関連
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/bazelbuild/rules_go">Go rules for Bazel&lt;/a>
+&lt;ul>
+&lt;li>基本はここを見て、やるのが良さそう？&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://medium.com/mixi-developers/go-project-with-bazel-ad807ba19f5c">Go と Bazel&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://qiita.com/mmmknt/items/cb23a597dfb5a4ca6353">Golang+Bazel で依存ライブラリをいい感じに管理する&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://qiita.com/akrisn/items/ebb77073824c3d6fcde1">ProtocolBuffers を使っている Go のプロジェクトを Bazel でビルドする&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://opentelemetry.io/">OpenTelemetry&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>iOS・SwiftプロジェクトのCI/CDで、bitrise.ymlをリポジトリ内で管理する</title><link>https://blog.jkkitakita.dev/post/202001191310/</link><pubDate>Sun, 19 Jan 2020 13:10:43 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202001191310/</guid><description>&lt;h2 id="はじめに">はじめに&lt;/h2>
+&lt;hr>
+&lt;p>普段は、CircleCI をメインで使っていますが、モバイルアプリの CI/CD で流行っている&lt;a href="https://www.bitrise.io/">Bitrise&lt;/a>を少し触ってみて、CircleCI と同じようにリポジトリ内で、設定ファイルを管理したくなったので、その設定方法に関する記事です。&lt;/p>
+&lt;h2 id="モチベーション">モチベーション&lt;/h2>
+&lt;hr>
+&lt;p>人・文化・サービスによって、bitrise の設定（bitrise.yml）を&lt;code>bitrise GUIで管理する&lt;/code> or &lt;code>リポジトリで管理する&lt;/code>については議論があると思います。ちょっとワークフローの流れを試してみたいとかなら、GUI でもいいと思いますが、 &lt;strong>基本的には、&lt;code>リポジトリで管理する&lt;/code>方が自分は良いと思っています。&lt;/strong> 以下、自分なりにそれぞれのメリット・デメリットに関して整理してみました。&lt;/p>
+&lt;h3 id="メリットデメリット">メリット・デメリット&lt;/h3>
+&lt;hr>
+&lt;h4 id="-bitrise-gui">◯ bitrise GUI&lt;/h4>
+&lt;h5 id="-メリット">■ メリット&lt;/h5>
+&lt;ol>
+&lt;li>ワークフローが &lt;strong>視覚的に&lt;/strong> 確認できる&lt;/li>
+&lt;li>GitHub 等のソースコード管理ツールの権限を持っていなくても、ワークフローの参照・編集ができる&lt;/li>
+&lt;li>bitrise GUI でワークフローの差分管理もできる&lt;/li>
+&lt;/ol>
+&lt;h5 id="-デメリット">■ デメリット&lt;/h5>
+&lt;ol>
+&lt;li>bitrise GUI を見に行かないと（権限がないと）、どういうワークフローになっているのかを確認できない。（そもそもそのリポジトリがなんの CI が動いているのか、リポジトリからは判断できない。）&lt;/li>
+&lt;li>他の CI/CD サービス（CircleCI, TravisCI etc&amp;hellip;）は基本的にリポジトリで管理することを前提としているものもまぁまぁ多く、同じノリではいかないので、そういったサービスを使ってた人は、ちょっと戸惑う。&lt;/li>
+&lt;li>ワークフローを修正するときに、レビュー・反映するまでのフローが仕組み化されていない。（Git Flow, GitHub Flow が使えない？）&lt;/li>
+&lt;/ol>
+&lt;h4 id="-リポジトリで管理">◯ リポジトリで管理&lt;/h4>
+&lt;h5 id="-メリット-1">■ メリット&lt;/h5>
+&lt;ol>
+&lt;li>bitrise GUI を見に行かずに、リポジトリの bitrise.yml を見れば、ワークフローの流れが確認できる。&lt;/li>
+&lt;li>他の CI/CD サービス（CircleCI, TravisCI etc&amp;hellip;）と同じノリで使える。&lt;/li>
+&lt;li>&lt;strong>Git Flow, GitHub Flow が使える。&lt;/strong>&lt;/li>
+&lt;/ol>
+&lt;h5 id="-デメリット-1">■ デメリット&lt;/h5>
+&lt;ol>
+&lt;li>GitHub の権限がないと、対象 app のワークフローの流れが &lt;code>視覚的に&lt;/code> パッとわからない。（build の log を見れば、何がどの順番で実行されているかはまぁわかる。）&lt;/li>
+&lt;li>GUI では、ワークフローの変更はできない。&lt;/li>
+&lt;li>ワークフローで変更した内容を反映させて、CI を試したい場合は、都度 git commit しないといけないので、少し面倒。かつ、git が汚くなるかも。&lt;/li>
+&lt;/ol>
+&lt;h2 id="実際にやってみた">実際にやってみた&lt;/h2>
+&lt;hr>
+&lt;p>実際にやったこととしては&lt;/p>
+&lt;ol>
+&lt;li>事前に、bitrise 管理画面からトリガーとなるワークフローを作成する&lt;/li>
+&lt;li>リポジトリ内の bitrise.yml 等の設定ファイルを作成する&lt;/li>
+&lt;/ol>
+&lt;p>の２つです。以下その詳細を記載します。&lt;/p>
+&lt;h3 id="1-事前にbitrise-管理画面からトリガーとなるワークフローを作成する">1. 事前に、bitrise 管理画面からトリガーとなるワークフローを作成する&lt;/h3>
+&lt;hr>
+&lt;p>上記で、&lt;code>リポジトリで管理する&lt;/code>と記載しましたが、 &lt;strong>bitrise は全てのワークフローをリポジトリで管理するわけではありません。&lt;/strong> 構造としては以下のようになっています。その理由に関しては、 &lt;a href="https://devcenter.bitrise.io/tips-and-tricks/use-bitrise-yml-from-repository/#potential-issues-of-storing-the-bitriseyml-in-the-repository">リポジトリに bitrise.yml を保存する潜在的な問題&lt;/a> を参考にしてください。&lt;/p>
+&lt;h4 id="11-大まかな流れ">1.1. 大まかな流れ&lt;/h4>
+&lt;hr>
+&lt;ol>
+&lt;li>まず、bitrise GUI から作成したワークフローをトリガーとして CI が起動する。&lt;/li>
+&lt;li>そのワークフローがリポジトリ管理されている bitrise.yml をキックする（起動する）。&lt;/li>
+&lt;/ol>
+&lt;h4 id="12-bitrise-管理画面からワークフローを作成する">1.2. bitrise 管理画面からワークフローを作成する&lt;/h4>
+&lt;hr>
+&lt;p>やることは、以下の &lt;code>ci&lt;/code> と &lt;code>run_from_repo&lt;/code> の 2 つだけです。&lt;/p>
+&lt;h5 id="ci">ci&lt;/h5>
+&lt;p>&lt;strong>名前は ci ではなくてもなんでも良いが、リポジトリ内の bitrise.yml で定義するワークフローと同じ名前に合わせる必要がある。&lt;/strong>&lt;br>
+多分、↑ ここ、最初みんなハマるかなと思うので、要注意です！！！やることとしては、&lt;code>run_from_repo&lt;/code>を起動するだけ。&lt;br>
+c.f. &lt;a href="https://qiita.com/mqtsuo02/items/a547eab6fa6486613198#%E3%81%AF%E3%81%BE%E3%81%A3%E3%81%9F%E7%82%B9">bitrise.yml をリポジトリ内で管理するための手引き#はまった点&lt;/a>&lt;/p>
+&lt;h5 id="run_from_repo">run_from_repo&lt;/h5>
+&lt;ul>
+&lt;li>対象のリポジトリを &lt;code>git clone&lt;/code> する。&lt;/li>
+&lt;li>git clone されたリポジトリ内で管理された &lt;code>bitrise.yml&lt;/code> をみて、対象のワークフローを起動する。&lt;br>
+c.f. &lt;code>bitrise run &amp;lt;workflow name&amp;gt;&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>実際の bitrise GUI 上から作成するワークフロー（今回の場合は、&lt;code>ci&lt;/code>というワークフロー）は、以下の通りです。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yml" data-lang="yml">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">format_version&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;8&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">default_step_lib_source&lt;/span>: &lt;span style="color:#ae81ff">https://github.com/bitrise-io/bitrise-steplib.git&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">project_type&lt;/span>: &lt;span style="color:#ae81ff">ios&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">trigger_map&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">push_branch&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;*&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">workflow&lt;/span>: &lt;span style="color:#ae81ff">ci&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">pull_request_target_branch&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;*&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">workflow&lt;/span>: &lt;span style="color:#ae81ff">ci&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">workflows&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ci&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">after_run&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">run_from_repo&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run_from_repo&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">steps&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># git cloneするためのkeyのsetup&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">activate-ssh-key&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run_if&lt;/span>: &lt;span style="color:#e6db74">&amp;#39;{{getenv &amp;#34;SSH_RSA_PRIVATE_KEY&amp;#34; | ne &amp;#34;&amp;#34;}}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 対象のリポジトリを `git clone` する。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">git-clone&lt;/span>: {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># git cloneされたリポジトリ内で管理された `bitrise.yml` をみて、対象のワークフローを起動する。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">script&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">title&lt;/span>: &lt;span style="color:#ae81ff">continue from repo&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">inputs&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">content&lt;/span>: |-&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> #!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> set -ex
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> # この場合 `bitrise run ci` が実行される。
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> # リポジトリ内のbitrise.ymlの ci というワークフローを実行する。
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> bitrise run &amp;#34;${BITRISE_TRIGGERED_WORKFLOW_ID}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ちなみに余談ですが、公式ドキュメントに合わせて、&lt;code>after_run&lt;/code> を使って &lt;code>ci&lt;/code> -&amp;gt; &lt;code>run_from_repo&lt;/code> と実行するように記載しましたが、試していないのですが、直接指定しても動作としては、問題ないと思います。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yml" data-lang="yml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># e.g. after_runを使わずに、直接指定する場合&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">workflows&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ci&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">steps&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">activate-ssh-key&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run_if&lt;/span>: &lt;span style="color:#e6db74">&amp;#39;{{getenv &amp;#34;SSH_RSA_PRIVATE_KEY&amp;#34; | ne &amp;#34;&amp;#34;}}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">git-clone&lt;/span>: {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">script&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">title&lt;/span>: &lt;span style="color:#ae81ff">continue from repo&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">inputs&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">content&lt;/span>: |-&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> #!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> set -ex
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> bitrise run &amp;#34;${BITRISE_TRIGGERED_WORKFLOW_ID}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ただ&lt;/p>
+&lt;ol>
+&lt;li>activate-ssh-key&lt;/li>
+&lt;li>git-clone&lt;/li>
+&lt;li>script&lt;/li>
+&lt;/ol>
+&lt;p>この部分を &lt;code>run_from_repo&lt;/code> というワークフローで &lt;strong>共通化する&lt;/strong> ことで、ワークフローの管理を少なくすることができるので基本的には &lt;code>after_run&lt;/code>を使った公式ドキュメントのやり方をすることが推奨されているのだと思います。&lt;/p>
+&lt;h3 id="2-リポジトリ内の-bitriseyml-等の設定ファイルを作成する">2. リポジトリ内の bitrise.yml 等の設定ファイルを作成する&lt;/h3>
+&lt;hr>
+&lt;p>さて、bitrise GUI 上での設定は終わりました。&lt;br>
+あとは、いつも通りローカルで、エディタを開いて、対象のリポジトリに設定ファイルを追加するだけです。結論今回試したのは、Swift のプロジェクトだったので、用意したのは、以下の 3 つのファイル。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ tree -L &lt;span style="color:#ae81ff">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── Dangerfile
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>・・・
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── bitrise.yml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── fastlane
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── Fastfile
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>・・・
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="bitriseyml">bitrise.yml&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yml" data-lang="yml">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">format_version&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;8&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">default_step_lib_source&lt;/span>: &lt;span style="color:#ae81ff">https://github.com/bitrise-io/bitrise-steplib.git&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">project_type&lt;/span>: &lt;span style="color:#ae81ff">ios&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">workflows&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ci&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">steps&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># fastlaneでSwiftLintを動かしたい場合、事前にInstallしないとダメっぽい？&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">script&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">title&lt;/span>: &lt;span style="color:#ae81ff">Install SwiftLint&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">inputs&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">content&lt;/span>: |-&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> #!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> set -ex
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> curl -s -L -O https://github.com/realm/SwiftLint/releases/download/0.38.2/SwiftLint.pkg &amp;gt; /dev/null
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> sudo installer -pkg SwiftLint.pkg -target / &amp;gt; /dev/null
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> rm SwiftLint.pkg&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># fastlaneで、build laneを実行する&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">fastlane&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">inputs&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">lane&lt;/span>: &lt;span style="color:#ae81ff">build&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># bitriseに swiftlint の結果を artifact としてuploadする&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">deploy-to-bitrise-io&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">inputs&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">deploy_path&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;swiftlint-output.html&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 結果をSlack通知&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">slack&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">inputs&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">title&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">emoji&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">emoji_on_error&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">webhook_url&lt;/span>: &lt;span style="color:#ae81ff">https://hooks.slack.com/services/xxxxxx/xxxxxx/xxxxxx&lt;/span> &lt;span style="color:#75715e"># Slack の incoming webhook url&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">channel&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;#bitrise-ci&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">message&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">message_on_error&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">icon_url&lt;/span>: &lt;span style="color:#ae81ff">https://bitrise-public-content-production.s3.amazonaws.com/slack/bitrise-slack-icon-128.png&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">icon_url_on_error&lt;/span>: &lt;span style="color:#ae81ff">https://bitrise-public-content-production.s3.amazonaws.com/slack/bitrise-slack-error-icon-128.png&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">fields&lt;/span>: |&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> App|${BITRISE_APP_TITLE}
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> Branch|${BITRISE_GIT_BRANCH}
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> Message|${BITRISE_GIT_MESSAGE}
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="fastlane">Fastlane&lt;/h3>
+&lt;ol>
+&lt;li>Swiftlint&lt;/li>
+&lt;li>danger&lt;/li>
+&lt;/ol>
+&lt;p>を実行するだけ。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ruby" data-lang="ruby">&lt;span style="display:flex;">&lt;span>fastlane_version &lt;span style="color:#e6db74">&amp;#34;2.140.0&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>default_platform &lt;span style="color:#e6db74">:ios&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>lane &lt;span style="color:#e6db74">:build&lt;/span> &lt;span style="color:#66d9ef">do&lt;/span> &lt;span style="color:#f92672">|&lt;/span>options&lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> danger(&lt;span style="color:#e6db74">use_bundle_exec&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>)　&lt;span style="color:#75715e"># use_bundle_execをtrueにする必要あったか不明。。すいません。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> swiftlint(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">mode&lt;/span>: &lt;span style="color:#e6db74">:lint&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">reporter&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;html&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">output_file&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;swiftlint-output.html&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">config_file&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;.swiftlint.yml&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> )
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">end&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="dangerfle">Dangerfle&lt;/h3>
+&lt;p>とりあえず、wip だったら warn するだけ。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ruby" data-lang="ruby">&lt;span style="display:flex;">&lt;span>has_label_wip &lt;span style="color:#f92672">=&lt;/span> github&lt;span style="color:#f92672">.&lt;/span>pr_title&lt;span style="color:#f92672">.&lt;/span>match(&lt;span style="color:#e6db74">/WIP/i&lt;/span>) &lt;span style="color:#f92672">||&lt;/span> github&lt;span style="color:#f92672">.&lt;/span>pr_labels&lt;span style="color:#f92672">.&lt;/span>include?(&lt;span style="color:#e6db74">&amp;#39;wip&amp;#39;&lt;/span>) &lt;span style="color:#f92672">||&lt;/span> github&lt;span style="color:#f92672">.&lt;/span>pr_labels&lt;span style="color:#f92672">.&lt;/span>include?(&lt;span style="color:#e6db74">&amp;#39;Wip&amp;#39;&lt;/span>) &lt;span style="color:#f92672">||&lt;/span> github&lt;span style="color:#f92672">.&lt;/span>pr_labels&lt;span style="color:#f92672">.&lt;/span>include?(&lt;span style="color:#e6db74">&amp;#39;WIP&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>warn(&lt;span style="color:#e6db74">&amp;#34;PR is Work in Progress&amp;#34;&lt;/span>) &lt;span style="color:#66d9ef">if&lt;/span> has_label_wip
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="実行する">実行する&lt;/h3>
+&lt;p>あとは、これらのファイルを対象リポジトリに追加、commit して、push するだけ。&lt;/p>
+&lt;p>bitrise の log を管理画面から確認してみると&lt;/p>
+&lt;p>&lt;img src="https://blog.jkkitakita.dev/images/bitrise-from-repo.png" alt="bitrise-from-repo">
+&lt;img src="https://blog.jkkitakita.dev/images/bitrise-artifact.png" alt="bitrise-artifact">&lt;/p>
+&lt;p>こんな感じで成功です！
+今後これをベースに bitrise.yml を改善していこうと思っています。&lt;/p>
+&lt;h2 id="さいごに">さいごに&lt;/h2>
+&lt;p>今まで bitrise 触ったことなかったですが、いい感じにベースは設定できたのかなという感じでした。
+fastlane も初めて触ったのですが、色々便利だなーと思いました。
+&lt;a href="https://techblog.zozo.com/entry/ios-bitrise-workflow">iOS で構築している CI の Workflow 紹介&lt;/a>の記事の中で紹介しているように、bitrise のワークフローではなく、Fastlane でメイン部分のワークフローを管理すれば、実質今回やりたかった「ワークフローを git で管理すること」は満たせる感じはあるので、まずそちらをやってみて、それでもワークフローの管理に課題感を感じたら、本記事のように bitrise.yml も git で管理することも検討してみるといいのかなと思いました。&lt;/p>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://devcenter.bitrise.io/tips-and-tricks/use-bitrise-yml-from-repository/">Using the bitrise.yml from repository&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://qiita.com/mqtsuo02/items/a547eab6fa6486613198">bitrise.yml をリポジトリ内で管理するための手引き&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://inside.pixiv.blog/kwzr/6190">モバイルアプリの CI を Bitrise にして 1 年が経ちました&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://techblog.zozo.com/entry/ios-bitrise-workflow">iOS で構築している CI の Workflow 紹介&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Goもくもく会（ごもくかい）#23</title><link>https://blog.jkkitakita.dev/post/202001150046/</link><pubDate>Tue, 14 Jan 2020 19:00:00 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202001150046/</guid><description>&lt;p>エウレカさんの新しいオフィスでの Go のもくもく会に行ってきた。&lt;/p>
+&lt;p>&lt;a href="https://eure.connpass.com/event/159240/">https://eure.connpass.com/event/159240/&lt;/a>&lt;/p>
+&lt;p>ちょっとこのブログの更新のテスト的な投稿なので
+あまり内容書く気ないです。笑&lt;/p>
+&lt;h2 id="もくもくログ">もくもくログ&lt;/h2>
+&lt;ul>
+&lt;li>自己紹介&lt;/li>
+&lt;li>統計データの API を Go で叩いて色々集計してみようと思ってた。&lt;/li>
+&lt;li>とりあえず、&lt;a href="https://www.e-stat.go.jp/">e-Stat&lt;/a>の API を叩いてみた。&lt;/li>
+&lt;li>が、しかし、エンコードで詰まったのと、json のデータがなんかいまいちきれいじゃなくてやめた。&lt;/li>
+&lt;li>&lt;a href="https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation">World Bank Open data API&lt;/a> で普通に良さそうだったので、そっちで叩いてみた。&lt;/li>
+&lt;li>うまいこと取れたが、ちょっと古めだが、もうもくもく会の後半で &lt;a href="https://github.com/mindreframer/golang-stuff/tree/master/github.com/johnwesonga/wbdata">World Bank Open data API for Go&lt;/a> を作っている人がいたのに気づく。&lt;/li>
+&lt;li>これ使ったら簡単に取れた。&lt;/li>
+&lt;/ul>
+&lt;h2 id="学び">学び&lt;/h2>
+&lt;ul>
+&lt;li>やっぱり先人達の知恵を借りた方がコスパいい。&lt;/li>
+&lt;li>何かのデータを取得したいと思ったら、まずそれを利用するためのツールがないか探すべき。&lt;/li>
+&lt;li>てか、このツール古すぎだから、新しく自分で作ろう！という新しいことをやると、新しい発見・宿題が得られるのはいいこと！&lt;/li>
+&lt;/ul></description></item><item><title>Javaがわからないエンジニアが、JJUG CCC行ってみた。</title><link>https://blog.jkkitakita.dev/post/20170520/</link><pubDate>Sat, 20 May 2017 18:16:36 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/20170520/</guid><description>&lt;h2 id="どうして行こうと思ったか">どうして行こうと思ったか&lt;/h2>
+&lt;p>GW に開催された soudai さんの&lt;a href="https://soudai1025.connpass.com/event/55846/">たけともそん&lt;/a>に参加させていただいて、その soudai さんが登壇されるということで、行ってきました。&lt;/p>
+&lt;h2 id="jjug-ccc-参加してみて">JJUG CCC 参加してみて&lt;/h2>
+&lt;p>基本的なタイムテーブルは&lt;a href="http://yujisoftware.github.io/jjug-ccc/2017-Spring/">こちら&lt;/a>参照。&lt;/p>
+&lt;p>会場はこんな感じ。&lt;/p>
+&lt;p>■ 休憩中の LT&lt;/p>
+&lt;p>&lt;img src="https://blog.jkkitakita.dev/images/IMG_0010.JPG" alt="会場1">&lt;/p>
+&lt;p>■ 講演中&lt;/p>
+&lt;p>&lt;img src="https://blog.jkkitakita.dev/images/IMG_0012.JPG" alt="会場2">&lt;/p>
+&lt;p>（ぼやけとるー笑）&lt;/p>
+&lt;p>以下、自分が参加したセッションと思い返して大事だと思ったポイントとコメント。&lt;/p>
+&lt;h3 id="1-java-エンジニアに知って欲しい-rdb-アンチパターン">1. Java エンジニアに知って欲しい RDB アンチパターン&lt;/h3>
+&lt;hr>
+&lt;h4 id="ポイント">ポイント&lt;/h4>
+&lt;ul>
+&lt;li>データにロジックを埋め込むな&lt;/li>
+&lt;li>アプリには、データベースの中身がわからない&lt;/li>
+&lt;li>DB を停止すると、サービスが止まる&lt;/li>
+&lt;li>DB を変更すると、複数サービスの改修が必要&lt;/li>
+&lt;li>データは常に変化する&lt;/li>
+&lt;li>アプリと違って、DB の知識、数年では廃れない。&lt;/li>
+&lt;li>モニタリング大事。&lt;/li>
+&lt;/ul>
+&lt;h4 id="コメント">コメント&lt;/h4>
+&lt;ul>
+&lt;li>当たり前なんだけど、どれも大事。&lt;/li>
+&lt;li>特に、モニタリング。&lt;/li>
+&lt;li>何が良くて、何が悪いのかが推測になってしまう。&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-java-とアイドルのコラボ某アイドル-bot-開発の裏側">2. Java とアイドルのコラボ！？某アイドル Bot 開発の裏側&lt;/h3>
+&lt;hr>
+&lt;p>乃木坂 46 の若月佑美さんと会話できる&lt;a href="http://wakasamabot.sakamichi46.com/">若様 bot&lt;/a>の話。&lt;/p>
+&lt;h4 id="フレーズ">フレーズ&lt;/h4>
+&lt;ul>
+&lt;li>みなさん、会場合ってますか？（笑）&lt;/li>
+&lt;li>とりあえず、このセッションのゴールは、みんなが若月さん推しになること（笑）&lt;/li>
+&lt;li>LINEbot って難しそうなイメージがあるけど、そうでもない。&lt;/li>
+&lt;li>思っているより、コードは買いていない&lt;/li>
+&lt;li>基本的に、LINE で受け付けた言葉を、&lt;a href="https://azure.microsoft.com/ja-jp/services/cognitive-services/">Microsoft Cognitive Services&lt;/a>に投げつけて、解析結果を返しているだけ。&lt;/li>
+&lt;/ul>
+&lt;h4 id="コメント-1">コメント&lt;/h4>
+&lt;ul>
+&lt;li>実際、若様 bot 使って見たけど、すごい！面白い！笑&lt;/li>
+&lt;li>自分でもなんか作ってみようかなと思える講演でこういうのやってみたい。笑&lt;/li>
+&lt;li>Microsoft Cognitive Services の画像解析とかは面白そう。&lt;/li>
+&lt;li>何 bot 作ろうかな。俺だと、&lt;a href="https://ameblo.jp/yoshi-rihorihoriho/">吉岡里帆&lt;/a>bot でも作ろうかな笑&lt;/li>
+&lt;/ul>
+&lt;h3 id="それ以外に聞いた講演">それ以外に聞いた講演&lt;/h3>
+&lt;hr>
+&lt;h4 id="3-java-エンジニアから見た-kotlin-の魅力">3. Java エンジニアから見た Kotlin の魅力&lt;/h4>
+&lt;ul>
+&lt;li>&lt;a href="https://events.google.com/io/">Google I/O 2017&lt;/a>で話題の Kotlin ってどんな感じなのかなと気になったので。&lt;/li>
+&lt;li>とりあえず、Java との互換性が高く、シンプルに書けるんだなという感じ。（違ったらすいません。笑）&lt;/li>
+&lt;/ul>
+&lt;h4 id="4-グラフデータベース入門">4. グラフデータベース入門&lt;/h4>
+&lt;ul>
+&lt;li>まぁ本当に入門って感じ。&lt;/li>
+&lt;li>グラフデータベース面白いけど、まだまだ面白い領域を超えない感じ。&lt;/li>
+&lt;li>あとは、百々さんが頑張ってくれるだろう。。。笑&lt;/li>
+&lt;/ul>
+&lt;h2 id="その他">その他&lt;/h2>
+&lt;p>講演聞く以外は、基本的には、以前の&lt;a href="https://blog.jkkitakita.dev/archives/2017/04/20/2017042019/">Atlassian ユーザー会&lt;/a>でお会いした Atlassian の犬山さんに、JIRA の使い方に関して相談させてもらっていた。まだまだどの企業も探り探りらしい。&lt;/p>
+&lt;p>誰か、&lt;a href="https://ja.atlassian.com/software/jira/portfolio">Portfolio for JIRA&lt;/a>の良い使い方知らないかなー。まぁ JIRA を使っているので、それでできれば一番ベストなのでしょうが。まぁ Agile の&lt;code>モニタリング&lt;/code>するよい方法があればいいのですがといった感じ。&lt;/p>
+&lt;h2 id="さいごに">さいごに&lt;/h2>
+&lt;p>自分はまだまだ外の世界がわからないペーペーなので、引き続きこういう外のイベントは参加していこー。&lt;/p>
+&lt;h2 id="みなさん有難うございました">みなさん、有難うございました&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="http://soudai.hatenablog.com/">soudai さん&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.slideshare.net/MasayaDake/ss-76145383">嶽　雅也さん&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://kikutaro777.hatenablog.com/">キクタローさん&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://twitter.com/soranakk">空中さん&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://japan.blogs.atlassian.com/author/ninuyama/">Atlassian 犬山さん&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Tokyo Atlassian ユーザーグループに行ってみた。</title><link>https://blog.jkkitakita.dev/post/2017042019/</link><pubDate>Thu, 20 Apr 2017 19:14:11 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/2017042019/</guid><description>&lt;p>あの&lt;a href="https://www.pairs.lv/">pairs&lt;/a>を開発・運営している eureka, Inc.さんのオフィスにて Atlassian のユーザー会があったので、行ってきました＾＾&lt;/p>
+&lt;p>第 21 回 Tokyo Atlassian ユーザーグループ(AUG) @eureka #augj&lt;br>
+&lt;a href="https://aug.atlassian.com/events/details/atlassian-tokyo-presents-di-21hui-tokyo-atlassian-yuzagurupu-eureka-augj#/">https://aug.atlassian.com/events/details/atlassian-tokyo-presents-di-21hui-tokyo-atlassian-yuzagurupu-eureka-augj#/&lt;/a>&lt;/p>
+&lt;h2 id="1-atlassian-user-groupaugとは">1. Atlassian User Group（AUG）とは&lt;/h2>
+&lt;hr>
+&lt;p>ユーザーが中心になって活動している組織。&lt;/p>
+&lt;ol>
+&lt;li>セミナー会&lt;/li>
+&lt;li>カジュアルトーク&lt;/li>
+&lt;/ol>
+&lt;p>などの形式で定期的に開催していまーす。
+とのこと。&lt;/p>
+&lt;h2 id="2-aug-の概要">2. AUG の概要&lt;/h2>
+&lt;hr>
+&lt;p>&lt;a href="https://aug.atlassian.com/">AUG のコミュニケーションサイト&lt;/a>&lt;/p>
+&lt;h2 id="3-コンテンツ">3. コンテンツ&lt;/h2>
+&lt;hr>
+&lt;h2 id="新atlassian-の歩き方-by-atlassian-犬山さん">新・Atlassian の歩き方 by Atlassian 犬山さん&lt;/h2>
+&lt;p>cf. ) &lt;a href="http://qiita.com/kunny53/items/06759877d321c799df95">Atlassian の歩き方&lt;/a>&lt;/p>
+&lt;p>Atlassian 製品の&lt;/p>
+&lt;ul>
+&lt;li>ドキュメント&lt;/li>
+&lt;li>最新のアップデート&lt;/li>
+&lt;/ul>
+&lt;p>に関して、ざっと教えていただいた。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:center">#&lt;/th>
+&lt;th style="text-align:left">タイトル&lt;/th>
+&lt;th style="text-align:left">ざっくり言うと？&lt;/th>
+&lt;th style="text-align:left">備考&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:center">1&lt;/td>
+&lt;td style="text-align:left">&lt;a href="https://confluence.atlassian.com/jpns">日本語サポートサイト&lt;/a>&lt;/td>
+&lt;td style="text-align:left">公式ドキュメントの日本版&lt;/td>
+&lt;td style="text-align:left">&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">2&lt;/td>
+&lt;td style="text-align:left">&lt;a href="https://community.atlassian.com/">オンラインコミュニティ&lt;/a>&lt;/td>
+&lt;td style="text-align:left">Atlassian 製品の開発・改善・情報交換を目的とするコミュニティの総称&lt;/td>
+&lt;td style="text-align:left">※ 今後日本語対応も予定中&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">3&lt;/td>
+&lt;td style="text-align:left">&lt;a href="http://japan.blogs.atlassian.com/">Atlassian Japan Blog&lt;/a>&lt;/td>
+&lt;td style="text-align:left">日々の Atlassian の更新情報を知りたい時見る&lt;/td>
+&lt;td style="text-align:left">&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">4&lt;/td>
+&lt;td style="text-align:left">&lt;a href="https://ja.atlassian.com/team-playbook">Team playbook&lt;/a>&lt;/td>
+&lt;td style="text-align:left">チームの健康診断ツール&lt;/td>
+&lt;td style="text-align:left">これ使ってみたい！&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">5&lt;/td>
+&lt;td style="text-align:left">&lt;a href="https://www.atlassian.com/company/events/summit">Atlassian Summit&lt;/a>&lt;/td>
+&lt;td style="text-align:left">Atlassian も Summit やってるよー！&lt;/td>
+&lt;td style="text-align:left">&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>cf.) その他情報&lt;/p>
+&lt;p>&lt;a href="https://twitter.com/NahoInuyama/status/855017397278744576/photo/1">https://twitter.com/NahoInuyama/status/855017397278744576/photo/1&lt;/a>&lt;/p>
+&lt;p>あとは、わからないことがあれば、いつでも電話してー！と言っていたので、鬼電しようかなと思っています。笑&lt;/p>
+&lt;p>cf.) &lt;a href="https://confluence.atlassian.com/jpns">日本語サポートサイト&lt;/a>&lt;/p>
+&lt;h2 id="atassian-製品の事例紹介">Atassian 製品の事例紹介&lt;/h2>
+&lt;hr>
+&lt;h3 id="リソースを効率的に使うためのバックログ使用例">リソースを効率的に使うためのバックログ使用例&lt;/h3>
+&lt;h4 id="ポイント">ポイント&lt;/h4>
+&lt;ol>
+&lt;li>サービス毎にボードを分けている、&lt;/li>
+&lt;li>ステータス毎のカラム（縦軸）（例）ToDo・進行中・完了 etc&amp;hellip;&lt;/li>
+&lt;li>ラベル毎のスイムレーン（横軸）（例）要件定義、QA、営業 etc&amp;hellip;&lt;/li>
+&lt;li>ラベル毎、かつ、担当者毎に時間の見える化（例）QA にどれくらい使ったか&lt;/li>
+&lt;/ol>
+&lt;h4 id="所感">所感&lt;/h4>
+&lt;ol>
+&lt;li>運用フェーズになると、ステータスはやっぱり結構増やさないと回らなくなるんだなー。&lt;/li>
+&lt;li>ラベルって活用しているんだなー。&lt;/li>
+&lt;li>見える化は、必要最低限でいいからやりたい！&lt;/li>
+&lt;/ol>
+&lt;h3 id="sourcetree-を実際に使ってみた話運用を回す話">SourceTree を実際に使ってみた話（運用を回す話）&lt;/h3>
+&lt;h4 id="ポイント-1">ポイント&lt;/h4>
+&lt;ol>
+&lt;li>履歴を取らないリスクって結構ある。&lt;/li>
+&lt;li>履歴を取ることによって、リスクを取りに行きやすい。（チャレンジしやすい）&lt;/li>
+&lt;li>非エンジニアの人にも Git を使ってもらうようにすれば、組織は変わっていく！&lt;/li>
+&lt;li>Source Tree とかの GUI の利点は、非エンジニアの人でもとっつきやすい！英語アレルギーの人にもわかりやすい！&lt;/li>
+&lt;li>まずは、小さく。Team に導入できる問題を整えてあげることが大事。&lt;/li>
+&lt;/ol>
+&lt;h4 id="所感-1">所感&lt;/h4>
+&lt;ol>
+&lt;li>どっちかっていうと、非エンジニア向きの話だったので、内容自体は、大したものではないかなと思った。&lt;/li>
+&lt;li>ただ、組織改善という観点では、確かにツールの導入は、まぁまぁあり！&lt;/li>
+&lt;li>てか、SourceTree って Atlassian のツールだったのか笑&lt;/li>
+&lt;/ol>
+&lt;h2 id="4-感想">4. 感想&lt;/h2>
+&lt;ol>
+&lt;li>せっかく eureka さんまで行ったのに、あまり女の人との出会いがなかった、、、笑&lt;/li>
+&lt;li>懇親会で話していると、世間は、まだまだオンプレの人が多いんだなーと感じた。&lt;/li>
+&lt;li>「JIRA みないで、Slack から JIRA 入力したい！」とか話していると案外、「そうだよねー笑」みたいな人もいて、やっぱりみんな思ってたのかと共感できた。
+※ Atlassian のイベントでこんなこと言っていいのかわからなかったが。。。笑&lt;/li>
+&lt;li>とりあえず、プラグインか Slack 連携ツールを作って、自動化しなければ！と感じたので、今日から作ろうと思う！！！&lt;/li>
+&lt;/ol>
+&lt;p>そんな感じ。今後もこういうイベントでて、世の中にアンテナを広げていきましょ(｀・ω・´)ｷﾘｯ&lt;/p>
+&lt;h2 id="5-参考登壇者">5. 参考登壇者&lt;/h2>
+&lt;ul>
+&lt;li>eureka Narichika Kajihara さん
+&lt;ul>
+&lt;li>&lt;a href="https://www.slideshare.net/kajinari/presentations">https://www.slideshare.net/kajinari/presentations&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Atlassian 犬山 奈穂さん
+&lt;ul>
+&lt;li>&lt;a href="http://japan.blogs.atlassian.com/author/ninuyama/">http://japan.blogs.atlassian.com/author/ninuyama/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Housmart Hiroki Matsue さん
+&lt;ul>
+&lt;li>&lt;a href="https://speakerdeck.com/matsue">https://speakerdeck.com/matsue&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>はてな  曽根 壮大さん
+&lt;ul>
+&lt;li>&lt;a href="http://soudai.hatenablog.com/">http://soudai.hatenablog.com/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>「まだ若手社員と言われるうちに知っておきたい「会社の数字」」を読んでみて。</title><link>https://blog.jkkitakita.dev/post/2017040512/</link><pubDate>Wed, 05 Apr 2017 00:13:51 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/2017040512/</guid><description>&lt;p>現在
+IT ベンチャーでエンジニアとして働かせてもらって
+社会人 3 年目になった。&lt;/p>
+&lt;p>色々とマネジメントもさせてもらっているのですが
+その中で&lt;/p>
+&lt;ul>
+&lt;li>「○○○ の金額が、○○○」&lt;/li>
+&lt;li>「VC から、○○○ 調達したい」&lt;/li>
+&lt;li>「銀行から ○○○ 借り入れしないと」&lt;/li>
+&lt;/ul>
+&lt;p>的な話をちょこちょこ耳に入ってきて
+（今までも話していたのだけれど、たぶん気にしてなかった。）
+いやあ確かに大事！
+と思って、恥ずかしながら、そこらへんの勉強をと思い
+とりあえずググって出てきた
+&lt;a href="https://www.amazon.co.jp/%E3%81%BE%E3%81%A0%E8%8B%A5%E6%89%8B%E7%A4%BE%E5%93%A1%E3%81%A8%E3%81%84%E3%82%8F%E3%82%8C%E3%82%8B%E3%81%86%E3%81%A1%E3%81%AB%E7%9F%A5%E3%81%A3%E3%81%A6%E3%81%8A%E3%81%8D%E3%81%9F%E3%81%84%E3%80%8C%E4%BC%9A%E7%A4%BE%E3%81%AE%E6%95%B0%E5%AD%97%E3%80%8D-%E4%BC%8A%E9%81%94-%E6%95%A6/dp/4062184125">まだ若手社員と言われるうちに知っておきたい「会社の数字」&lt;/a>
+という本を読んでみたので、その感想とかとか。&lt;/p>
+&lt;blockquote>
+&lt;p>作者： 伊達 淳&lt;br>
+出版社/メーカー： 株式会社講談社&lt;br>
+発売日： 2013/07/04&lt;br>
+メディア： 単行本&lt;/p>
+&lt;/blockquote>
+&lt;p>なるほどなるほど。
+確かにそういうの大事。
+と思うことがあった。&lt;/p>
+&lt;ol>
+&lt;li>本からの学びの箇条書き 2. エンジニアとか関係なく、社会人として、必須の知識だと感じた。（最先端の研究者とかだと別かも？） 3. 今後、どんな会社で働こうが共通スキルなので、知って損することはない。 4. 会計の知識があるのとないのとでは、見える世界がまるで違う気がした。&lt;/li>
+&lt;li>キーワード 4. 資金繰り 5. 採算性 6. 借入金 7. 投資リスク 8. 支払い条件 9. 取引先分析 10. 人件費&lt;/li>
+&lt;/ol>
+&lt;p>正直、数式とかちょこちょこ出てくるけど、全然難しくない。という小学生レベルの数式ですし、内容も、ストーリー仕立てなので、読みやすく、かつ、基本はちゃんと抑えているので、本当「若手社員」のとっかかりとしては良本なんじゃないかなと思いました。&lt;/p>
+&lt;p>特に印象に残っているのは&lt;/p>
+&lt;blockquote>
+&lt;p>「ゴーイングコンサーン」が、会計の基本ルール&lt;/p>
+&lt;/blockquote>
+&lt;p>ということ。&lt;/p>
+&lt;p>これは、
+会計の世界の大前提として
+「会社は倒産しない」
+があるからこそ、成立するということ。&lt;/p>
+&lt;p>本当まさにそんなの当たり前だろ。って作者の思い通りのツッコミをしてしまったのですが、これがあるからこそ会社が継続できるんだなとつくづく感じました。&lt;/p>
+&lt;p>今後も会社に関する数字の勉強とかしていかないとなー。&lt;/p></description></item><item><title>HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。</title><link>https://blog.jkkitakita.dev/post/2017031302/</link><pubDate>Sun, 12 Mar 2017 13:39:17 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/2017031302/</guid><description>&lt;h2 id="1-本記事のゴール">1. 本記事のゴール&lt;/h2>
+&lt;ol>
+&lt;li>Hugo と Github Pages を使って、ブログを開設する&lt;/li>
+&lt;li>新規投稿時のシェルスクリプトを考える。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2-前提">2. 前提&lt;/h2>
+&lt;ol>
+&lt;li>私は、新卒二年目（もうすぐ、三年目）&lt;/li>
+&lt;li>インフラエンジニアをやった後、現在、スクラムマスター。&lt;/li>
+&lt;li>なので、そこまで、技術的な知識はない。&lt;/li>
+&lt;/ol>
+&lt;h2 id="3-はじめていきましょう">3. はじめていきましょう&lt;/h2>
+&lt;blockquote>
+&lt;ol>
+&lt;li>Hugo と Github Pages を使って、ブログを開設する&lt;/li>
+&lt;/ol>
+&lt;/blockquote>
+&lt;h3 id="hugo">Hugo&lt;/h3>
+&lt;p>&lt;img src="https://blog.jkkitakita.dev/images/hugo.png" alt="hugo">&lt;/p>
+&lt;h3 id="github-pages">Github Pages&lt;/h3>
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe src="https://www.youtube.com/embed/2MsN8gpT6jY" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
+&lt;/div>
+&lt;hr>
+&lt;p>もうここは、色々な方々がブログでまとめてくださっているので問題ないかなと。yewton さんの記事が参考になりそうです。（参考にさせていただきました。ありがとうございます。）&lt;/p>
+&lt;p>&lt;a href="https://www.yewton.net/2016/02/02/blog-with-hugo/">https://www.yewton.net/2016/02/02/blog-with-hugo/&lt;/a>&lt;/p>
+&lt;p>とりあえず、私の Hugo + Github Pages の構成は
+&lt;a href="https://github.com/jkkitakita/blog" title="JK's memo">こちら&lt;/a>。&lt;/p>
+&lt;p>残課題として、ドメイン周りとか整理する必要があるかも？誰かアドバイスがあれば、お願いいたします。。。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>~ ❯❯❯ dig jkkitakita.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>; &amp;lt;&amp;lt;&amp;gt;&amp;gt; DiG 9.8.3-P1 &amp;lt;&amp;lt;&amp;gt;&amp;gt; jkkitakita.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; global options: +cmd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; Got answer:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; -&amp;gt;&amp;gt;HEADER&lt;span style="color:#e6db74">&amp;lt;&amp;lt;- opco&lt;/span>de: QUERY, status: NOERROR, id: &lt;span style="color:#ae81ff">2013&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 4, ADDITIONAL: &lt;span style="color:#ae81ff">8&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; QUESTION SECTION:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;jkkitakita.com. IN A
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; ANSWER SECTION:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jkkitakita.com. 300 IN A 192.30.252.153
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jkkitakita.com. 300 IN A 192.30.252.154
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; AUTHORITY SECTION:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jkkitakita.com. 93078 IN NS ns-1622.awsdns-10.co.uk.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jkkitakita.com. 93078 IN NS ns-1310.awsdns-35.org.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jkkitakita.com. 93078 IN NS ns-708.awsdns-24.net.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jkkitakita.com. 93078 IN NS ns-191.awsdns-23.com.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; ADDITIONAL SECTION:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ns-191.awsdns-23.com. 40099 IN AAAA 2600:9000:5300:bf00::1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ns-708.awsdns-24.net. 38549 IN AAAA 2600:9000:5302:c400::1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ns-1310.awsdns-35.org. 59218 IN AAAA 2600:9000:5305:1e00::1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ns-1622.awsdns-10.co.uk. 66592 IN AAAA 2600:9000:5306:5600::1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ns-191.awsdns-23.com. 40099 IN A 205.251.192.191
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ns-708.awsdns-24.net. 38549 IN A 205.251.194.196
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ns-1310.awsdns-35.org. 59218 IN A 205.251.197.30
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ns-1622.awsdns-10.co.uk. 46709 IN A 205.251.198.86
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; Query time: &lt;span style="color:#ae81ff">16&lt;/span> msec
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; SERVER: 2400:2410:8be2:1d00:1111:1111:1111:1111#53&lt;span style="color:#f92672">(&lt;/span>2400:2410:8be2:1d00:1111:1111:1111:1111&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; WHEN: Sun Mar &lt;span style="color:#ae81ff">12&lt;/span> 23:57:59 &lt;span style="color:#ae81ff">2017&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>;; MSG SIZE rcvd: &lt;span style="color:#ae81ff">377&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="memo">memo&lt;/h4>
+&lt;ol>
+&lt;li>Hugo 関連
+&lt;ol>
+&lt;li>theme は、kakawait さんの hugo-tranquilpeak-theme を使わせてもらった。&lt;br>
+&lt;a href="https://themes.gohugo.io/hugo-tranquilpeak-theme/">https://themes.gohugo.io/hugo-tranquilpeak-theme/&lt;/a>&lt;/li>
+&lt;li>そのままだと、archives ページがうまく表示されなかったので、layout/taxonomy/archive.html を作成した。（themes/hugo-tranquilpeak-theme/layouts/taxonomy/archive.terms.html から複製）&lt;/li>
+&lt;li>日本語（ja）だとやっぱり色々だめかな。（ex.placeholder でないとか。）
+↓ は、にしておいた方が良さそう。 1. &lt;code>languageCode = &amp;quot;en-us&amp;quot;&lt;/code> 1. `defaultContentLanguage = &amp;ldquo;en-us&amp;quot;&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>ドメイン関連
+&lt;ol>
+&lt;li>&lt;code>192.30.252.153&lt;/code>、&lt;code>192.30.252.154&lt;/code>は、Github Pages のドメイン&lt;br>
+&lt;a href="https://help.github.com/articles/setting-up-an-apex-domain/">https://help.github.com/articles/setting-up-an-apex-domain/&lt;/a>&lt;/li>
+&lt;li>ドメインは、お名前.com で管理&lt;/li>
+&lt;li>DNS 関連は、AWS Route53。（A レコード）&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>残課題
+&lt;ol>
+&lt;li>サブドメインの方が、Github Pages としては、良い？&lt;br>
+&lt;a href="https://help.github.com/articles/about-supported-custom-domains/">https://help.github.com/articles/about-supported-custom-domains/&lt;/a>&lt;/li>
+&lt;li>CDN の整備&lt;/li>
+&lt;li>Hugo の知識不足。&lt;/li>
+&lt;li>ネタ不足。笑&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>2.新規投稿時のシェルスクリプトを考える。&lt;/p>
+&lt;/blockquote>
+&lt;p>なんかただ作成するだけだと寂しいから、「綺麗な画像が欲しい！」と思って、無料画像的なのを引っ張ってくるスクリプトつくってみた。（これダメだったら、誰か指摘してください。。笑）&lt;/p>
+&lt;p>ざっくりやったことの流れ&lt;/p>
+&lt;ol>
+&lt;li>pixabay にアカウント登録&lt;br>
+&lt;a href="https://pixabay.com/ja/">https://pixabay.com/ja/&lt;/a>&lt;/li>
+&lt;li>APIkey 発行&lt;/li>
+&lt;li>シェルの作成 4. 記事作成（hugo new） 5. curl で 画像を取得 6. hugo 用にワンライナーで整形 7. sed で新規作成した記事へ挿入&lt;/li>
+&lt;li>完成&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-post.sh" data-lang="post.sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#!bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>num&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">`&lt;/span>expr $RANDOM % 20&lt;span style="color:#e6db74">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DATE_TIME&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">`&lt;/span>date &lt;span style="color:#e6db74">&amp;#39;+%Y%m%d%H%M&amp;#39;&lt;/span>&lt;span style="color:#e6db74">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>hugo new post/$1.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>image&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">`&lt;/span>curl &lt;span style="color:#e6db74">&amp;#39;https://pixabay.com/api/?key=${Key}&amp;amp;q=landscape&amp;amp;image_type=photo&amp;amp;pretty=true&amp;#39;&lt;/span> | jq -r &lt;span style="color:#e6db74">&amp;#39;.hits[&amp;#39;&lt;/span>$num&lt;span style="color:#e6db74">&amp;#39;].webformatURL&amp;#39;&lt;/span> | cut -c7-&lt;span style="color:#e6db74">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gsed -i -e &lt;span style="color:#e6db74">&amp;#34;2i coverImage = \&amp;#34;&lt;/span>$image&lt;span style="color:#e6db74">\&amp;#34;&amp;#34;&lt;/span> content/post/$DATE_TIME.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gsed -i -e &lt;span style="color:#e6db74">&amp;#34;2i thumbnailImage = \&amp;#34;&lt;/span>$image&lt;span style="color:#e6db74">\&amp;#34;&amp;#34;&lt;/span> content/post/$DATE_TIME.md
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="memo-1">memo&lt;/h4>
+&lt;ol>
+&lt;li>ランダムで 20 個生成する感じになっているが、同じ画像が出ることがある。&lt;/li>
+&lt;li>sed でうまくいかなかったので、gsed を install した。&lt;br>
+（参考）&lt;a href="http://cross-black777.hatenablog.com/entry/2015/02/23/214337">http://cross-black777.hatenablog.com/entry/2015/02/23/214337&lt;/a>&lt;/li>
+&lt;li>そもそもブログの画像、ライセンス、著作権の勉強しないとかなと思った。&lt;/li>
+&lt;li>Hugo さんの logo は、なんかいけそうだと思ったので、使わせてもらいました。&lt;/li>
+&lt;/ol>
+&lt;h2 id="4-さいごに">4. さいごに&lt;/h2>
+&lt;p>Qiita とかでは、ちょこちょこ投稿していましたが、自分で開設してみたいと思い、始めました。ちょこちょここのサイト自体も、update されるかなと思いますが、お気になさらずに。。。。笑&lt;/p>
+&lt;p>まぁ気楽に色々と書いていきたいと思いますので
+宜しくお願いいたします 😀&lt;/p></description></item></channel></rss>
