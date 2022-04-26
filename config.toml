@@ -1,7 +1,7 @@
 baseurl = "https://blog.jkkitakita.dev"
 languageCode = "ja"
 title = "jkkitakita"
-theme = "kiss"
+theme = "etch"
 copyright = "(C) <a href=\"https://github.com/jkkitakita\">Jun Kitamura</a> 2020"
 googleAnalytics = "UA-156067080-1"
 Paginate = 30 # Number of posts per page
