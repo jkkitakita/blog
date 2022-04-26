@@ -1,49 +1,49 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://blog.jkkitakita.dev/favicon.ico><link rel=stylesheet href=/css/style.min.css><title>HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。</title></head><body><header id=banner><h2><a href=https://blog.jkkitakita.dev>jkkitakita</a></h2><nav><ul></ul></nav></header><main id=content><article><header id=post-header><h1>HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。</h1><div><time>March 12, 2017</time></div></header><h2 id=1-本記事のゴール>1. 本記事のゴール</h2><ol><li>Hugo と Github Pages を使って、ブログを開設する</li><li>新規投稿時のシェルスクリプトを考える。</li></ol><h2 id=2-前提>2. 前提</h2><ol><li>私は、新卒二年目（もうすぐ、三年目）</li><li>インフラエンジニアをやった後、現在、スクラムマスター。</li><li>なので、そこまで、技術的な知識はない。</li></ol><h2 id=3-はじめていきましょう>3. はじめていきましょう</h2><blockquote><ol><li>Hugo と Github Pages を使って、ブログを開設する</li></ol></blockquote><h3 id=hugo>Hugo</h3><p><img src=/images/hugo.png alt=hugo></p><h3 id=github-pages>Github Pages</h3><div style=position:relative;padding-bottom:56.25%;height:0;overflow:hidden><iframe src=https://www.youtube.com/embed/2MsN8gpT6jY style=position:absolute;top:0;left:0;width:100%;height:100%;border:0 allowfullscreen title="YouTube Video"></iframe></div><hr><p>もうここは、色々な方々がブログでまとめてくださっているので問題ないかなと。yewton さんの記事が参考になりそうです。（参考にさせていただきました。ありがとうございます。）</p><p><a href=https://www.yewton.net/2016/02/02/blog-with-hugo/>https://www.yewton.net/2016/02/02/blog-with-hugo/</a></p><p>とりあえず、私の Hugo + Github Pages の構成は
-<a href=https://github.com/jkkitakita/blog title="JK's memo">こちら</a>。</p><p>残課題として、ドメイン周りとか整理する必要があるかも？誰かアドバイスがあれば、お願いいたします。。。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>~ ❯❯❯ dig jkkitakita.com
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; jkkitakita.com
-</span></span><span style=display:flex><span>;; global options: +cmd
-</span></span><span style=display:flex><span>;; Got answer:
-</span></span><span style=display:flex><span>;; -&gt;&gt;HEADER<span style=color:#e6db74>&lt;&lt;- opco</span>de: QUERY, status: NOERROR, id: <span style=color:#ae81ff>2013</span>
-</span></span><span style=display:flex><span>;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 4, ADDITIONAL: <span style=color:#ae81ff>8</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>;; QUESTION SECTION:
-</span></span><span style=display:flex><span>;jkkitakita.com.			IN	A
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>;; ANSWER SECTION:
-</span></span><span style=display:flex><span>jkkitakita.com.		300	IN	A	192.30.252.153
-</span></span><span style=display:flex><span>jkkitakita.com.		300	IN	A	192.30.252.154
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>;; AUTHORITY SECTION:
-</span></span><span style=display:flex><span>jkkitakita.com.		93078	IN	NS	ns-1622.awsdns-10.co.uk.
-</span></span><span style=display:flex><span>jkkitakita.com.		93078	IN	NS	ns-1310.awsdns-35.org.
-</span></span><span style=display:flex><span>jkkitakita.com.		93078	IN	NS	ns-708.awsdns-24.net.
-</span></span><span style=display:flex><span>jkkitakita.com.		93078	IN	NS	ns-191.awsdns-23.com.
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>;; ADDITIONAL SECTION:
-</span></span><span style=display:flex><span>ns-191.awsdns-23.com.	40099	IN	AAAA	2600:9000:5300:bf00::1
-</span></span><span style=display:flex><span>ns-708.awsdns-24.net.	38549	IN	AAAA	2600:9000:5302:c400::1
-</span></span><span style=display:flex><span>ns-1310.awsdns-35.org.	59218	IN	AAAA	2600:9000:5305:1e00::1
-</span></span><span style=display:flex><span>ns-1622.awsdns-10.co.uk. 66592	IN	AAAA	2600:9000:5306:5600::1
-</span></span><span style=display:flex><span>ns-191.awsdns-23.com.	40099	IN	A	205.251.192.191
-</span></span><span style=display:flex><span>ns-708.awsdns-24.net.	38549	IN	A	205.251.194.196
-</span></span><span style=display:flex><span>ns-1310.awsdns-35.org.	59218	IN	A	205.251.197.30
-</span></span><span style=display:flex><span>ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>;; Query time: <span style=color:#ae81ff>16</span> msec
-</span></span><span style=display:flex><span>;; SERVER: 2400:2410:8be2:1d00:1111:1111:1111:1111#53<span style=color:#f92672>(</span>2400:2410:8be2:1d00:1111:1111:1111:1111<span style=color:#f92672>)</span>
-</span></span><span style=display:flex><span>;; WHEN: Sun Mar <span style=color:#ae81ff>12</span> 23:57:59 <span style=color:#ae81ff>2017</span>
-</span></span><span style=display:flex><span>;; MSG SIZE  rcvd: <span style=color:#ae81ff>377</span>
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://blog.jkkitakita.dev/favicon.ico><link rel=stylesheet href=/css/style.min.css><title>HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。</title></head><body><header id=banner><h2><a href=https://blog.jkkitakita.dev>jkkitakita</a></h2><nav><ul><li><a href=/ title=posts>posts</a></li><li><a href=/about/ title=about>about</a></li></ul></nav></header><main id=content><article><header id=post-header><h1>HugoとGithub Pagesでブログ開設。新規投稿時の画像を引っ張ってくるシェルスクリプトを書いてみた。</h1><div><time>March 12, 2017</time></div></header><h2 id=1-本記事のゴール>1. 本記事のゴール</h2><ol><li>Hugo と Github Pages を使って、ブログを開設する</li><li>新規投稿時のシェルスクリプトを考える。</li></ol><h2 id=2-前提>2. 前提</h2><ol><li>私は、新卒二年目（もうすぐ、三年目）</li><li>インフラエンジニアをやった後、現在、スクラムマスター。</li><li>なので、そこまで、技術的な知識はない。</li></ol><h2 id=3-はじめていきましょう>3. はじめていきましょう</h2><blockquote><ol><li>Hugo と Github Pages を使って、ブログを開設する</li></ol></blockquote><h3 id=hugo>Hugo</h3><p><img src=/images/hugo.png alt=hugo></p><h3 id=github-pages>Github Pages</h3><div style=position:relative;padding-bottom:56.25%;height:0;overflow:hidden><iframe src=https://www.youtube.com/embed/2MsN8gpT6jY style=position:absolute;top:0;left:0;width:100%;height:100%;border:0 allowfullscreen title="YouTube Video"></iframe></div><hr><p>もうここは、色々な方々がブログでまとめてくださっているので問題ないかなと。yewton さんの記事が参考になりそうです。（参考にさせていただきました。ありがとうございます。）</p><p><a href=https://www.yewton.net/2016/02/02/blog-with-hugo/>https://www.yewton.net/2016/02/02/blog-with-hugo/</a></p><p>とりあえず、私の Hugo + Github Pages の構成は
+<a href=https://github.com/jkkitakita/blog title="JK's memo">こちら</a>。</p><p>残課題として、ドメイン周りとか整理する必要があるかも？誰かアドバイスがあれば、お願いいたします。。。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>~ ❯❯❯ dig jkkitakita.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>;</span> &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; jkkitakita.com
+</span></span><span class=line><span class=cl><span class=p>;;</span> global options: +cmd
+</span></span><span class=line><span class=cl><span class=p>;;</span> Got answer:
+</span></span><span class=line><span class=cl><span class=p>;;</span> -&gt;&gt;HEADER<span class=s>&lt;&lt;- opco</span>de: QUERY, status: NOERROR, id: <span class=m>2013</span>
+</span></span><span class=line><span class=cl><span class=p>;;</span> flags: qr rd ra<span class=p>;</span> QUERY: 1, ANSWER: 2, AUTHORITY: 4, ADDITIONAL: <span class=m>8</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>;;</span> QUESTION SECTION:
+</span></span><span class=line><span class=cl><span class=p>;</span>jkkitakita.com.			IN	A
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>;;</span> ANSWER SECTION:
+</span></span><span class=line><span class=cl>jkkitakita.com.		300	IN	A	192.30.252.153
+</span></span><span class=line><span class=cl>jkkitakita.com.		300	IN	A	192.30.252.154
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>;;</span> AUTHORITY SECTION:
+</span></span><span class=line><span class=cl>jkkitakita.com.		93078	IN	NS	ns-1622.awsdns-10.co.uk.
+</span></span><span class=line><span class=cl>jkkitakita.com.		93078	IN	NS	ns-1310.awsdns-35.org.
+</span></span><span class=line><span class=cl>jkkitakita.com.		93078	IN	NS	ns-708.awsdns-24.net.
+</span></span><span class=line><span class=cl>jkkitakita.com.		93078	IN	NS	ns-191.awsdns-23.com.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>;;</span> ADDITIONAL SECTION:
+</span></span><span class=line><span class=cl>ns-191.awsdns-23.com.	40099	IN	AAAA	2600:9000:5300:bf00::1
+</span></span><span class=line><span class=cl>ns-708.awsdns-24.net.	38549	IN	AAAA	2600:9000:5302:c400::1
+</span></span><span class=line><span class=cl>ns-1310.awsdns-35.org.	59218	IN	AAAA	2600:9000:5305:1e00::1
+</span></span><span class=line><span class=cl>ns-1622.awsdns-10.co.uk. 66592	IN	AAAA	2600:9000:5306:5600::1
+</span></span><span class=line><span class=cl>ns-191.awsdns-23.com.	40099	IN	A	205.251.192.191
+</span></span><span class=line><span class=cl>ns-708.awsdns-24.net.	38549	IN	A	205.251.194.196
+</span></span><span class=line><span class=cl>ns-1310.awsdns-35.org.	59218	IN	A	205.251.197.30
+</span></span><span class=line><span class=cl>ns-1622.awsdns-10.co.uk. 46709	IN	A	205.251.198.86
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>;;</span> Query time: <span class=m>16</span> msec
+</span></span><span class=line><span class=cl><span class=p>;;</span> SERVER: 2400:2410:8be2:1d00:1111:1111:1111:1111#53<span class=o>(</span>2400:2410:8be2:1d00:1111:1111:1111:1111<span class=o>)</span>
+</span></span><span class=line><span class=cl><span class=p>;;</span> WHEN: Sun Mar <span class=m>12</span> 23:57:59 <span class=m>2017</span>
+</span></span><span class=line><span class=cl><span class=p>;;</span> MSG SIZE  rcvd: <span class=m>377</span>
 </span></span></code></pre></div><h4 id=memo>memo</h4><ol><li>Hugo 関連<ol><li>theme は、kakawait さんの hugo-tranquilpeak-theme を使わせてもらった。<br><a href=https://themes.gohugo.io/hugo-tranquilpeak-theme/>https://themes.gohugo.io/hugo-tranquilpeak-theme/</a></li><li>そのままだと、archives ページがうまく表示されなかったので、layout/taxonomy/archive.html を作成した。（themes/hugo-tranquilpeak-theme/layouts/taxonomy/archive.terms.html から複製）</li><li>日本語（ja）だとやっぱり色々だめかな。（ex.placeholder でないとか。）
-↓ は、にしておいた方が良さそう。 1. <code>languageCode = "en-us"</code> 1. `defaultContentLanguage = &ldquo;en-us"</li></ol></li><li>ドメイン関連<ol><li><code>192.30.252.153</code>、<code>192.30.252.154</code>は、Github Pages のドメイン<br><a href=https://help.github.com/articles/setting-up-an-apex-domain/>https://help.github.com/articles/setting-up-an-apex-domain/</a></li><li>ドメインは、お名前.com で管理</li><li>DNS 関連は、AWS Route53。（A レコード）</li></ol></li><li>残課題<ol><li>サブドメインの方が、Github Pages としては、良い？<br><a href=https://help.github.com/articles/about-supported-custom-domains/>https://help.github.com/articles/about-supported-custom-domains/</a></li><li>CDN の整備</li><li>Hugo の知識不足。</li><li>ネタ不足。笑</li></ol></li></ol><blockquote><p>2.新規投稿時のシェルスクリプトを考える。</p></blockquote><p>なんかただ作成するだけだと寂しいから、「綺麗な画像が欲しい！」と思って、無料画像的なのを引っ張ってくるスクリプトつくってみた。（これダメだったら、誰か指摘してください。。笑）</p><p>ざっくりやったことの流れ</p><ol><li>pixabay にアカウント登録<br><a href=https://pixabay.com/ja/>https://pixabay.com/ja/</a></li><li>APIkey 発行</li><li>シェルの作成 4. 記事作成（hugo new） 5. curl で 画像を取得 6. hugo 用にワンライナーで整形 7. sed で新規作成した記事へ挿入</li><li>完成</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-post.sh data-lang=post.sh><span style=display:flex><span><span style=color:#75715e>#!bin/bash
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
-</span></span><span style=display:flex><span>num<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>expr $RANDOM % 20<span style=color:#e6db74>`</span>
-</span></span><span style=display:flex><span>DATE_TIME<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>date <span style=color:#e6db74>&#39;+%Y%m%d%H%M&#39;</span><span style=color:#e6db74>`</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>hugo new post/$1.md
-</span></span><span style=display:flex><span>image<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>curl <span style=color:#e6db74>&#39;https://pixabay.com/api/?key=${Key}&amp;q=landscape&amp;image_type=photo&amp;pretty=true&#39;</span> | jq -r <span style=color:#e6db74>&#39;.hits[&#39;</span>$num<span style=color:#e6db74>&#39;].webformatURL&#39;</span> | cut -c7-<span style=color:#e6db74>`</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>gsed -i -e <span style=color:#e6db74>&#34;2i coverImage = \&#34;</span>$image<span style=color:#e6db74>\&#34;&#34;</span> content/post/$DATE_TIME.md
-</span></span><span style=display:flex><span>gsed -i -e <span style=color:#e6db74>&#34;2i thumbnailImage = \&#34;</span>$image<span style=color:#e6db74>\&#34;&#34;</span> content/post/$DATE_TIME.md
+↓ は、にしておいた方が良さそう。 1. <code>languageCode = "en-us"</code> 1. `defaultContentLanguage = &ldquo;en-us"</li></ol></li><li>ドメイン関連<ol><li><code>192.30.252.153</code>、<code>192.30.252.154</code>は、Github Pages のドメイン<br><a href=https://help.github.com/articles/setting-up-an-apex-domain/>https://help.github.com/articles/setting-up-an-apex-domain/</a></li><li>ドメインは、お名前.com で管理</li><li>DNS 関連は、AWS Route53。（A レコード）</li></ol></li><li>残課題<ol><li>サブドメインの方が、Github Pages としては、良い？<br><a href=https://help.github.com/articles/about-supported-custom-domains/>https://help.github.com/articles/about-supported-custom-domains/</a></li><li>CDN の整備</li><li>Hugo の知識不足。</li><li>ネタ不足。笑</li></ol></li></ol><blockquote><p>2.新規投稿時のシェルスクリプトを考える。</p></blockquote><p>なんかただ作成するだけだと寂しいから、「綺麗な画像が欲しい！」と思って、無料画像的なのを引っ張ってくるスクリプトつくってみた。（これダメだったら、誰か指摘してください。。笑）</p><p>ざっくりやったことの流れ</p><ol><li>pixabay にアカウント登録<br><a href=https://pixabay.com/ja/>https://pixabay.com/ja/</a></li><li>APIkey 発行</li><li>シェルの作成 4. 記事作成（hugo new） 5. curl で 画像を取得 6. hugo 用にワンライナーで整形 7. sed で新規作成した記事へ挿入</li><li>完成</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-post.sh data-lang=post.sh><span class=line><span class=cl><span class=cp>#!bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=nv>num</span><span class=o>=</span><span class=sb>`</span>expr <span class=nv>$RANDOM</span> % 20<span class=sb>`</span>
+</span></span><span class=line><span class=cl><span class=nv>DATE_TIME</span><span class=o>=</span><span class=sb>`</span>date <span class=s1>&#39;+%Y%m%d%H%M&#39;</span><span class=sb>`</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>hugo new post/<span class=nv>$1</span>.md
+</span></span><span class=line><span class=cl><span class=nv>image</span><span class=o>=</span><span class=sb>`</span>curl <span class=s1>&#39;https://pixabay.com/api/?key=${Key}&amp;q=landscape&amp;image_type=photo&amp;pretty=true&#39;</span> <span class=p>|</span> jq -r <span class=s1>&#39;.hits[&#39;</span><span class=nv>$num</span><span class=s1>&#39;].webformatURL&#39;</span> <span class=p>|</span> cut -c7-<span class=sb>`</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>gsed -i -e <span class=s2>&#34;2i coverImage = \&#34;</span><span class=nv>$image</span><span class=s2>\&#34;&#34;</span> content/post/<span class=nv>$DATE_TIME</span>.md
+</span></span><span class=line><span class=cl>gsed -i -e <span class=s2>&#34;2i thumbnailImage = \&#34;</span><span class=nv>$image</span><span class=s2>\&#34;&#34;</span> content/post/<span class=nv>$DATE_TIME</span>.md
 </span></span></code></pre></div><h4 id=memo-1>memo</h4><ol><li>ランダムで 20 個生成する感じになっているが、同じ画像が出ることがある。</li><li>sed でうまくいかなかったので、gsed を install した。<br>（参考）<a href=http://cross-black777.hatenablog.com/entry/2015/02/23/214337>http://cross-black777.hatenablog.com/entry/2015/02/23/214337</a></li><li>そもそもブログの画像、ライセンス、著作権の勉強しないとかなと思った。</li><li>Hugo さんの logo は、なんかいけそうだと思ったので、使わせてもらいました。</li></ol><h2 id=4-さいごに>4. さいごに</h2><p>Qiita とかでは、ちょこちょこ投稿していましたが、自分で開設してみたいと思い、始めました。ちょこちょここのサイト自体も、update されるかなと思いますが、お気になさらずに。。。。笑</p><p>まぁ気楽に色々と書いていきたいと思いますので
-宜しくお願いいたします 😀</p></article></main><footer id=footer></footer></body></html>
+宜しくお願いいたします 😀</p></article></main><footer id=footer>Copyright © 2020 Jun Kitamura</footer></body></html>

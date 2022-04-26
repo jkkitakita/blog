@@ -1,370 +1,370 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://blog.jkkitakita.dev/favicon.ico><link rel=stylesheet href=/css/style.min.css><title>puppet bolt のディレクトリ構成</title></head><body><header id=banner><h2><a href=https://blog.jkkitakita.dev>jkkitakita</a></h2><nav><ul></ul></nav></header><main id=content><article><header id=post-header><h1>puppet bolt のディレクトリ構成</h1><div><time>December 16, 2020</time></div></header><p>この記事は <a href=https://qiita.com/advent-calendar/2020/puppet>Puppet Advent Calendar 2020 16 日目</a> の記事です。</p><ul><li><a href=#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB>はじめに</a></li><li><a href=#puppet-bolt-%E3%81%AE%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E6%A7%8B%E6%88%90>puppet bolt のディレクトリ構成</a></li><li><a href=#%E5%90%84%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6>各ディレクトリ・ファイルについて</a><ul><li><a href=#modules>.modules</a></li><li><a href=#resource_types>.resource_types</a></li><li><a href=#puppetfile>Puppetfile</a></li><li><a href=#bolt-debuglog>bolt-debug.log</a></li><li><a href=#bolt-projectyaml>bolt-project.yaml</a></li><li><a href=#data>data</a></li><li><a href=#hierayaml>hiera.yaml</a></li><li><a href=#inventoryyaml>inventory.yaml</a></li><li><a href=#tasks>tasks</a></li><li><a href=#site-modules>site-modules</a><ul><li><a href=#files>files</a></li><li><a href=#templates>templates</a></li><li><a href=#plans>plans</a></li></ul></li></ul></li><li><a href=#%E3%81%95%E3%81%84%E3%81%94%E3%81%AB>さいごに</a></li><li><a href=#%E5%8F%82%E8%80%83>参考</a></li></ul><h2 id=はじめに>はじめに</h2><p>まず、本記事を書こうと思ったモチベーションは</p><ul><li>puppet bolt に関する記事が足りない！！</li><li>あったとしても、1,2 年前の日本語の記事で、かつ、なんか最近の bolt と違う感じがする！！</li><li>じゃあ、公式ドキュメントだ！と思っても、実際やろうと思うと、かゆいところまでは、手が届いていない感！！</li><li>というか、puppet bolt 自体が発展途上で、そもそも色々足りない！！</li><li>puppet bolt を使いたいけど、まず、何すればいいの？</li><li>このツールの全体感がわからない。</li></ul><p>です。もし私と同様に puppet bolt を触ろうと思っている方が</p><ul><li>「あーはいはい。そんな感じで使えばいいのね。雰囲気わかった。」</li></ul><p>って状態になっていただければ、幸いです。</p><p>ただし、前置きすると、上記に記載した通り、「まだまだ発展途上感がある」と感じているため、この記事を目にした時点で、だいぶ変わっている可能性もあると思っていますので、そこのところは、ご留意ください。</p><h2 id=puppet-bolt-のディレクトリ構成>puppet bolt のディレクトリ構成</h2><p>本記事で説明する puppet bolt のディレクトリ構成は以下の通りです。それぞれに関して、簡単にですが、解説して行きたいと思います。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ tree -a -L <span style=color:#ae81ff>3</span>
-</span></span><span style=display:flex><span>.
-</span></span><span style=display:flex><span>├── .modules
-</span></span><span style=display:flex><span>│   ├── chocolatey
-</span></span><span style=display:flex><span>│   └── ...
-</span></span><span style=display:flex><span>├── .resource_types
-</span></span><span style=display:flex><span>│   └── ...
-</span></span><span style=display:flex><span>├── Puppetfile
-</span></span><span style=display:flex><span>├── README.md
-</span></span><span style=display:flex><span>├── bolt-debug.log
-</span></span><span style=display:flex><span>├── bolt-project.yaml
-</span></span><span style=display:flex><span>├── data
-</span></span><span style=display:flex><span>│   ├── common.yaml
-</span></span><span style=display:flex><span>│   ├── local.yaml
-</span></span><span style=display:flex><span>│   ├── production.yaml
-</span></span><span style=display:flex><span>│   └── staging.yaml
-</span></span><span style=display:flex><span>├── hiera.yaml
-</span></span><span style=display:flex><span>├── inventory.yaml
-</span></span><span style=display:flex><span>├── site-modules
-</span></span><span style=display:flex><span>│   └── mymodule
-</span></span><span style=display:flex><span>│       ├── files
-</span></span><span style=display:flex><span>│       │   ├── motd.txt
-</span></span><span style=display:flex><span>│       │   └── check_server.sh
-</span></span><span style=display:flex><span>│       ├── plans
-</span></span><span style=display:flex><span>│       │   ├── planA.yaml
-</span></span><span style=display:flex><span>│       │   └── planB.yaml
-</span></span><span style=display:flex><span>│       └── templates
-</span></span><span style=display:flex><span>│           └── env.epp
-</span></span><span style=display:flex><span>└── tasks
-</span></span><span style=display:flex><span>    ├── download_from_gcs.json
-</span></span><span style=display:flex><span>    └── download_from_gcs.rb
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://blog.jkkitakita.dev/favicon.ico><link rel=stylesheet href=/css/style.min.css><title>puppet bolt のディレクトリ構成</title></head><body><header id=banner><h2><a href=https://blog.jkkitakita.dev>jkkitakita</a></h2><nav><ul><li><a href=/ title=posts>posts</a></li><li><a href=/about/ title=about>about</a></li></ul></nav></header><main id=content><article><header id=post-header><h1>puppet bolt のディレクトリ構成</h1><div><time>December 16, 2020</time></div></header><p>この記事は <a href=https://qiita.com/advent-calendar/2020/puppet>Puppet Advent Calendar 2020 16 日目</a> の記事です。</p><ul><li><a href=#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB>はじめに</a></li><li><a href=#puppet-bolt-%E3%81%AE%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E6%A7%8B%E6%88%90>puppet bolt のディレクトリ構成</a></li><li><a href=#%E5%90%84%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6>各ディレクトリ・ファイルについて</a><ul><li><a href=#modules>.modules</a></li><li><a href=#resource_types>.resource_types</a></li><li><a href=#puppetfile>Puppetfile</a></li><li><a href=#bolt-debuglog>bolt-debug.log</a></li><li><a href=#bolt-projectyaml>bolt-project.yaml</a></li><li><a href=#data>data</a></li><li><a href=#hierayaml>hiera.yaml</a></li><li><a href=#inventoryyaml>inventory.yaml</a></li><li><a href=#tasks>tasks</a></li><li><a href=#site-modules>site-modules</a><ul><li><a href=#files>files</a></li><li><a href=#templates>templates</a></li><li><a href=#plans>plans</a></li></ul></li></ul></li><li><a href=#%E3%81%95%E3%81%84%E3%81%94%E3%81%AB>さいごに</a></li><li><a href=#%E5%8F%82%E8%80%83>参考</a></li></ul><h2 id=はじめに>はじめに</h2><p>まず、本記事を書こうと思ったモチベーションは</p><ul><li>puppet bolt に関する記事が足りない！！</li><li>あったとしても、1,2 年前の日本語の記事で、かつ、なんか最近の bolt と違う感じがする！！</li><li>じゃあ、公式ドキュメントだ！と思っても、実際やろうと思うと、かゆいところまでは、手が届いていない感！！</li><li>というか、puppet bolt 自体が発展途上で、そもそも色々足りない！！</li><li>puppet bolt を使いたいけど、まず、何すればいいの？</li><li>このツールの全体感がわからない。</li></ul><p>です。もし私と同様に puppet bolt を触ろうと思っている方が</p><ul><li>「あーはいはい。そんな感じで使えばいいのね。雰囲気わかった。」</li></ul><p>って状態になっていただければ、幸いです。</p><p>ただし、前置きすると、上記に記載した通り、「まだまだ発展途上感がある」と感じているため、この記事を目にした時点で、だいぶ変わっている可能性もあると思っていますので、そこのところは、ご留意ください。</p><h2 id=puppet-bolt-のディレクトリ構成>puppet bolt のディレクトリ構成</h2><p>本記事で説明する puppet bolt のディレクトリ構成は以下の通りです。それぞれに関して、簡単にですが、解説して行きたいと思います。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ tree -a -L <span class=m>3</span>
+</span></span><span class=line><span class=cl>.
+</span></span><span class=line><span class=cl>├── .modules
+</span></span><span class=line><span class=cl>│   ├── chocolatey
+</span></span><span class=line><span class=cl>│   └── ...
+</span></span><span class=line><span class=cl>├── .resource_types
+</span></span><span class=line><span class=cl>│   └── ...
+</span></span><span class=line><span class=cl>├── Puppetfile
+</span></span><span class=line><span class=cl>├── README.md
+</span></span><span class=line><span class=cl>├── bolt-debug.log
+</span></span><span class=line><span class=cl>├── bolt-project.yaml
+</span></span><span class=line><span class=cl>├── data
+</span></span><span class=line><span class=cl>│   ├── common.yaml
+</span></span><span class=line><span class=cl>│   ├── local.yaml
+</span></span><span class=line><span class=cl>│   ├── production.yaml
+</span></span><span class=line><span class=cl>│   └── staging.yaml
+</span></span><span class=line><span class=cl>├── hiera.yaml
+</span></span><span class=line><span class=cl>├── inventory.yaml
+</span></span><span class=line><span class=cl>├── site-modules
+</span></span><span class=line><span class=cl>│   └── mymodule
+</span></span><span class=line><span class=cl>│       ├── files
+</span></span><span class=line><span class=cl>│       │   ├── motd.txt
+</span></span><span class=line><span class=cl>│       │   └── check_server.sh
+</span></span><span class=line><span class=cl>│       ├── plans
+</span></span><span class=line><span class=cl>│       │   ├── planA.yaml
+</span></span><span class=line><span class=cl>│       │   └── planB.yaml
+</span></span><span class=line><span class=cl>│       └── templates
+</span></span><span class=line><span class=cl>│           └── env.epp
+</span></span><span class=line><span class=cl>└── tasks
+</span></span><span class=line><span class=cl>    ├── download_from_gcs.json
+</span></span><span class=line><span class=cl>    └── download_from_gcs.rb
 </span></span></code></pre></div><h2 id=各ディレクトリファイルについて>各ディレクトリ・ファイルについて</h2><h3 id=modules>.modules</h3><p><a href=https://forge.puppet.com/>Puppet Forge</a>の puppet modules が install されるディレクトリです。node.js でいうと node_modules 的なディレクトリです。基本的には、ここのディレクトリは、変更しない方針であることが前提で、gitignore しても問題ありません。もし修正した場合は、.gitignore しないで、含めた方がいいと思います。ちなみにここに関しては、puppet bolt を利用する上では、知らなくても、まぁなんとかなります。</p><h3 id=resource_types>.resource_types</h3><p><a href=https://forge.puppet.com/>Puppet Forge</a>の puppet modules に関連する <a href=https://puppet.com/docs/puppet/7.0/type.html>Resource Type</a> が install されるディレクトリ。基本的には、このディレクトリは、変更しない方針であることが前提で、gitignore しても問題ない。また、puppet bolt を利用する上では、知らなくても、基本問題ありません。
-「<code>Resource Type</code> とはなんぞや？」というところを理解したい場合は、まずは「<code>Resource</code> とはなんぞや？」というところから、調べてみることをオススメします。</p><p>ref.</p><ul><li><a href=https://qiita.com/takeuchikzm/items/cfa012571fdedcf0792b#resource---puppet%E3%81%AB%E3%82%88%E3%82%8B%E6%A7%8B%E6%88%90%E7%AE%A1%E7%90%86%E3%81%AE%E6%9C%80%E5%B0%8F%E5%8D%98%E4%BD%8D>Resource - Puppet による構成管理の最小単位</a></li><li><a href=https://puppet.com/docs/puppet/7.0/lang_resources.html>Resources</a></li><li><a href=https://puppet.com/docs/puppet/7.0/type.html>Resource Type Reference</a></li></ul><h3 id=puppetfile>Puppetfile</h3><p><a href=https://forge.puppet.com/>Puppet Forge</a>の puppet modules を「初めて」 install した時に、作成されるファイル。基本的には、このファイルは、手で修正しない方針であることが前提（Do not edit）。このファイルをベースに、<code>.modules</code> を install するため、基本的には、gitignore はしない方がいいと個人的には思っています。ファイル名的には、<code>Gemfile</code> っぽいファイルと思いきや、<code>Gemfile.lock</code>のようなファイル。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=display:flex><span><span style=color:#75715e># This Puppetfile is managed by Bolt. Do not edit.</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># For more information, see https://pup.pt/bolt-modules</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># The following directive installs modules to the managed moduledir.</span>
-</span></span><span style=display:flex><span>moduledir <span style=color:#e6db74>&#39;.modules&#39;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>mod <span style=color:#e6db74>&#34;puppetlabs-chocolatey&#34;</span>, <span style=color:#e6db74>&#34;5.1.1&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>・・・</span>
-</span></span></code></pre></div><h3 id=bolt-debuglog>bolt-debug.log</h3><p>Bolt コマンドを実行時、デバッグレベルのログが出力されるログファイルです。<code>bolt plan</code>などの実行ログが書き込まれます。ログの形式は以下の通りです。特に何も指定しなければ、実行毎に recreate されるため、過去のログは残らなさそうです。基本的には、<code>.gitignore</code>などで、git からは除外することが多いと思います。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-txt data-lang=txt><span style=display:flex><span>2020-12-02T18:44:46.273566 INFO   [event-publisher] [Bolt::Outputter::Logger] Starting: plan mymodule::planA
-</span></span><span style=display:flex><span>2020-12-02T18:44:46.291736 INFO   [event-publisher] [Bolt::Outputter::Logger] Finished: plan mymodule::planA in 0.02 sec
-</span></span></code></pre></div><p>ref. <a href=https://puppet.com/docs/bolt/latest/logs.html#the-bolt-debuglog-file>The bolt-debug.log file</a></p><h3 id=bolt-projectyaml>bolt-project.yaml</h3><p>project 単位（リポジトリ単位？）で、bolt の設定を管理する時に用意するファイル。ansible でいうところの ansible.cfg みたいなもの。今までは、<code>bolt.yaml</code>を使っていたみたいですが、そちらは非推奨になっています。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># bolt project の作成（ project_name に、ハイフンは含められない。）</span>
-</span></span><span style=display:flex><span>$ bolt project init myproject
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>$ ls
-</span></span><span style=display:flex><span>bolt-project.yaml
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>$ cat bolt-project.yaml
-</span></span><span style=display:flex><span>---
-</span></span><span style=display:flex><span>name: myproject
-</span></span></code></pre></div><p>ref. <a href=https://puppet.com/docs/bolt/latest/bolt_project_reference.html>bolt-project.yaml options</a></p><h3 id=data>data</h3><p>bolt で利用する変数などを管理するディレクトリ。一般的には、OS や環境毎や構成管理ツール毎などの yaml ファイルを格納しておくことが多いです。後述する hiera の機能で、その変数等を読み込む優先順位を定義します。格納できるファイルは、YAML or JSON or HOCON（Human-Optimized Config Object Notation）が利用できます。ディレクトリ名は <code>data</code> である必要はありませんが、大体、 <code>data</code> とすることが多いようです。簡単な yaml の例を記載するとすると以下のような形で、普通の yaml として定義するだけです。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># staging.yaml</span>
-</span></span><span style=display:flex><span>---
-</span></span><span style=display:flex><span><span style=color:#f92672>gcp_project_id</span>: <span style=color:#e6db74>&#34;gcp_project_staging&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># production.yaml</span>
-</span></span><span style=display:flex><span>---
-</span></span><span style=display:flex><span><span style=color:#f92672>gcp_project_id</span>: <span style=color:#e6db74>&#34;gcp_project_production&#34;</span>
-</span></span></code></pre></div><p>ref. <a href=https://puppet.com/docs/puppet/7.1/hiera_merging.html>Creating and editing data</a></p><h3 id=hierayaml>hiera.yaml</h3><p><code>data</code> ディレクトリに格納した変数ファイルの読み込む優先順位などを定義するファイル。 <code>hierarchy</code> に、ハッシュの配列形式で読み込む順番（優先順位）を定義する。上から下に、優先順位が下がっていきます。そのため基本的には、最後に、<code>common.yaml</code> とかを記載することが多いです。ansible だと、<code>group_vars</code> とか <code>host_vars</code> とか暗黙的な変数定義ルールがある印象ですが、多分？、puppet bolt の変数定義ルールはここに全て記載する必要があるような気がしています。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span>---
-</span></span><span style=display:flex><span><span style=color:#f92672>version</span>: <span style=color:#ae81ff>5</span> <span style=color:#75715e># hiera の ver 指定する。bolt は ver 5のみ対応している。</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>defaults</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>datadir</span>: <span style=color:#ae81ff>data</span> <span style=color:#75715e># 変数ファイルを、hiera.yaml ファイルからみた相対パスで指定する</span>
-</span></span><span style=display:flex><span>  <span style=color:#f92672>data_hash</span>: <span style=color:#ae81ff>yaml_data</span> <span style=color:#75715e># 変数ファイルの形式を指定する。e.g. yaml, json, HOCON</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>hierarchy</span>:
-</span></span><span style=display:flex><span>  <span style=color:#75715e># bolt 実行時に、env を渡すとそれぞれの変数ファイルを読み込む</span>
-</span></span><span style=display:flex><span>  <span style=color:#75715e># 上から優先順位が高い。そのため基本的には、最後に、common.yamlとかを記載することが多い。</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#e6db74>&#34;environment data&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>path</span>: <span style=color:#e6db74>&#34;%{env}.yaml&#34;</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#e6db74>&#34;common data&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>path</span>: <span style=color:#e6db74>&#34;common.yaml&#34;</span>
-</span></span></code></pre></div><p>上記 hiera.yaml を定義した場合、下記のように bolt plan 実行時に、引数に<code>env</code>実行すると、各環境の変数ファイルを読み込むことが可能です。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 引数 env=staging -&gt; data/staging.yaml を読み込む</span>
-</span></span><span style=display:flex><span>$ bolt plan run mymodule::planA env<span style=color:#f92672>=</span>staging --targets webservers
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 引数 env=production -&gt; data/production.yaml を読み込む</span>
-</span></span><span style=display:flex><span>$ bolt plan run mymodule::planA env<span style=color:#f92672>=</span>production --targets webservers
-</span></span></code></pre></div><p>ref.</p><ul><li><a href=https://qiita.com/takeuchikzm/items/e04e6cbe84a185eb1f26>私と Puppet ベストプラクティス編 その 3 (Hiera で世界が変わる?)</a></li><li><a href=https://puppet.com/docs/puppet/7.0/hiera_config_yaml_5.html>Configuring Hiera</a></li></ul><h3 id=inventoryyaml>inventory.yaml</h3><p>対象ホストを管理するファイルです。ansbible の inventory ファイルと同様の役割をするファイルです。<a href=https://puppet.com/docs/bolt/latest/inventory_file_v2.html>Inventory files</a>にある、一部の例を下記に転記しました。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>groups</span>:
-</span></span><span style=display:flex><span>  <span style=color:#75715e># e.g. linux の webserver via ssh</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>ssh_nodes</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>groups</span>:
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>webservers</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>targets</span>:
-</span></span><span style=display:flex><span>          - <span style=color:#ae81ff>192.168.100.179</span>
-</span></span><span style=display:flex><span>          - <span style=color:#ae81ff>192.168.100.180</span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>memcached</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>targets</span>:
-</span></span><span style=display:flex><span>          - <span style=color:#ae81ff>192.168.101.50</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>config</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>ssh</span>:
-</span></span><span style=display:flex><span>            <span style=color:#f92672>user</span>: <span style=color:#ae81ff>root</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>config</span>:
-</span></span><span style=display:flex><span>      <span style=color:#f92672>transport</span>: <span style=color:#ae81ff>ssh</span>
-</span></span><span style=display:flex><span>      <span style=color:#f92672>ssh</span>:
-</span></span><span style=display:flex><span>        <span style=color:#f92672>user</span>: <span style=color:#ae81ff>centos</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>private-key</span>: <span style=color:#ae81ff>~/.ssh/id_rsa</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>host-key-check</span>: <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span>  <span style=color:#75715e># e.g. windows の webservers via winrm</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>win_nodes</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>groups</span>:
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>apiservers</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>targets</span>:
-</span></span><span style=display:flex><span>          - <span style=color:#ae81ff>192.168.110.10</span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>testservers</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>targets</span>:
-</span></span><span style=display:flex><span>          - <span style=color:#ae81ff>172.16.219.20</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>config</span>:
-</span></span><span style=display:flex><span>      <span style=color:#f92672>transport</span>: <span style=color:#ae81ff>winrm</span>
-</span></span><span style=display:flex><span>      <span style=color:#f92672>winrm</span>:
-</span></span><span style=display:flex><span>        <span style=color:#f92672>user</span>: <span style=color:#ae81ff>DOMAIN\opsaccount</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>password</span>: <span style=color:#ae81ff>S3cretP@ssword</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>ssl</span>: <span style=color:#66d9ef>true</span>
-</span></span></code></pre></div><p>ここの例では、まず、接続方式が、「ssh」か「<a href=https://qiita.com/asterisk9101/items/46d45c30a1141b1e6115>winrm</a>」かで group を分けています。その後、それぞれで、複数対象ホストが存在する場合は、さらに、groups で入れ子にして、対象ホストを指定します。config には、接続方式とその認証情報を記載します。そして、bolt コマンド実行時の <code>--targets</code> の引数として、groups を指定するように、下記のようなコマンドを実行します。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># ssh_nodes,win_nodes 両方に実行する場合</span>
-</span></span><span style=display:flex><span>$ bolt command run <span style=color:#e6db74>&#39;echo hello&#39;</span> --targets ssh_nodes,win_nodes
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># ssh_nodes のみに実行する場合</span>
-</span></span><span style=display:flex><span>$ bolt command run <span style=color:#e6db74>&#39;echo hello&#39;</span> --targets ssh_nodes
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># webservers,testservers のみに実行する場合</span>
-</span></span><span style=display:flex><span>$ bolt command run <span style=color:#e6db74>&#39;echo hello&#39;</span> --targets webservers,testservers
-</span></span></code></pre></div><p>そうすると、inventory から指定された targets への接続方法・情報を判断して、それぞれに対して、接続し、コマンドを実行します。ただし、この指定の仕方の場合、<code>targets</code>に対して、IP アドレスなどを指定しなければならないため、対象ホストが増えてくると管理が煩雑になっていきます。もし設計段階で、そのような状況になりそうであれば、AWS や GCP などのクラウドを使っているのであれば、いわゆる <a href=https://puppet.com/docs/bolt/latest/inventory_file_v2.html#plugins>Dynamic Inventory</a> のような plugin 機能を利用するのは簡単にできそうなため、試してみるのが良いかなと思います。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># ref. https://forge.puppet.com/modules/puppetlabs/aws_inventory</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># inventory.yaml</span>
-</span></span><span style=display:flex><span>---
-</span></span><span style=display:flex><span><span style=color:#f92672>groups</span>:
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>aws</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>targets</span>:
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>_plugin</span>: <span style=color:#ae81ff>aws_inventory</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>profile</span>: <span style=color:#ae81ff>user1</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>region</span>: <span style=color:#ae81ff>us-west-1</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>filters</span>:
-</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>tag:Owner</span>
-</span></span><span style=display:flex><span>            <span style=color:#f92672>values</span>: [<span style=color:#ae81ff>Devs]</span>
-</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>instance-type</span>
-</span></span><span style=display:flex><span>            <span style=color:#f92672>values</span>: [<span style=color:#ae81ff>t2.micro, c5.large]</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>target_mapping</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>name</span>: <span style=color:#ae81ff>public_dns_name</span>
-</span></span><span style=display:flex><span>          <span style=color:#f92672>uri</span>: <span style=color:#ae81ff>public_ip_address</span>
-</span></span><span style=display:flex><span>          <span style=color:#f92672>config</span>:
-</span></span><span style=display:flex><span>            <span style=color:#f92672>ssh</span>:
-</span></span><span style=display:flex><span>              <span style=color:#f92672>host</span>: <span style=color:#ae81ff>public_dns_name</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>config</span>:
-</span></span><span style=display:flex><span>      <span style=color:#f92672>ssh</span>:
-</span></span><span style=display:flex><span>        <span style=color:#f92672>user</span>: <span style=color:#ae81ff>ec2-user</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>private-key</span>: <span style=color:#ae81ff>~/.aws/private-key.pem</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>host-key-check</span>: <span style=color:#66d9ef>false</span>
-</span></span></code></pre></div><p>ref. <a href=https://puppet.com/docs/bolt/latest/inventory_file_v2.html>Inventory files</a></p><h3 id=tasks>tasks</h3><p>task は、対象ホストで実行する puppet bolt の中で最もシンプルなアクションの単位です。タスクは、Bash、Python、Ruby など、対象ホスト似て、実行できる任意のプログラミング言語でタスクを記述できます。デフォルトでは、下記のようなタスクが用意されています。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ bolt task show
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>apt                                 Allows you to perform apt functions
-</span></span><span style=display:flex><span>facts                               Gather system facts
-</span></span><span style=display:flex><span>http_request                        Make a HTTP or HTTPS request.
-</span></span><span style=display:flex><span>package                             Manage and inspect the state of packages
-</span></span><span style=display:flex><span>pkcs7::secret_createkeys            Create a key pair
-</span></span><span style=display:flex><span>pkcs7::secret_decrypt               Encrypt sensitive data with pkcs7
-</span></span><span style=display:flex><span>pkcs7::secret_encrypt               Encrypt sensitive data with pkcs7
-</span></span><span style=display:flex><span>puppet_agent::install               Install the Puppet agent package
-</span></span><span style=display:flex><span>puppet_agent::version               Get the version of the Puppet agent package installed. Returns nothing <span style=color:#66d9ef>if</span> none present.
-</span></span><span style=display:flex><span>puppet_conf                         Inspect puppet agent configuration settings
-</span></span><span style=display:flex><span>reboot                              Reboots a machine
-</span></span><span style=display:flex><span>reboot::last_boot_time              Gets the last boot time of a Linux or Windows system
-</span></span><span style=display:flex><span>service                             Manage and inspect the state of services
-</span></span><span style=display:flex><span>terraform::apply                    Apply an HCL manifest
-</span></span><span style=display:flex><span>terraform::destroy                  Destroy resources managed with Terraform
-</span></span><span style=display:flex><span>terraform::initialize               Initialize a Terraform project directory
-</span></span><span style=display:flex><span>terraform::output                   JSON representation of Terraform outputs
-</span></span></code></pre></div><p>例えば、package のタスクの使い方としては、以下のコマンドを実行することで、対象ホスト（webservers）の Apache の status を確認することができます。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>bolt task run package action<span style=color:#f92672>=</span>status name<span style=color:#f92672>=</span>apache2 --targets webservers
-</span></span></code></pre></div><p>カスタムタスクの例として、ruby で記載した GCS からファイルをダウンロードするタスクを紹介します。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>・・・
-</span></span><span style=display:flex><span>└── tasks
-</span></span><span style=display:flex><span>    ├── download_from_gcs.json <span style=color:#75715e># タスクのメタデータ</span>
-</span></span><span style=display:flex><span>    └── download_from_gcs.rb   <span style=color:#75715e># タスクを定義する実行スクリプト</span>
-</span></span></code></pre></div><p>ファイルとしては、「タスクのメタデータ」の json と「タスクを定義する実行スクリプト」を準備します。そして、それぞれのファイルを以下のように記述します。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span><span style=color:#75715e>// download_from_gcs.json
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;description&#34;</span>: <span style=color:#e6db74>&#34;Download file from google cloud storage locally&#34;</span>, <span style=color:#75715e>// タスクの説明
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#f92672>&#34;input_method&#34;</span>: <span style=color:#e6db74>&#34;stdin&#34;</span>, <span style=color:#75715e>// タスクのインプット方法 e.g. environment（環境変数）, stdin（標準入力）, powershell（？？）
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#f92672>&#34;parameters&#34;</span>: {
-</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;bucket_name&#34;</span>: {
-</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;description&#34;</span>: <span style=color:#e6db74>&#34;Bucket of google cloud storage&#34;</span>, <span style=color:#75715e>// パラメータの説明
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;String[1]&#34;</span> <span style=color:#75715e>// パラメータのデータ型の指定 e.g. 空ではない文字列
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    },
-</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;object_path&#34;</span>: {
-</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;description&#34;</span>: <span style=color:#e6db74>&#34;Object path of google cloud storage&#34;</span>,
-</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;String[1]&#34;</span>
-</span></span><span style=display:flex><span>    },
-</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;tmp_dir&#34;</span>: {
-</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;description&#34;</span>: <span style=color:#e6db74>&#34;tmp path&#34;</span>,
-</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;String[1]&#34;</span>
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>  },
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;files&#34;</span>: [<span style=color:#e6db74>&#34;ruby_task_helper/files/task_helper.rb&#34;</span>] <span style=color:#75715e>// タスク実行時に利用するファイルの指定。基本、ヘルパーライブラリが多いかも。
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=display:flex><span><span style=color:#75715e>#!/usr/bin/env ruby</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>require_relative <span style=color:#e6db74>&#39;../../ruby_task_helper/files/task_helper&#39;</span>
-</span></span><span style=display:flex><span>require <span style=color:#e6db74>&#39;google/cloud/storage&#39;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>DownloadFileFromGCS</span> <span style=color:#f92672>&lt;</span> <span style=color:#66d9ef>TaskHelper</span>
-</span></span><span style=display:flex><span>  <span style=color:#75715e># GCSの指定バケット・オブジェクトパスを指定tmpディレクトリにダウンロードするタスク</span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>task</span>(<span style=color:#e6db74>bucket_name</span>: <span style=color:#66d9ef>nil</span>, <span style=color:#e6db74>object_path</span>: <span style=color:#66d9ef>nil</span>, <span style=color:#e6db74>tmp_dir</span>: <span style=color:#66d9ef>nil</span>, <span style=color:#f92672>**</span>_kwargs)
-</span></span><span style=display:flex><span>    storage <span style=color:#f92672>=</span> <span style=color:#66d9ef>Google</span><span style=color:#f92672>::</span><span style=color:#66d9ef>Cloud</span><span style=color:#f92672>::</span><span style=color:#66d9ef>Storage</span><span style=color:#f92672>.</span>new
-</span></span><span style=display:flex><span>    bucket <span style=color:#f92672>=</span> storage<span style=color:#f92672>.</span>bucket bucket_name
-</span></span><span style=display:flex><span>    object <span style=color:#f92672>=</span> bucket<span style=color:#f92672>.</span>file object_path
-</span></span><span style=display:flex><span>    object<span style=color:#f92672>.</span>download tmp_dir <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;/&#39;</span> <span style=color:#f92672>+</span> object_path
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    puts <span style=color:#e6db74>&#34;Success to download </span><span style=color:#e6db74>#{</span>object<span style=color:#f92672>.</span>name<span style=color:#e6db74>}</span><span style=color:#e6db74> to </span><span style=color:#e6db74>#{</span>tmp_dir<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>end</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>DownloadFileFromGCS</span><span style=color:#f92672>.</span>run <span style=color:#66d9ef>if</span> __FILE__ <span style=color:#f92672>==</span> $0
-</span></span></code></pre></div><p>上記カスタムタスクは、<code>ruby_task_helper</code>を利用しています。名前の通り、ruby でカスタムタスクを作成する際に、いい感じにしてくれる、ruby のヘルパーライブラリです。ざっくりいうと、メタデータにパラメータを指定して、スクリプトの方で、メソッドを定義すればよい。それだけと言えばそれだけです。</p><p>ref. <a href=https://puppet.com/docs/bolt/latest/writing_tasks.html#common-task-data-types>利用できるタスクのデータ型</a></p><p>タスクの詳細は以下のように確認することもできます。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ bolt task show myproject::download_from_gcs
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>myproject::download_from_gcs - Download file from google cloud storage locally
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>USAGE:
-</span></span><span style=display:flex><span>bolt task run --targets &lt;node-name&gt; myproject::download_from_gcs bucket_name<span style=color:#f92672>=</span>&lt;value&gt; object_path<span style=color:#f92672>=</span>&lt;value&gt; tmp_dir<span style=color:#f92672>=</span>&lt;value&gt;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>PARAMETERS:
-</span></span><span style=display:flex><span>- bucket_name: String<span style=color:#f92672>[</span>1<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>    Bucket of google cloud storage
-</span></span><span style=display:flex><span>- object_path: String<span style=color:#f92672>[</span>1<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>    Object path of google cloud storage
-</span></span><span style=display:flex><span>- tmp_dir: String<span style=color:#f92672>[</span>1<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>    tmp path
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>MODULE:
-</span></span><span style=display:flex><span>/Users/jkkitakita/myproject
-</span></span></code></pre></div><p>あとは、定義した task を直接使う、または、plan から呼び出せば ok です。</p><p>ref. <a href=https://puppet.com/docs/bolt/latest/tasks.html>Making on-demand changes with tasks</a></p><h3 id=site-modules>site-modules</h3><p>最後に、site-modules を紹介します。site-modules は、プロジェクト毎の custom modules です。（ドキュメントがいまいちないので、合ってるか不明。私の認識です。）<a href=https://forge.puppet.com/>Puppet Forge</a>の puppet modules は、<code>.modules</code> に格納されると上述しましたが、それでは不十分である、または、プロダクト固有の modules を作成したい場合に用意します。その際には、<code>site-modules</code> ディレクトリを作成します。シンプルな plan を実行したいだけであれば、 bolt project のルートディレクトリに <code>plan</code> ディレクトリを作成するだけで十分かもしれません。が、個人的には、ちゃんと今後の保守・運用も考慮するのであれば、単純な plan を実行するだけでも <code>site-modules</code> ディレクトリを作成した方がいいと思います。ansible でいうと、<code>modules</code> を <code>roles</code> に読み替えると良いかもしません。<code>Puppet Forge</code> は <code>Ansible Galaxy</code>的な立ち位置なので、ansible に慣れている方は、そのイメージです。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># puppet bolt の site-modules のディレクトリ構成</span>
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span>├── site-modules
-</span></span><span style=display:flex><span>│   └── mymodule
-</span></span><span style=display:flex><span>│       ├── files
-</span></span><span style=display:flex><span>│       ├── plans
-</span></span><span style=display:flex><span>│       └── templates
-</span></span><span style=display:flex><span>...
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># ref. ansible の場合の roles のディレクトリ構成</span>
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span>├── roles
-</span></span><span style=display:flex><span>│   └── myrole
-</span></span><span style=display:flex><span>│       ├── files
-</span></span><span style=display:flex><span>│       ├── tasks
-</span></span><span style=display:flex><span>│       └── templates
-</span></span><span style=display:flex><span>...
-</span></span></code></pre></div><p>ただし、実際に使ってみた感覚から言うと、ansible の roles よりも、もう少し柔軟な（悪くいうと、フワッとした）custom modules を定義できる印象があります。具体的には</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># puppet bolt の site-modules のディレクトリ構成</span>
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span>├── site-modules
-</span></span><span style=display:flex><span>│   └── mymodule
-</span></span><span style=display:flex><span>│       └── plans
-</span></span><span style=display:flex><span>│           ├── planA.yaml
-</span></span><span style=display:flex><span>│           └── planB.yaml
-</span></span><span style=display:flex><span>...
-</span></span></code></pre></div><p>と定義した場合</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># planA を実行したい場合</span>
-</span></span><span style=display:flex><span>$ bolt plan run mymodule::planA --targets webservers
-</span></span><span style=display:flex><span><span style=color:#75715e># planB を実行したい場合</span>
-</span></span><span style=display:flex><span>$ bolt plan run mymodule::planB --targets webservers
-</span></span></code></pre></div><p>のような形で、指定できるため、ざっくりと、サービス単位とかで、custom modules を設計することも可能です。何が言いたいかというと、ansible の場合、tasks を実行する際、 <code>tasks/main.yaml</code> から実行される縛りがあるのですが、その縛りはないということです。ただ、一般的に他の puppet bolt のリポジトリを見た感じだと、ansible の roles と同様に、<code>nginx</code>とか<code>deploy</code>とかの単位で分けているところが多そうには感じました。下記のリポジトリなどが参考になるかもしれません。</p><p><a href=https://github.com/puppetlabs-seteam/control-repo>https://github.com/puppetlabs-seteam/control-repo</a></p><p>以下、site-modules 配下の <code>files</code>、<code>plans</code>、<code>templates</code>の 3 つのディレクトリに関してのみ解説しようと思います。その他に関しては、<a href=https://puppet.com/docs/bolt/latest/module_structure.html>Module structure</a>を参考にしてください。<br>※ ただし、上記、<code>Module structure</code>で紹介されているディレクトリ・ファイルが、<code>site-modules</code>が対応しているかどうかは調べていません。全然 <code>site-modules</code> に関するドキュメントがない。。）</p><p>ref. <a href=https://puppet.com/docs/bolt/latest/writing_plans.html#plan-location>Plan location</a> の一部に <code>site-modules</code> に関して記述されています。</p><h4 id=files>files</h4><p>plan 実行時に、「対象ホストに、静的ファイルを upload する」「対象ホスト上で、静的スクリプトを実行する」などの場合に、その静的ファイル・スクリプトを格納するディレクトリです。ansible でも同様に <code>files</code> ディレクトリを使っていますが、それと使い方は同じです。実際の bolt の plan ファイルの syntax は下記のような形になります。<code>site-modules</code>や<code>files</code>などは無視して、<code>mymodule/motd.txt</code>と指定するところが少しややこしさがあるかもしれません。が、一応、他 modules の files も指定できますよ。ってことなのかなと思っています。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>steps</span>:
-</span></span><span style=display:flex><span>  <span style=color:#75715e># motd.txt を対象ホストに upload する</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>upload</span>: <span style=color:#ae81ff>mymodule/motd.txt</span> <span style=color:#75715e># ref. site-modules/mymodule/files/motd.txt</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>destination</span>: <span style=color:#ae81ff>/etc/motd</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>targets</span>: <span style=color:#ae81ff>$targets</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;Upload motd to the webservers&#34;</span>
-</span></span><span style=display:flex><span>  <span style=color:#75715e># check_server.sh を対象ホスト上で実行する</span>
-</span></span><span style=display:flex><span>  <span style=color:#75715e># e.g. ./check_server.sh /index.html 60</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>script</span>: <span style=color:#ae81ff>mymodule/check_server.sh</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>targets</span>: <span style=color:#ae81ff>$targets</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;Run mymodule/files/check_server.sh on the webservers&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>arguments</span>: <span style=color:#75715e># Optional</span>
-</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#34;/index.html&#34;</span>
-</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>60</span>
-</span></span></code></pre></div><p>ref.</p><ul><li><a href=https://puppet.com/docs/bolt/latest/writing_yaml_plans.html#script-step>Writing plans in YAML#Script step</a></li><li><a href=https://puppet.com/docs/bolt/latest/writing_yaml_plans.html#file-download-step>Writing plans in YAML#File download step</a></li><li><a href=https://puppet.com/docs/bolt/latest/writing_yaml_plans.html#file-upload-step>Writing plans in YAML#File upload step</a></li></ul><h4 id=templates>templates</h4><p>templates は、files と違い、動的に変数等を代入して、最終的にレンダリングされたファイルを生成したいファイルを管理するディレクトリです。こちらも ansible の templates と同様の用途です。ansible の場合は、python 製のため、基本的に jinja2 がテンプレートエンジンとして利用されていますが、Puppet の場合は、<a href=https://puppet.com/docs/puppet/5.5/lang_template_epp.html>Embedded Puppet（EPP）</a>、もしくは、<a href=https://puppet.com/docs/puppet/5.5/lang_template_erb.html>Embedded Ruby (ERB)</a>で記述する必要があります。以下、結論を記載します。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-pp data-lang=pp><span style=display:flex><span><span style=color:#75715e># mymodules/templates/env.epp</span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#f92672>&lt;</span><span style=color:#960050;background-color:#1e0010>%</span><span style=color:#f92672>-</span> <span style=color:#f92672>|</span> <span style=color:#a6e22e>String</span>  $env,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>      <span style=color:#a6e22e>String</span>  $gcp_project_id,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#f92672>|</span> <span style=color:#f92672>-</span><span style=color:#960050;background-color:#1e0010>%</span><span style=color:#f92672>&gt;</span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#a6e22e>ENV</span><span style=color:#f92672>=&lt;</span><span style=color:#960050;background-color:#1e0010>%</span><span style=color:#f92672>=</span> $env <span style=color:#960050;background-color:#1e0010>%</span><span style=color:#f92672>&gt;</span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#a6e22e>GCP_PROJECT_ID</span><span style=color:#f92672>=&lt;</span><span style=color:#960050;background-color:#1e0010>%</span><span style=color:#f92672>=</span> $gcp_project_id <span style=color:#960050;background-color:#1e0010>%</span><span style=color:#f92672>&gt;</span><span style=color:#960050;background-color:#1e0010>
-</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-pp data-lang=pp><span style=display:flex><span><span style=color:#75715e># mymodules/plans/planB.pp
-</span></span></span><span style=display:flex><span><span style=color:#75715e>#
-</span></span></span><span style=display:flex><span><span style=color:#75715e>#/tmp/.env ファイルを更新する plan
-</span></span></span><span style=display:flex><span><span style=color:#75715e># @param targets The targets to configure
-</span></span></span><span style=display:flex><span><span style=color:#75715e># @param env The environment
-</span></span></span><span style=display:flex><span><span style=color:#75715e># @param tmp_dir The tmp directory for download destination</span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#a6e22e>plan</span> <span style=color:#a6e22e>mymodule</span>::<span style=color:#a6e22e>planB</span>(<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#a6e22e>TargetSpec</span> $targets,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#a6e22e>String</span>[<span style=color:#ae81ff>1</span>] $env,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#a6e22e>String</span>[<span style=color:#ae81ff>1</span>] $tmp_dir <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;/tmp&#39;</span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>) {<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#a6e22e>apply</span>($targets) {<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    <span style=color:#66d9ef>file</span> { <span style=color:#e6db74>&#34;${tmp_dir}/.env&#34;</span>:<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>      <span style=color:#a6e22e>content</span> <span style=color:#f92672>=&gt;</span> <span style=color:#a6e22e>epp</span>(<span style=color:#e6db74>&#39;mymodules/env.epp&#39;</span>, {<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>        <span style=color:#e6db74>&#39;env&#39;</span>            <span style=color:#f92672>=&gt;</span> $env,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>        <span style=color:#e6db74>&#39;gcp_project_id&#39;</span> <span style=color:#f92672>=&gt;</span> <span style=color:#a6e22e>lookup</span>(<span style=color:#e6db74>&#39;gcp_project_id&#39;</span>),<span style=color:#75715e> # hiera の data を取得</span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>      }),<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    }<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  }<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>}<span style=color:#960050;background-color:#1e0010>
-</span></span></span></code></pre></div><p>上記は、それぞれ <code>mymodules/templates/env.epp</code> と <code>mymodules/plans/planB.pp</code> で記載した template と plan（Puppet 言語）です。これで、下記コマンドを実行してみると</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>bolt plan run mymodules::planB env<span style=color:#f92672>=</span>staging --targets webservers
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>centos@192.168.100.179$ cat /tmp/.env
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>ENV<span style=color:#f92672>=</span>staging
-</span></span><span style=display:flex><span>GCP_PROJECT_ID<span style=color:#f92672>=</span>gcp_project_staging
-</span></span></code></pre></div><p>となります。この際、<code>lookup('gcp_project_id')</code>と指定して、<code>gcp_project_staging</code>が代入されています。これは puppet の build-in function <a href=https://puppet.com/docs/puppet/7.1/function.html#lookup>lookup</a> を使うことで、hiera data として定義した変数を取得することができるためです。</p><p>ref.</p><ul><li><a href=https://puppet.com/docs/puppet/5.5/lang_template.html>Language: Using templates</a></li><li><a href=https://puppet.com/docs/bolt/latest/applying_manifest_blocks.html#using-hiera-data-in-a-manifest-block>Applying Puppet code#Using Hiera data in a manifest block</a></li></ul><h4 id=plans>plans</h4><p>bolt の plan を格納するディレクトリです。plan は、複数のタスクを一まとまりにした単位のことを呼びます。実行したタスクの入力の値を計算したり、別のタスクの結果に基づいて特定のタスクを実行したりするなど、複雑なタスクを実行できます。plan は、yaml（not .yml） or puppet（pp）で記述することが可能です。それぞれ同じで、同じタスクを記述すると</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># yaml の場合（site-modules/mymodule/plans/planA.yaml）</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>parameters</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>targets</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>TargetSpec</span>
-</span></span><span style=display:flex><span>  <span style=color:#f92672>bucket_name</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>String[1]</span>
-</span></span><span style=display:flex><span>  <span style=color:#f92672>object_path</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>String[1]</span>
-</span></span><span style=display:flex><span>  <span style=color:#f92672>tmp_dir</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>String[1]</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>default</span>: <span style=color:#e6db74>&#34;/tmp&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>steps</span>:
-</span></span><span style=display:flex><span>  <span style=color:#75715e># motd.txt を対象ホストに upload する</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>upload</span>: <span style=color:#ae81ff>mymodule/motd.txt</span> <span style=color:#75715e># ref. site-modules/mymodule/files/motd.txt</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>destination</span>: <span style=color:#ae81ff>/etc/motd</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>targets</span>: <span style=color:#ae81ff>$targets</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;Upload motd to the webservers&#34;</span>
-</span></span><span style=display:flex><span>  <span style=color:#75715e># check_server.sh を対象ホスト上で実行する</span>
-</span></span><span style=display:flex><span>  <span style=color:#75715e># e.g. ./check_server.sh /index.html 60</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>script</span>: <span style=color:#ae81ff>mymodule/check_server.sh</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>targets</span>: <span style=color:#ae81ff>$targets</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;Run mymodule/files/check_server.sh on the webservers&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>arguments</span>: <span style=color:#75715e># Optional</span>
-</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#34;/index.html&#34;</span>
-</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>60</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>task</span>: <span style=color:#ae81ff>myproject::download_from_gcs</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>targets</span>: <span style=color:#ae81ff>$targets</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;Download file from gcs&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>parameters</span>:
-</span></span><span style=display:flex><span>      <span style=color:#f92672>bucket_name</span>: <span style=color:#ae81ff>$bucket_name</span>
-</span></span><span style=display:flex><span>      <span style=color:#f92672>object_path</span>: <span style=color:#ae81ff>$object_path</span>
-</span></span><span style=display:flex><span>      <span style=color:#f92672>tmp_dir</span>: <span style=color:#ae81ff>$tmp_dir</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-pp data-lang=pp><span style=display:flex><span><span style=color:#75715e># puppuet の場合（site-modules/mymodule/plans/planA.pp）
-</span></span></span><span style=display:flex><span><span style=color:#75715e>
-</span></span></span><span style=display:flex><span><span style=color:#75715e># @param targets The targets to configure
-</span></span></span><span style=display:flex><span><span style=color:#75715e># @param bucket_name The bucket name
-</span></span></span><span style=display:flex><span><span style=color:#75715e># @param object_path The object path
-</span></span></span><span style=display:flex><span><span style=color:#75715e># @param tmp_dir The tmp directory for download destination</span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#a6e22e>plan</span> <span style=color:#a6e22e>mymodule</span>::<span style=color:#a6e22e>planA</span>(<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#a6e22e>TargetSpec</span> $targets,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#a6e22e>String</span>[<span style=color:#ae81ff>1</span>] $bucket_name,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#a6e22e>String</span>[<span style=color:#ae81ff>1</span>] $object_path,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#a6e22e>String</span>[<span style=color:#ae81ff>1</span>] $tmp_dir <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;/tmp&#39;</span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>) {<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#a6e22e>upload_file</span>(<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    <span style=color:#e6db74>&#39;mymodule/motd.txt&#39;</span>,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    <span style=color:#e6db74>&#39;/etc/motd&#39;</span>,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    $targets,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    <span style=color:#e6db74>&#34;Upload motd to the webservers&#34;</span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  )<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#a6e22e>run_script</span>(<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    <span style=color:#e6db74>&#39;mymodule/check_server.sh&#39;</span>,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    $targets,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    <span style=color:#e6db74>&#34;Run mymodule/files/check_server.sh on the webservers&#34;</span>,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    {<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>      <span style=color:#e6db74>&#39;arguments&#39;</span> <span style=color:#f92672>=&gt;</span> [<span style=color:#e6db74>&#34;/index.html&#34;</span>, <span style=color:#ae81ff>60</span>]<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    }<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  )<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#a6e22e>run_task</span>(<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    <span style=color:#e6db74>&#39;myproject::download_from_gcs&#39;</span>,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    $targets,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    <span style=color:#e6db74>&#39;Download file from gcs&#39;</span>,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    {<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>      <span style=color:#e6db74>&#39;bucket_name&#39;</span> <span style=color:#f92672>=&gt;</span> $bucket_name,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>      <span style=color:#e6db74>&#39;object_path&#39;</span> <span style=color:#f92672>=&gt;</span> $object_path,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>      <span style=color:#e6db74>&#39;tmp_dir&#39;</span>     <span style=color:#f92672>=&gt;</span> $tmp_dir,<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    },<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  )<span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>}<span style=color:#960050;background-color:#1e0010>
-</span></span></span></code></pre></div><p>となります。上記 2 つの plan は同じ plan です。細かい箇所の説明は省きますが、上記のように記述したのち</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>bolt plan run mymodule::planA env<span style=color:#f92672>=</span>staging bucket_name<span style=color:#f92672>=</span>mybucket object_path<span style=color:#f92672>=</span>myobject.txt --targets webservers
-</span></span></code></pre></div><p>のコマンドを実行することで、対象ホスト（targets）に対して、plan を実行することができます。ちなみに余談ですが、下記コマンドを実行すると、<code>yaml -> pp</code> への変換ができます。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>bolt plan convert site-modules/mymodule/plans/planA.yaml
-</span></span></code></pre></div><p>そこで次に考えるのは、<code>yaml</code>と<code>pp</code>どっちで書こう問題なのですが、「やっぱり yaml の方が慣れてる人多いし、puppet 独自の DSL とか学習コスト高そうだし、やっぱり yaml で書こう！」と、Puppet 言語に慣れていないほとんどの人が思うところかなと思うのですが、ここで割と大事な個人的な見解としては、<code>「（現時点では）ちゃんと本番環境で利用とするのであれば、多少苦労してでも、Puppet言語で記述した方がいい」</code>です。なぜかというと、<code>yaml だと、まだ動かないこと結構多いです。</code>最も致命的なのは、<code>templateがいまいち使えない</code>ことです。（ref. <a href=https://github.com/puppetlabs/bolt/issues/2301>Support Templates from yaml #2301</a>） やはり、前身となるのが Puppet 言語なので、現段階では、「今まで、Puppet 言語で作られてきたものを YAML でも書けるようにするために色々頑張ってる」という印象が強いです。そのため現段階での個人的な見解としては、あまり yaml で記述することをお勧めしません。</p><h2 id=さいごに>さいごに</h2><p>他の構成管理ツールを使ったことがある方なら、やはりディレクトリ構成も似ていたりするので、割と取っつきやすい部分もありますが、「独自言語であること」「落とし穴がある」「ドキュメント・ナレッジが少ない」の 3 つがやはりネックになってきます。上記記載したことを参考にしていただきなら、まずは、触ってみる。その中で、全体のコンセプトを掴んでもらい、設計 -> 実装とやると良いかなと思います。今後はもっと、Puppet Bolt が流行ってくることを期待したいです。</p><h2 id=参考>参考</h2><ul><li><a href=https://puppet.com/docs/bolt/latest/bolt.html>Welcome to Bolt</a></li><li>その他に関しては、各項目毎の <code>ref</code> を参考にしてください。</li></ul></article></main><footer id=footer></footer></body></html>
+「<code>Resource Type</code> とはなんぞや？」というところを理解したい場合は、まずは「<code>Resource</code> とはなんぞや？」というところから、調べてみることをオススメします。</p><p>ref.</p><ul><li><a href=https://qiita.com/takeuchikzm/items/cfa012571fdedcf0792b#resource---puppet%E3%81%AB%E3%82%88%E3%82%8B%E6%A7%8B%E6%88%90%E7%AE%A1%E7%90%86%E3%81%AE%E6%9C%80%E5%B0%8F%E5%8D%98%E4%BD%8D>Resource - Puppet による構成管理の最小単位</a></li><li><a href=https://puppet.com/docs/puppet/7.0/lang_resources.html>Resources</a></li><li><a href=https://puppet.com/docs/puppet/7.0/type.html>Resource Type Reference</a></li></ul><h3 id=puppetfile>Puppetfile</h3><p><a href=https://forge.puppet.com/>Puppet Forge</a>の puppet modules を「初めて」 install した時に、作成されるファイル。基本的には、このファイルは、手で修正しない方針であることが前提（Do not edit）。このファイルをベースに、<code>.modules</code> を install するため、基本的には、gitignore はしない方がいいと個人的には思っています。ファイル名的には、<code>Gemfile</code> っぽいファイルと思いきや、<code>Gemfile.lock</code>のようなファイル。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=line><span class=cl><span class=c1># This Puppetfile is managed by Bolt. Do not edit.</span>
+</span></span><span class=line><span class=cl><span class=c1># For more information, see https://pup.pt/bolt-modules</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># The following directive installs modules to the managed moduledir.</span>
+</span></span><span class=line><span class=cl><span class=n>moduledir</span> <span class=s1>&#39;.modules&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>mod</span> <span class=s2>&#34;puppetlabs-chocolatey&#34;</span><span class=p>,</span> <span class=s2>&#34;5.1.1&#34;</span>
+</span></span><span class=line><span class=cl><span class=err>・・・</span>
+</span></span></code></pre></div><h3 id=bolt-debuglog>bolt-debug.log</h3><p>Bolt コマンドを実行時、デバッグレベルのログが出力されるログファイルです。<code>bolt plan</code>などの実行ログが書き込まれます。ログの形式は以下の通りです。特に何も指定しなければ、実行毎に recreate されるため、過去のログは残らなさそうです。基本的には、<code>.gitignore</code>などで、git からは除外することが多いと思います。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-txt data-lang=txt><span class=line><span class=cl>2020-12-02T18:44:46.273566 INFO   [event-publisher] [Bolt::Outputter::Logger] Starting: plan mymodule::planA
+</span></span><span class=line><span class=cl>2020-12-02T18:44:46.291736 INFO   [event-publisher] [Bolt::Outputter::Logger] Finished: plan mymodule::planA in 0.02 sec
+</span></span></code></pre></div><p>ref. <a href=https://puppet.com/docs/bolt/latest/logs.html#the-bolt-debuglog-file>The bolt-debug.log file</a></p><h3 id=bolt-projectyaml>bolt-project.yaml</h3><p>project 単位（リポジトリ単位？）で、bolt の設定を管理する時に用意するファイル。ansible でいうところの ansible.cfg みたいなもの。今までは、<code>bolt.yaml</code>を使っていたみたいですが、そちらは非推奨になっています。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># bolt project の作成（ project_name に、ハイフンは含められない。）</span>
+</span></span><span class=line><span class=cl>$ bolt project init myproject
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>$ ls
+</span></span><span class=line><span class=cl>bolt-project.yaml
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>$ cat bolt-project.yaml
+</span></span><span class=line><span class=cl>---
+</span></span><span class=line><span class=cl>name: myproject
+</span></span></code></pre></div><p>ref. <a href=https://puppet.com/docs/bolt/latest/bolt_project_reference.html>bolt-project.yaml options</a></p><h3 id=data>data</h3><p>bolt で利用する変数などを管理するディレクトリ。一般的には、OS や環境毎や構成管理ツール毎などの yaml ファイルを格納しておくことが多いです。後述する hiera の機能で、その変数等を読み込む優先順位を定義します。格納できるファイルは、YAML or JSON or HOCON（Human-Optimized Config Object Notation）が利用できます。ディレクトリ名は <code>data</code> である必要はありませんが、大体、 <code>data</code> とすることが多いようです。簡単な yaml の例を記載するとすると以下のような形で、普通の yaml として定義するだけです。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># staging.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>---</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>gcp_project_id</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;gcp_project_staging&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># production.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>---</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>gcp_project_id</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;gcp_project_production&#34;</span><span class=w>
+</span></span></span></code></pre></div><p>ref. <a href=https://puppet.com/docs/puppet/7.1/hiera_merging.html>Creating and editing data</a></p><h3 id=hierayaml>hiera.yaml</h3><p><code>data</code> ディレクトリに格納した変数ファイルの読み込む優先順位などを定義するファイル。 <code>hierarchy</code> に、ハッシュの配列形式で読み込む順番（優先順位）を定義する。上から下に、優先順位が下がっていきます。そのため基本的には、最後に、<code>common.yaml</code> とかを記載することが多いです。ansible だと、<code>group_vars</code> とか <code>host_vars</code> とか暗黙的な変数定義ルールがある印象ですが、多分？、puppet bolt の変数定義ルールはここに全て記載する必要があるような気がしています。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nn>---</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=m>5</span><span class=w> </span><span class=c># hiera の ver 指定する。bolt は ver 5のみ対応している。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>defaults</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>datadir</span><span class=p>:</span><span class=w> </span><span class=l>data</span><span class=w> </span><span class=c># 変数ファイルを、hiera.yaml ファイルからみた相対パスで指定する</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>data_hash</span><span class=p>:</span><span class=w> </span><span class=l>yaml_data</span><span class=w> </span><span class=c># 変数ファイルの形式を指定する。e.g. yaml, json, HOCON</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>hierarchy</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># bolt 実行時に、env を渡すとそれぞれの変数ファイルを読み込む</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># 上から優先順位が高い。そのため基本的には、最後に、common.yamlとかを記載することが多い。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;environment data&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>path</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;%{env}.yaml&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;common data&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>path</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;common.yaml&#34;</span><span class=w>
+</span></span></span></code></pre></div><p>上記 hiera.yaml を定義した場合、下記のように bolt plan 実行時に、引数に<code>env</code>実行すると、各環境の変数ファイルを読み込むことが可能です。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 引数 env=staging -&gt; data/staging.yaml を読み込む</span>
+</span></span><span class=line><span class=cl>$ bolt plan run mymodule::planA <span class=nv>env</span><span class=o>=</span>staging --targets webservers
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 引数 env=production -&gt; data/production.yaml を読み込む</span>
+</span></span><span class=line><span class=cl>$ bolt plan run mymodule::planA <span class=nv>env</span><span class=o>=</span>production --targets webservers
+</span></span></code></pre></div><p>ref.</p><ul><li><a href=https://qiita.com/takeuchikzm/items/e04e6cbe84a185eb1f26>私と Puppet ベストプラクティス編 その 3 (Hiera で世界が変わる?)</a></li><li><a href=https://puppet.com/docs/puppet/7.0/hiera_config_yaml_5.html>Configuring Hiera</a></li></ul><h3 id=inventoryyaml>inventory.yaml</h3><p>対象ホストを管理するファイルです。ansbible の inventory ファイルと同様の役割をするファイルです。<a href=https://puppet.com/docs/bolt/latest/inventory_file_v2.html>Inventory files</a>にある、一部の例を下記に転記しました。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>groups</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># e.g. linux の webserver via ssh</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>ssh_nodes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>groups</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>webservers</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>targets</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=m>192.168.100.179</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=m>192.168.100.180</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>memcached</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>targets</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=m>192.168.101.50</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>config</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>ssh</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>user</span><span class=p>:</span><span class=w> </span><span class=l>root</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>config</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>transport</span><span class=p>:</span><span class=w> </span><span class=l>ssh</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>ssh</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>user</span><span class=p>:</span><span class=w> </span><span class=l>centos</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>private-key</span><span class=p>:</span><span class=w> </span><span class=l>~/.ssh/id_rsa</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>host-key-check</span><span class=p>:</span><span class=w> </span><span class=kc>false</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># e.g. windows の webservers via winrm</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>win_nodes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>groups</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>apiservers</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>targets</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=m>192.168.110.10</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>testservers</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>targets</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=m>172.16.219.20</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>config</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>transport</span><span class=p>:</span><span class=w> </span><span class=l>winrm</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>winrm</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>user</span><span class=p>:</span><span class=w> </span><span class=l>DOMAIN\opsaccount</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>password</span><span class=p>:</span><span class=w> </span><span class=l>S3cretP@ssword</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>ssl</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span></code></pre></div><p>ここの例では、まず、接続方式が、「ssh」か「<a href=https://qiita.com/asterisk9101/items/46d45c30a1141b1e6115>winrm</a>」かで group を分けています。その後、それぞれで、複数対象ホストが存在する場合は、さらに、groups で入れ子にして、対象ホストを指定します。config には、接続方式とその認証情報を記載します。そして、bolt コマンド実行時の <code>--targets</code> の引数として、groups を指定するように、下記のようなコマンドを実行します。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># ssh_nodes,win_nodes 両方に実行する場合</span>
+</span></span><span class=line><span class=cl>$ bolt <span class=nb>command</span> run <span class=s1>&#39;echo hello&#39;</span> --targets ssh_nodes,win_nodes
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ssh_nodes のみに実行する場合</span>
+</span></span><span class=line><span class=cl>$ bolt <span class=nb>command</span> run <span class=s1>&#39;echo hello&#39;</span> --targets ssh_nodes
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># webservers,testservers のみに実行する場合</span>
+</span></span><span class=line><span class=cl>$ bolt <span class=nb>command</span> run <span class=s1>&#39;echo hello&#39;</span> --targets webservers,testservers
+</span></span></code></pre></div><p>そうすると、inventory から指定された targets への接続方法・情報を判断して、それぞれに対して、接続し、コマンドを実行します。ただし、この指定の仕方の場合、<code>targets</code>に対して、IP アドレスなどを指定しなければならないため、対象ホストが増えてくると管理が煩雑になっていきます。もし設計段階で、そのような状況になりそうであれば、AWS や GCP などのクラウドを使っているのであれば、いわゆる <a href=https://puppet.com/docs/bolt/latest/inventory_file_v2.html#plugins>Dynamic Inventory</a> のような plugin 機能を利用するのは簡単にできそうなため、試してみるのが良いかなと思います。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># ref. https://forge.puppet.com/modules/puppetlabs/aws_inventory</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># inventory.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>---</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>groups</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>aws</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>targets</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>_plugin</span><span class=p>:</span><span class=w> </span><span class=l>aws_inventory</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>profile</span><span class=p>:</span><span class=w> </span><span class=l>user1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>region</span><span class=p>:</span><span class=w> </span><span class=l>us-west-1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>filters</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>tag:Owner</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>values</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=l>Devs]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>instance-type</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>values</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=l>t2.micro, c5.large]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>target_mapping</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>public_dns_name</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>uri</span><span class=p>:</span><span class=w> </span><span class=l>public_ip_address</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>config</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>ssh</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>public_dns_name</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>config</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>ssh</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>user</span><span class=p>:</span><span class=w> </span><span class=l>ec2-user</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>private-key</span><span class=p>:</span><span class=w> </span><span class=l>~/.aws/private-key.pem</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>host-key-check</span><span class=p>:</span><span class=w> </span><span class=kc>false</span><span class=w>
+</span></span></span></code></pre></div><p>ref. <a href=https://puppet.com/docs/bolt/latest/inventory_file_v2.html>Inventory files</a></p><h3 id=tasks>tasks</h3><p>task は、対象ホストで実行する puppet bolt の中で最もシンプルなアクションの単位です。タスクは、Bash、Python、Ruby など、対象ホスト似て、実行できる任意のプログラミング言語でタスクを記述できます。デフォルトでは、下記のようなタスクが用意されています。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ bolt task show
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>apt                                 Allows you to perform apt functions
+</span></span><span class=line><span class=cl>facts                               Gather system facts
+</span></span><span class=line><span class=cl>http_request                        Make a HTTP or HTTPS request.
+</span></span><span class=line><span class=cl>package                             Manage and inspect the state of packages
+</span></span><span class=line><span class=cl>pkcs7::secret_createkeys            Create a key pair
+</span></span><span class=line><span class=cl>pkcs7::secret_decrypt               Encrypt sensitive data with pkcs7
+</span></span><span class=line><span class=cl>pkcs7::secret_encrypt               Encrypt sensitive data with pkcs7
+</span></span><span class=line><span class=cl>puppet_agent::install               Install the Puppet agent package
+</span></span><span class=line><span class=cl>puppet_agent::version               Get the version of the Puppet agent package installed. Returns nothing <span class=k>if</span> none present.
+</span></span><span class=line><span class=cl>puppet_conf                         Inspect puppet agent configuration settings
+</span></span><span class=line><span class=cl>reboot                              Reboots a machine
+</span></span><span class=line><span class=cl>reboot::last_boot_time              Gets the last boot <span class=nb>time</span> of a Linux or Windows system
+</span></span><span class=line><span class=cl>service                             Manage and inspect the state of services
+</span></span><span class=line><span class=cl>terraform::apply                    Apply an HCL manifest
+</span></span><span class=line><span class=cl>terraform::destroy                  Destroy resources managed with Terraform
+</span></span><span class=line><span class=cl>terraform::initialize               Initialize a Terraform project directory
+</span></span><span class=line><span class=cl>terraform::output                   JSON representation of Terraform outputs
+</span></span></code></pre></div><p>例えば、package のタスクの使い方としては、以下のコマンドを実行することで、対象ホスト（webservers）の Apache の status を確認することができます。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>bolt task run package <span class=nv>action</span><span class=o>=</span>status <span class=nv>name</span><span class=o>=</span>apache2 --targets webservers
+</span></span></code></pre></div><p>カスタムタスクの例として、ruby で記載した GCS からファイルをダウンロードするタスクを紹介します。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>・・・
+</span></span><span class=line><span class=cl>└── tasks
+</span></span><span class=line><span class=cl>    ├── download_from_gcs.json <span class=c1># タスクのメタデータ</span>
+</span></span><span class=line><span class=cl>    └── download_from_gcs.rb   <span class=c1># タスクを定義する実行スクリプト</span>
+</span></span></code></pre></div><p>ファイルとしては、「タスクのメタデータ」の json と「タスクを定義する実行スクリプト」を準備します。そして、それぞれのファイルを以下のように記述します。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=c1>// download_from_gcs.json
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;description&#34;</span><span class=p>:</span> <span class=s2>&#34;Download file from google cloud storage locally&#34;</span><span class=p>,</span> <span class=c1>// タスクの説明
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nt>&#34;input_method&#34;</span><span class=p>:</span> <span class=s2>&#34;stdin&#34;</span><span class=p>,</span> <span class=c1>// タスクのインプット方法 e.g. environment（環境変数）, stdin（標準入力）, powershell（？？）
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nt>&#34;parameters&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;bucket_name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;description&#34;</span><span class=p>:</span> <span class=s2>&#34;Bucket of google cloud storage&#34;</span><span class=p>,</span> <span class=c1>// パラメータの説明
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;String[1]&#34;</span> <span class=c1>// パラメータのデータ型の指定 e.g. 空ではない文字列
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;object_path&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;description&#34;</span><span class=p>:</span> <span class=s2>&#34;Object path of google cloud storage&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;String[1]&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;tmp_dir&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;description&#34;</span><span class=p>:</span> <span class=s2>&#34;tmp path&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;String[1]&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;files&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;ruby_task_helper/files/task_helper.rb&#34;</span><span class=p>]</span> <span class=c1>// タスク実行時に利用するファイルの指定。基本、ヘルパーライブラリが多いかも。
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=line><span class=cl><span class=ch>#!/usr/bin/env ruby</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>require_relative</span> <span class=s1>&#39;../../ruby_task_helper/files/task_helper&#39;</span>
+</span></span><span class=line><span class=cl><span class=nb>require</span> <span class=s1>&#39;google/cloud/storage&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>DownloadFileFromGCS</span> <span class=o>&lt;</span> <span class=no>TaskHelper</span>
+</span></span><span class=line><span class=cl>  <span class=c1># GCSの指定バケット・オブジェクトパスを指定tmpディレクトリにダウンロードするタスク</span>
+</span></span><span class=line><span class=cl>  <span class=k>def</span> <span class=nf>task</span><span class=p>(</span><span class=ss>bucket_name</span><span class=p>:</span> <span class=kp>nil</span><span class=p>,</span> <span class=ss>object_path</span><span class=p>:</span> <span class=kp>nil</span><span class=p>,</span> <span class=ss>tmp_dir</span><span class=p>:</span> <span class=kp>nil</span><span class=p>,</span> <span class=o>**</span><span class=n>_kwargs</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>storage</span> <span class=o>=</span> <span class=no>Google</span><span class=o>::</span><span class=no>Cloud</span><span class=o>::</span><span class=no>Storage</span><span class=o>.</span><span class=n>new</span>
+</span></span><span class=line><span class=cl>    <span class=n>bucket</span> <span class=o>=</span> <span class=n>storage</span><span class=o>.</span><span class=n>bucket</span> <span class=n>bucket_name</span>
+</span></span><span class=line><span class=cl>    <span class=n>object</span> <span class=o>=</span> <span class=n>bucket</span><span class=o>.</span><span class=n>file</span> <span class=n>object_path</span>
+</span></span><span class=line><span class=cl>    <span class=n>object</span><span class=o>.</span><span class=n>download</span> <span class=n>tmp_dir</span> <span class=o>+</span> <span class=s1>&#39;/&#39;</span> <span class=o>+</span> <span class=n>object_path</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nb>puts</span> <span class=s2>&#34;Success to download </span><span class=si>#{</span><span class=n>object</span><span class=o>.</span><span class=n>name</span><span class=si>}</span><span class=s2> to </span><span class=si>#{</span><span class=n>tmp_dir</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=no>DownloadFileFromGCS</span><span class=o>.</span><span class=n>run</span> <span class=k>if</span> <span class=bp>__FILE__</span> <span class=o>==</span> <span class=vg>$0</span>
+</span></span></code></pre></div><p>上記カスタムタスクは、<code>ruby_task_helper</code>を利用しています。名前の通り、ruby でカスタムタスクを作成する際に、いい感じにしてくれる、ruby のヘルパーライブラリです。ざっくりいうと、メタデータにパラメータを指定して、スクリプトの方で、メソッドを定義すればよい。それだけと言えばそれだけです。</p><p>ref. <a href=https://puppet.com/docs/bolt/latest/writing_tasks.html#common-task-data-types>利用できるタスクのデータ型</a></p><p>タスクの詳細は以下のように確認することもできます。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ bolt task show myproject::download_from_gcs
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>myproject::download_from_gcs - Download file from google cloud storage locally
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>USAGE:
+</span></span><span class=line><span class=cl>bolt task run --targets &lt;node-name&gt; myproject::download_from_gcs <span class=nv>bucket_name</span><span class=o>=</span>&lt;value&gt; <span class=nv>object_path</span><span class=o>=</span>&lt;value&gt; <span class=nv>tmp_dir</span><span class=o>=</span>&lt;value&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>PARAMETERS:
+</span></span><span class=line><span class=cl>- bucket_name: String<span class=o>[</span>1<span class=o>]</span>
+</span></span><span class=line><span class=cl>    Bucket of google cloud storage
+</span></span><span class=line><span class=cl>- object_path: String<span class=o>[</span>1<span class=o>]</span>
+</span></span><span class=line><span class=cl>    Object path of google cloud storage
+</span></span><span class=line><span class=cl>- tmp_dir: String<span class=o>[</span>1<span class=o>]</span>
+</span></span><span class=line><span class=cl>    tmp path
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>MODULE:
+</span></span><span class=line><span class=cl>/Users/jkkitakita/myproject
+</span></span></code></pre></div><p>あとは、定義した task を直接使う、または、plan から呼び出せば ok です。</p><p>ref. <a href=https://puppet.com/docs/bolt/latest/tasks.html>Making on-demand changes with tasks</a></p><h3 id=site-modules>site-modules</h3><p>最後に、site-modules を紹介します。site-modules は、プロジェクト毎の custom modules です。（ドキュメントがいまいちないので、合ってるか不明。私の認識です。）<a href=https://forge.puppet.com/>Puppet Forge</a>の puppet modules は、<code>.modules</code> に格納されると上述しましたが、それでは不十分である、または、プロダクト固有の modules を作成したい場合に用意します。その際には、<code>site-modules</code> ディレクトリを作成します。シンプルな plan を実行したいだけであれば、 bolt project のルートディレクトリに <code>plan</code> ディレクトリを作成するだけで十分かもしれません。が、個人的には、ちゃんと今後の保守・運用も考慮するのであれば、単純な plan を実行するだけでも <code>site-modules</code> ディレクトリを作成した方がいいと思います。ansible でいうと、<code>modules</code> を <code>roles</code> に読み替えると良いかもしません。<code>Puppet Forge</code> は <code>Ansible Galaxy</code>的な立ち位置なので、ansible に慣れている方は、そのイメージです。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># puppet bolt の site-modules のディレクトリ構成</span>
+</span></span><span class=line><span class=cl>...
+</span></span><span class=line><span class=cl>├── site-modules
+</span></span><span class=line><span class=cl>│   └── mymodule
+</span></span><span class=line><span class=cl>│       ├── files
+</span></span><span class=line><span class=cl>│       ├── plans
+</span></span><span class=line><span class=cl>│       └── templates
+</span></span><span class=line><span class=cl>...
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># ref. ansible の場合の roles のディレクトリ構成</span>
+</span></span><span class=line><span class=cl>...
+</span></span><span class=line><span class=cl>├── roles
+</span></span><span class=line><span class=cl>│   └── myrole
+</span></span><span class=line><span class=cl>│       ├── files
+</span></span><span class=line><span class=cl>│       ├── tasks
+</span></span><span class=line><span class=cl>│       └── templates
+</span></span><span class=line><span class=cl>...
+</span></span></code></pre></div><p>ただし、実際に使ってみた感覚から言うと、ansible の roles よりも、もう少し柔軟な（悪くいうと、フワッとした）custom modules を定義できる印象があります。具体的には</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># puppet bolt の site-modules のディレクトリ構成</span>
+</span></span><span class=line><span class=cl>...
+</span></span><span class=line><span class=cl>├── site-modules
+</span></span><span class=line><span class=cl>│   └── mymodule
+</span></span><span class=line><span class=cl>│       └── plans
+</span></span><span class=line><span class=cl>│           ├── planA.yaml
+</span></span><span class=line><span class=cl>│           └── planB.yaml
+</span></span><span class=line><span class=cl>...
+</span></span></code></pre></div><p>と定義した場合</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># planA を実行したい場合</span>
+</span></span><span class=line><span class=cl>$ bolt plan run mymodule::planA --targets webservers
+</span></span><span class=line><span class=cl><span class=c1># planB を実行したい場合</span>
+</span></span><span class=line><span class=cl>$ bolt plan run mymodule::planB --targets webservers
+</span></span></code></pre></div><p>のような形で、指定できるため、ざっくりと、サービス単位とかで、custom modules を設計することも可能です。何が言いたいかというと、ansible の場合、tasks を実行する際、 <code>tasks/main.yaml</code> から実行される縛りがあるのですが、その縛りはないということです。ただ、一般的に他の puppet bolt のリポジトリを見た感じだと、ansible の roles と同様に、<code>nginx</code>とか<code>deploy</code>とかの単位で分けているところが多そうには感じました。下記のリポジトリなどが参考になるかもしれません。</p><p><a href=https://github.com/puppetlabs-seteam/control-repo>https://github.com/puppetlabs-seteam/control-repo</a></p><p>以下、site-modules 配下の <code>files</code>、<code>plans</code>、<code>templates</code>の 3 つのディレクトリに関してのみ解説しようと思います。その他に関しては、<a href=https://puppet.com/docs/bolt/latest/module_structure.html>Module structure</a>を参考にしてください。<br>※ ただし、上記、<code>Module structure</code>で紹介されているディレクトリ・ファイルが、<code>site-modules</code>が対応しているかどうかは調べていません。全然 <code>site-modules</code> に関するドキュメントがない。。）</p><p>ref. <a href=https://puppet.com/docs/bolt/latest/writing_plans.html#plan-location>Plan location</a> の一部に <code>site-modules</code> に関して記述されています。</p><h4 id=files>files</h4><p>plan 実行時に、「対象ホストに、静的ファイルを upload する」「対象ホスト上で、静的スクリプトを実行する」などの場合に、その静的ファイル・スクリプトを格納するディレクトリです。ansible でも同様に <code>files</code> ディレクトリを使っていますが、それと使い方は同じです。実際の bolt の plan ファイルの syntax は下記のような形になります。<code>site-modules</code>や<code>files</code>などは無視して、<code>mymodule/motd.txt</code>と指定するところが少しややこしさがあるかもしれません。が、一応、他 modules の files も指定できますよ。ってことなのかなと思っています。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>steps</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># motd.txt を対象ホストに upload する</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>upload</span><span class=p>:</span><span class=w> </span><span class=l>mymodule/motd.txt</span><span class=w> </span><span class=c># ref. site-modules/mymodule/files/motd.txt</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>destination</span><span class=p>:</span><span class=w> </span><span class=l>/etc/motd</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>targets</span><span class=p>:</span><span class=w> </span><span class=l>$targets</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>description</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Upload motd to the webservers&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># check_server.sh を対象ホスト上で実行する</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># e.g. ./check_server.sh /index.html 60</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>script</span><span class=p>:</span><span class=w> </span><span class=l>mymodule/check_server.sh</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>targets</span><span class=p>:</span><span class=w> </span><span class=l>$targets</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>description</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Run mymodule/files/check_server.sh on the webservers&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>arguments</span><span class=p>:</span><span class=w> </span><span class=c># Optional</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=s2>&#34;/index.html&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=m>60</span><span class=w>
+</span></span></span></code></pre></div><p>ref.</p><ul><li><a href=https://puppet.com/docs/bolt/latest/writing_yaml_plans.html#script-step>Writing plans in YAML#Script step</a></li><li><a href=https://puppet.com/docs/bolt/latest/writing_yaml_plans.html#file-download-step>Writing plans in YAML#File download step</a></li><li><a href=https://puppet.com/docs/bolt/latest/writing_yaml_plans.html#file-upload-step>Writing plans in YAML#File upload step</a></li></ul><h4 id=templates>templates</h4><p>templates は、files と違い、動的に変数等を代入して、最終的にレンダリングされたファイルを生成したいファイルを管理するディレクトリです。こちらも ansible の templates と同様の用途です。ansible の場合は、python 製のため、基本的に jinja2 がテンプレートエンジンとして利用されていますが、Puppet の場合は、<a href=https://puppet.com/docs/puppet/5.5/lang_template_epp.html>Embedded Puppet（EPP）</a>、もしくは、<a href=https://puppet.com/docs/puppet/5.5/lang_template_erb.html>Embedded Ruby (ERB)</a>で記述する必要があります。以下、結論を記載します。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-pp data-lang=pp><span class=line><span class=cl><span class=c># mymodules/templates/env.epp</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=o>&lt;</span><span class=err>%</span><span class=o>-</span> <span class=o>|</span> <span class=na>String</span>  <span class=nv>$env,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>      <span class=na>String</span>  <span class=nv>$gcp_project_id,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=o>|</span> <span class=o>-</span><span class=err>%</span><span class=o>&gt;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=na>ENV</span><span class=o>=&lt;</span><span class=err>%</span><span class=o>=</span> <span class=nv>$env</span> <span class=err>%</span><span class=o>&gt;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=na>GCP_PROJECT_ID</span><span class=o>=&lt;</span><span class=err>%</span><span class=o>=</span> <span class=nv>$gcp_project_id</span> <span class=err>%</span><span class=o>&gt;</span><span class=err>
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-pp data-lang=pp><span class=line><span class=cl><span class=c># mymodules/plans/planB.pp
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c>#/tmp/.env ファイルを更新する plan
+</span></span></span><span class=line><span class=cl><span class=c># @param targets The targets to configure
+</span></span></span><span class=line><span class=cl><span class=c># @param env The environment
+</span></span></span><span class=line><span class=cl><span class=c># @param tmp_dir The tmp directory for download destination</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=na>plan</span> <span class=na>mymodule</span><span class=p>::</span><span class=na>planB</span><span class=p>(</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=na>TargetSpec</span> <span class=nv>$targets,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=na>String</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=nv>$env,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=na>String</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=nv>$tmp_dir</span> <span class=o>=</span> <span class=s>&#39;/tmp&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=p>)</span> <span class=p>{</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=na>apply</span><span class=p>(</span><span class=nv>$targets)</span> <span class=p>{</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=k>file</span> <span class=p>{</span> <span class=s>&#34;${tmp_dir}/.env&#34;</span><span class=p>:</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>      <span class=na>content</span> <span class=o>=&gt;</span> <span class=na>epp</span><span class=p>(</span><span class=s>&#39;mymodules/env.epp&#39;</span><span class=p>,</span> <span class=p>{</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>        <span class=s>&#39;env&#39;</span>            <span class=o>=&gt;</span> <span class=nv>$env,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>        <span class=s>&#39;gcp_project_id&#39;</span> <span class=o>=&gt;</span> <span class=na>lookup</span><span class=p>(</span><span class=s>&#39;gcp_project_id&#39;</span><span class=p>),</span><span class=c> # hiera の data を取得</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>      <span class=p>}),</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=p>}</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=p>}</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=p>}</span><span class=err>
+</span></span></span></code></pre></div><p>上記は、それぞれ <code>mymodules/templates/env.epp</code> と <code>mymodules/plans/planB.pp</code> で記載した template と plan（Puppet 言語）です。これで、下記コマンドを実行してみると</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>bolt plan run mymodules::planB <span class=nv>env</span><span class=o>=</span>staging --targets webservers
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>centos@192.168.100.179$ cat /tmp/.env
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>ENV</span><span class=o>=</span>staging
+</span></span><span class=line><span class=cl><span class=nv>GCP_PROJECT_ID</span><span class=o>=</span>gcp_project_staging
+</span></span></code></pre></div><p>となります。この際、<code>lookup('gcp_project_id')</code>と指定して、<code>gcp_project_staging</code>が代入されています。これは puppet の build-in function <a href=https://puppet.com/docs/puppet/7.1/function.html#lookup>lookup</a> を使うことで、hiera data として定義した変数を取得することができるためです。</p><p>ref.</p><ul><li><a href=https://puppet.com/docs/puppet/5.5/lang_template.html>Language: Using templates</a></li><li><a href=https://puppet.com/docs/bolt/latest/applying_manifest_blocks.html#using-hiera-data-in-a-manifest-block>Applying Puppet code#Using Hiera data in a manifest block</a></li></ul><h4 id=plans>plans</h4><p>bolt の plan を格納するディレクトリです。plan は、複数のタスクを一まとまりにした単位のことを呼びます。実行したタスクの入力の値を計算したり、別のタスクの結果に基づいて特定のタスクを実行したりするなど、複雑なタスクを実行できます。plan は、yaml（not .yml） or puppet（pp）で記述することが可能です。それぞれ同じで、同じタスクを記述すると</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># yaml の場合（site-modules/mymodule/plans/planA.yaml）</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>parameters</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>targets</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>TargetSpec</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>bucket_name</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>String[1]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>object_path</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>String[1]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>tmp_dir</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>String[1]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>default</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;/tmp&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>steps</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># motd.txt を対象ホストに upload する</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>upload</span><span class=p>:</span><span class=w> </span><span class=l>mymodule/motd.txt</span><span class=w> </span><span class=c># ref. site-modules/mymodule/files/motd.txt</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>destination</span><span class=p>:</span><span class=w> </span><span class=l>/etc/motd</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>targets</span><span class=p>:</span><span class=w> </span><span class=l>$targets</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>description</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Upload motd to the webservers&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># check_server.sh を対象ホスト上で実行する</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># e.g. ./check_server.sh /index.html 60</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>script</span><span class=p>:</span><span class=w> </span><span class=l>mymodule/check_server.sh</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>targets</span><span class=p>:</span><span class=w> </span><span class=l>$targets</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>description</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Run mymodule/files/check_server.sh on the webservers&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>arguments</span><span class=p>:</span><span class=w> </span><span class=c># Optional</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=s2>&#34;/index.html&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=m>60</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>task</span><span class=p>:</span><span class=w> </span><span class=l>myproject::download_from_gcs</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>targets</span><span class=p>:</span><span class=w> </span><span class=l>$targets</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>description</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Download file from gcs&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>parameters</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>bucket_name</span><span class=p>:</span><span class=w> </span><span class=l>$bucket_name</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>object_path</span><span class=p>:</span><span class=w> </span><span class=l>$object_path</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>tmp_dir</span><span class=p>:</span><span class=w> </span><span class=l>$tmp_dir</span><span class=w>
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-pp data-lang=pp><span class=line><span class=cl><span class=c># puppuet の場合（site-modules/mymodule/plans/planA.pp）
+</span></span></span><span class=line><span class=cl><span class=c>
+</span></span></span><span class=line><span class=cl><span class=c># @param targets The targets to configure
+</span></span></span><span class=line><span class=cl><span class=c># @param bucket_name The bucket name
+</span></span></span><span class=line><span class=cl><span class=c># @param object_path The object path
+</span></span></span><span class=line><span class=cl><span class=c># @param tmp_dir The tmp directory for download destination</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=na>plan</span> <span class=na>mymodule</span><span class=p>::</span><span class=na>planA</span><span class=p>(</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=na>TargetSpec</span> <span class=nv>$targets,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=na>String</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=nv>$bucket_name,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=na>String</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=nv>$object_path,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=na>String</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=nv>$tmp_dir</span> <span class=o>=</span> <span class=s>&#39;/tmp&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=p>)</span> <span class=p>{</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=na>upload_file</span><span class=p>(</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=s>&#39;mymodule/motd.txt&#39;</span><span class=p>,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=s>&#39;/etc/motd&#39;</span><span class=p>,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=nv>$targets,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=s>&#34;Upload motd to the webservers&#34;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=na>run_script</span><span class=p>(</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=s>&#39;mymodule/check_server.sh&#39;</span><span class=p>,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=nv>$targets,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=s>&#34;Run mymodule/files/check_server.sh on the webservers&#34;</span><span class=p>,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=p>{</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>      <span class=s>&#39;arguments&#39;</span> <span class=o>=&gt;</span> <span class=p>[</span><span class=s>&#34;/index.html&#34;</span><span class=p>,</span> <span class=mi>60</span><span class=p>]</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=p>}</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=na>run_task</span><span class=p>(</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=s>&#39;myproject::download_from_gcs&#39;</span><span class=p>,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=nv>$targets,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=s>&#39;Download file from gcs&#39;</span><span class=p>,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=p>{</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>      <span class=s>&#39;bucket_name&#39;</span> <span class=o>=&gt;</span> <span class=nv>$bucket_name,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>      <span class=s>&#39;object_path&#39;</span> <span class=o>=&gt;</span> <span class=nv>$object_path,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>      <span class=s>&#39;tmp_dir&#39;</span>     <span class=o>=&gt;</span> <span class=nv>$tmp_dir,</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=p>},</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>  <span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=p>}</span><span class=err>
+</span></span></span></code></pre></div><p>となります。上記 2 つの plan は同じ plan です。細かい箇所の説明は省きますが、上記のように記述したのち</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>bolt plan run mymodule::planA <span class=nv>env</span><span class=o>=</span>staging <span class=nv>bucket_name</span><span class=o>=</span>mybucket <span class=nv>object_path</span><span class=o>=</span>myobject.txt --targets webservers
+</span></span></code></pre></div><p>のコマンドを実行することで、対象ホスト（targets）に対して、plan を実行することができます。ちなみに余談ですが、下記コマンドを実行すると、<code>yaml -> pp</code> への変換ができます。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>bolt plan convert site-modules/mymodule/plans/planA.yaml
+</span></span></code></pre></div><p>そこで次に考えるのは、<code>yaml</code>と<code>pp</code>どっちで書こう問題なのですが、「やっぱり yaml の方が慣れてる人多いし、puppet 独自の DSL とか学習コスト高そうだし、やっぱり yaml で書こう！」と、Puppet 言語に慣れていないほとんどの人が思うところかなと思うのですが、ここで割と大事な個人的な見解としては、<code>「（現時点では）ちゃんと本番環境で利用とするのであれば、多少苦労してでも、Puppet言語で記述した方がいい」</code>です。なぜかというと、<code>yaml だと、まだ動かないこと結構多いです。</code>最も致命的なのは、<code>templateがいまいち使えない</code>ことです。（ref. <a href=https://github.com/puppetlabs/bolt/issues/2301>Support Templates from yaml #2301</a>） やはり、前身となるのが Puppet 言語なので、現段階では、「今まで、Puppet 言語で作られてきたものを YAML でも書けるようにするために色々頑張ってる」という印象が強いです。そのため現段階での個人的な見解としては、あまり yaml で記述することをお勧めしません。</p><h2 id=さいごに>さいごに</h2><p>他の構成管理ツールを使ったことがある方なら、やはりディレクトリ構成も似ていたりするので、割と取っつきやすい部分もありますが、「独自言語であること」「落とし穴がある」「ドキュメント・ナレッジが少ない」の 3 つがやはりネックになってきます。上記記載したことを参考にしていただきなら、まずは、触ってみる。その中で、全体のコンセプトを掴んでもらい、設計 -> 実装とやると良いかなと思います。今後はもっと、Puppet Bolt が流行ってくることを期待したいです。</p><h2 id=参考>参考</h2><ul><li><a href=https://puppet.com/docs/bolt/latest/bolt.html>Welcome to Bolt</a></li><li>その他に関しては、各項目毎の <code>ref</code> を参考にしてください。</li></ul></article></main><footer id=footer>Copyright © 2020 Jun Kitamura</footer></body></html>

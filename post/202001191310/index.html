@@ -1,114 +1,114 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://blog.jkkitakita.dev/favicon.ico><link rel=stylesheet href=/css/style.min.css><title>iOS・SwiftプロジェクトのCI/CDで、bitrise.ymlをリポジトリ内で管理する</title></head><body><header id=banner><h2><a href=https://blog.jkkitakita.dev>jkkitakita</a></h2><nav><ul></ul></nav></header><main id=content><article><header id=post-header><h1>iOS・SwiftプロジェクトのCI/CDで、bitrise.ymlをリポジトリ内で管理する</h1><div><time>January 19, 2020</time></div></header><h2 id=はじめに>はじめに</h2><hr><p>普段は、CircleCI をメインで使っていますが、モバイルアプリの CI/CD で流行っている<a href=https://www.bitrise.io/>Bitrise</a>を少し触ってみて、CircleCI と同じようにリポジトリ内で、設定ファイルを管理したくなったので、その設定方法に関する記事です。</p><h2 id=モチベーション>モチベーション</h2><hr><p>人・文化・サービスによって、bitrise の設定（bitrise.yml）を<code>bitrise GUIで管理する</code> or <code>リポジトリで管理する</code>については議論があると思います。ちょっとワークフローの流れを試してみたいとかなら、GUI でもいいと思いますが、 <strong>基本的には、<code>リポジトリで管理する</code>方が自分は良いと思っています。</strong> 以下、自分なりにそれぞれのメリット・デメリットに関して整理してみました。</p><h3 id=メリットデメリット>メリット・デメリット</h3><hr><h4 id=-bitrise-gui>◯ bitrise GUI</h4><h5 id=-メリット>■ メリット</h5><ol><li>ワークフローが <strong>視覚的に</strong> 確認できる</li><li>GitHub 等のソースコード管理ツールの権限を持っていなくても、ワークフローの参照・編集ができる</li><li>bitrise GUI でワークフローの差分管理もできる</li></ol><h5 id=-デメリット>■ デメリット</h5><ol><li>bitrise GUI を見に行かないと（権限がないと）、どういうワークフローになっているのかを確認できない。（そもそもそのリポジトリがなんの CI が動いているのか、リポジトリからは判断できない。）</li><li>他の CI/CD サービス（CircleCI, TravisCI etc&mldr;）は基本的にリポジトリで管理することを前提としているものもまぁまぁ多く、同じノリではいかないので、そういったサービスを使ってた人は、ちょっと戸惑う。</li><li>ワークフローを修正するときに、レビュー・反映するまでのフローが仕組み化されていない。（Git Flow, GitHub Flow が使えない？）</li></ol><h4 id=-リポジトリで管理>◯ リポジトリで管理</h4><h5 id=-メリット-1>■ メリット</h5><ol><li>bitrise GUI を見に行かずに、リポジトリの bitrise.yml を見れば、ワークフローの流れが確認できる。</li><li>他の CI/CD サービス（CircleCI, TravisCI etc&mldr;）と同じノリで使える。</li><li><strong>Git Flow, GitHub Flow が使える。</strong></li></ol><h5 id=-デメリット-1>■ デメリット</h5><ol><li>GitHub の権限がないと、対象 app のワークフローの流れが <code>視覚的に</code> パッとわからない。（build の log を見れば、何がどの順番で実行されているかはまぁわかる。）</li><li>GUI では、ワークフローの変更はできない。</li><li>ワークフローで変更した内容を反映させて、CI を試したい場合は、都度 git commit しないといけないので、少し面倒。かつ、git が汚くなるかも。</li></ol><h2 id=実際にやってみた>実際にやってみた</h2><hr><p>実際にやったこととしては</p><ol><li>事前に、bitrise 管理画面からトリガーとなるワークフローを作成する</li><li>リポジトリ内の bitrise.yml 等の設定ファイルを作成する</li></ol><p>の２つです。以下その詳細を記載します。</p><h3 id=1-事前にbitrise-管理画面からトリガーとなるワークフローを作成する>1. 事前に、bitrise 管理画面からトリガーとなるワークフローを作成する</h3><hr><p>上記で、<code>リポジトリで管理する</code>と記載しましたが、 <strong>bitrise は全てのワークフローをリポジトリで管理するわけではありません。</strong> 構造としては以下のようになっています。その理由に関しては、 <a href=https://devcenter.bitrise.io/tips-and-tricks/use-bitrise-yml-from-repository/#potential-issues-of-storing-the-bitriseyml-in-the-repository>リポジトリに bitrise.yml を保存する潜在的な問題</a> を参考にしてください。</p><h4 id=11-大まかな流れ>1.1. 大まかな流れ</h4><hr><ol><li>まず、bitrise GUI から作成したワークフローをトリガーとして CI が起動する。</li><li>そのワークフローがリポジトリ管理されている bitrise.yml をキックする（起動する）。</li></ol><h4 id=12-bitrise-管理画面からワークフローを作成する>1.2. bitrise 管理画面からワークフローを作成する</h4><hr><p>やることは、以下の <code>ci</code> と <code>run_from_repo</code> の 2 つだけです。</p><h5 id=ci>ci</h5><p><strong>名前は ci ではなくてもなんでも良いが、リポジトリ内の bitrise.yml で定義するワークフローと同じ名前に合わせる必要がある。</strong><br>多分、↑ ここ、最初みんなハマるかなと思うので、要注意です！！！やることとしては、<code>run_from_repo</code>を起動するだけ。<br>c.f. <a href=https://qiita.com/mqtsuo02/items/a547eab6fa6486613198#%E3%81%AF%E3%81%BE%E3%81%A3%E3%81%9F%E7%82%B9>bitrise.yml をリポジトリ内で管理するための手引き#はまった点</a></p><h5 id=run_from_repo>run_from_repo</h5><ul><li>対象のリポジトリを <code>git clone</code> する。</li><li>git clone されたリポジトリ内で管理された <code>bitrise.yml</code> をみて、対象のワークフローを起動する。<br>c.f. <code>bitrise run &lt;workflow name></code></li></ul><p>実際の bitrise GUI 上から作成するワークフロー（今回の場合は、<code>ci</code>というワークフロー）は、以下の通りです。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span>---
-</span></span><span style=display:flex><span><span style=color:#f92672>format_version</span>: <span style=color:#e6db74>&#34;8&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>default_step_lib_source</span>: <span style=color:#ae81ff>https://github.com/bitrise-io/bitrise-steplib.git</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>project_type</span>: <span style=color:#ae81ff>ios</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>trigger_map</span>:
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>push_branch</span>: <span style=color:#e6db74>&#34;*&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>workflow</span>: <span style=color:#ae81ff>ci</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>pull_request_target_branch</span>: <span style=color:#e6db74>&#34;*&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>workflow</span>: <span style=color:#ae81ff>ci</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>workflows</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>ci</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>after_run</span>:
-</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>run_from_repo</span>
-</span></span><span style=display:flex><span>  <span style=color:#f92672>run_from_repo</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
-</span></span><span style=display:flex><span>      <span style=color:#75715e># git cloneするためのkeyのsetup</span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>activate-ssh-key</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>run_if</span>: <span style=color:#e6db74>&#39;{{getenv &#34;SSH_RSA_PRIVATE_KEY&#34; | ne &#34;&#34;}}&#39;</span>
-</span></span><span style=display:flex><span>      <span style=color:#75715e># 対象のリポジトリを `git clone` する。</span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>git-clone</span>: {}
-</span></span><span style=display:flex><span>      <span style=color:#75715e># git cloneされたリポジトリ内で管理された `bitrise.yml` をみて、対象のワークフローを起動する。</span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>script</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>title</span>: <span style=color:#ae81ff>continue from repo</span>
-</span></span><span style=display:flex><span>          <span style=color:#f92672>inputs</span>:
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>content</span>: |-<span style=color:#e6db74>
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                #!/bin/bash
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                set -ex
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                # この場合 `bitrise run ci` が実行される。
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                # リポジトリ内のbitrise.ymlの ci というワークフローを実行する。
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                bitrise run &#34;${BITRISE_TRIGGERED_WORKFLOW_ID}&#34;</span>                
-</span></span></code></pre></div><p>ちなみに余談ですが、公式ドキュメントに合わせて、<code>after_run</code> を使って <code>ci</code> -> <code>run_from_repo</code> と実行するように記載しましたが、試していないのですが、直接指定しても動作としては、問題ないと思います。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#75715e># e.g. after_runを使わずに、直接指定する場合</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>workflows</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>ci</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>activate-ssh-key</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>run_if</span>: <span style=color:#e6db74>&#39;{{getenv &#34;SSH_RSA_PRIVATE_KEY&#34; | ne &#34;&#34;}}&#39;</span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>git-clone</span>: {}
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>script</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>title</span>: <span style=color:#ae81ff>continue from repo</span>
-</span></span><span style=display:flex><span>          <span style=color:#f92672>inputs</span>:
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>content</span>: |-<span style=color:#e6db74>
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                #!/bin/bash
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                set -ex
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                bitrise run &#34;${BITRISE_TRIGGERED_WORKFLOW_ID}&#34;</span>                
-</span></span></code></pre></div><p>ただ</p><ol><li>activate-ssh-key</li><li>git-clone</li><li>script</li></ol><p>この部分を <code>run_from_repo</code> というワークフローで <strong>共通化する</strong> ことで、ワークフローの管理を少なくすることができるので基本的には <code>after_run</code>を使った公式ドキュメントのやり方をすることが推奨されているのだと思います。</p><h3 id=2-リポジトリ内の-bitriseyml-等の設定ファイルを作成する>2. リポジトリ内の bitrise.yml 等の設定ファイルを作成する</h3><hr><p>さて、bitrise GUI 上での設定は終わりました。<br>あとは、いつも通りローカルで、エディタを開いて、対象のリポジトリに設定ファイルを追加するだけです。結論今回試したのは、Swift のプロジェクトだったので、用意したのは、以下の 3 つのファイル。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ tree -L <span style=color:#ae81ff>2</span>
-</span></span><span style=display:flex><span>.
-</span></span><span style=display:flex><span>├── Dangerfile
-</span></span><span style=display:flex><span>・・・
-</span></span><span style=display:flex><span>├── bitrise.yml
-</span></span><span style=display:flex><span>├── fastlane
-</span></span><span style=display:flex><span>│   └── Fastfile
-</span></span><span style=display:flex><span>・・・
-</span></span></code></pre></div><h3 id=bitriseyml>bitrise.yml</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span>---
-</span></span><span style=display:flex><span><span style=color:#f92672>format_version</span>: <span style=color:#e6db74>&#34;8&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>default_step_lib_source</span>: <span style=color:#ae81ff>https://github.com/bitrise-io/bitrise-steplib.git</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>project_type</span>: <span style=color:#ae81ff>ios</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>workflows</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>ci</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
-</span></span><span style=display:flex><span>      <span style=color:#75715e># fastlaneでSwiftLintを動かしたい場合、事前にInstallしないとダメっぽい？</span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>script</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>title</span>: <span style=color:#ae81ff>Install SwiftLint</span>
-</span></span><span style=display:flex><span>          <span style=color:#f92672>inputs</span>:
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>content</span>: |-<span style=color:#e6db74>
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                #!/bin/bash
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                set -ex
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                curl -s -L -O https://github.com/realm/SwiftLint/releases/download/0.38.2/SwiftLint.pkg &gt; /dev/null
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                sudo installer -pkg SwiftLint.pkg -target / &gt; /dev/null
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                rm SwiftLint.pkg</span>                
-</span></span><span style=display:flex><span>      <span style=color:#75715e># fastlaneで、build laneを実行する</span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>fastlane</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>inputs</span>:
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>lane</span>: <span style=color:#ae81ff>build</span>
-</span></span><span style=display:flex><span>      <span style=color:#75715e># bitriseに swiftlint の結果を artifact としてuploadする</span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>deploy-to-bitrise-io</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>inputs</span>:
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>deploy_path</span>: <span style=color:#e6db74>&#34;swiftlint-output.html&#34;</span>
-</span></span><span style=display:flex><span>      <span style=color:#75715e># 結果をSlack通知</span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>slack</span>:
-</span></span><span style=display:flex><span>          <span style=color:#f92672>inputs</span>:
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>title</span>: <span style=color:#e6db74>&#34;&#34;</span>
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>emoji</span>: <span style=color:#e6db74>&#34;&#34;</span>
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>emoji_on_error</span>: <span style=color:#e6db74>&#34;&#34;</span>
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>webhook_url</span>: <span style=color:#ae81ff>https://hooks.slack.com/services/xxxxxx/xxxxxx/xxxxxx</span> <span style=color:#75715e># Slack の incoming webhook url</span>
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>channel</span>: <span style=color:#e6db74>&#34;#bitrise-ci&#34;</span>
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>message</span>: <span style=color:#e6db74>&#34;&#34;</span>
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>message_on_error</span>: <span style=color:#e6db74>&#34;&#34;</span>
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>icon_url</span>: <span style=color:#ae81ff>https://bitrise-public-content-production.s3.amazonaws.com/slack/bitrise-slack-icon-128.png</span>
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>icon_url_on_error</span>: <span style=color:#ae81ff>https://bitrise-public-content-production.s3.amazonaws.com/slack/bitrise-slack-error-icon-128.png</span>
-</span></span><span style=display:flex><span>            - <span style=color:#f92672>fields</span>: |<span style=color:#e6db74>
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                App|${BITRISE_APP_TITLE}
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                Branch|${BITRISE_GIT_BRANCH}
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                Message|${BITRISE_GIT_MESSAGE}
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>                Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}</span>                
-</span></span></code></pre></div><h3 id=fastlane>Fastlane</h3><ol><li>Swiftlint</li><li>danger</li></ol><p>を実行するだけ。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=display:flex><span>fastlane_version <span style=color:#e6db74>&#34;2.140.0&#34;</span>
-</span></span><span style=display:flex><span>default_platform <span style=color:#e6db74>:ios</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>lane <span style=color:#e6db74>:build</span> <span style=color:#66d9ef>do</span> <span style=color:#f92672>|</span>options<span style=color:#f92672>|</span>
-</span></span><span style=display:flex><span>  danger(<span style=color:#e6db74>use_bundle_exec</span>: <span style=color:#66d9ef>true</span>)　<span style=color:#75715e># use_bundle_execをtrueにする必要あったか不明。。すいません。</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  swiftlint(
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>mode</span>: <span style=color:#e6db74>:lint</span>,
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>reporter</span>:    <span style=color:#e6db74>&#34;html&#34;</span>,
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>output_file</span>: <span style=color:#e6db74>&#34;swiftlint-output.html&#34;</span>,
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>config_file</span>: <span style=color:#e6db74>&#34;.swiftlint.yml&#34;</span>,
-</span></span><span style=display:flex><span>  )
-</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
-</span></span></code></pre></div><h3 id=dangerfle>Dangerfle</h3><p>とりあえず、wip だったら warn するだけ。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=display:flex><span>has_label_wip <span style=color:#f92672>=</span> github<span style=color:#f92672>.</span>pr_title<span style=color:#f92672>.</span>match(<span style=color:#e6db74>/WIP/i</span>) <span style=color:#f92672>||</span> github<span style=color:#f92672>.</span>pr_labels<span style=color:#f92672>.</span>include?(<span style=color:#e6db74>&#39;wip&#39;</span>) <span style=color:#f92672>||</span> github<span style=color:#f92672>.</span>pr_labels<span style=color:#f92672>.</span>include?(<span style=color:#e6db74>&#39;Wip&#39;</span>) <span style=color:#f92672>||</span> github<span style=color:#f92672>.</span>pr_labels<span style=color:#f92672>.</span>include?(<span style=color:#e6db74>&#39;WIP&#39;</span>)
-</span></span><span style=display:flex><span>warn(<span style=color:#e6db74>&#34;PR is Work in Progress&#34;</span>) <span style=color:#66d9ef>if</span> has_label_wip
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://blog.jkkitakita.dev/favicon.ico><link rel=stylesheet href=/css/style.min.css><title>iOS・SwiftプロジェクトのCI/CDで、bitrise.ymlをリポジトリ内で管理する</title></head><body><header id=banner><h2><a href=https://blog.jkkitakita.dev>jkkitakita</a></h2><nav><ul><li><a href=/ title=posts>posts</a></li><li><a href=/about/ title=about>about</a></li></ul></nav></header><main id=content><article><header id=post-header><h1>iOS・SwiftプロジェクトのCI/CDで、bitrise.ymlをリポジトリ内で管理する</h1><div><time>January 19, 2020</time></div></header><h2 id=はじめに>はじめに</h2><hr><p>普段は、CircleCI をメインで使っていますが、モバイルアプリの CI/CD で流行っている<a href=https://www.bitrise.io/>Bitrise</a>を少し触ってみて、CircleCI と同じようにリポジトリ内で、設定ファイルを管理したくなったので、その設定方法に関する記事です。</p><h2 id=モチベーション>モチベーション</h2><hr><p>人・文化・サービスによって、bitrise の設定（bitrise.yml）を<code>bitrise GUIで管理する</code> or <code>リポジトリで管理する</code>については議論があると思います。ちょっとワークフローの流れを試してみたいとかなら、GUI でもいいと思いますが、 <strong>基本的には、<code>リポジトリで管理する</code>方が自分は良いと思っています。</strong> 以下、自分なりにそれぞれのメリット・デメリットに関して整理してみました。</p><h3 id=メリットデメリット>メリット・デメリット</h3><hr><h4 id=-bitrise-gui>◯ bitrise GUI</h4><p>■ メリット</p><ol><li>ワークフローが <strong>視覚的に</strong> 確認できる</li><li>GitHub 等のソースコード管理ツールの権限を持っていなくても、ワークフローの参照・編集ができる</li><li>bitrise GUI でワークフローの差分管理もできる</li></ol><p>■ デメリット</p><ol><li>bitrise GUI を見に行かないと（権限がないと）、どういうワークフローになっているのかを確認できない。（そもそもそのリポジトリがなんの CI が動いているのか、リポジトリからは判断できない。）</li><li>他の CI/CD サービス（CircleCI, TravisCI etc&mldr;）は基本的にリポジトリで管理することを前提としているものもまぁまぁ多く、同じノリではいかないので、そういったサービスを使ってた人は、ちょっと戸惑う。</li><li>ワークフローを修正するときに、レビュー・反映するまでのフローが仕組み化されていない。（Git Flow, GitHub Flow が使えない？）</li></ol><h4 id=-リポジトリで管理>◯ リポジトリで管理</h4><p>■ メリット</p><ol><li>bitrise GUI を見に行かずに、リポジトリの bitrise.yml を見れば、ワークフローの流れが確認できる。</li><li>他の CI/CD サービス（CircleCI, TravisCI etc&mldr;）と同じノリで使える。</li><li><strong>Git Flow, GitHub Flow が使える。</strong></li></ol><p>■ デメリット</p><ol><li>GitHub の権限がないと、対象 app のワークフローの流れが <code>視覚的に</code> パッとわからない。（build の log を見れば、何がどの順番で実行されているかはまぁわかる。）</li><li>GUI では、ワークフローの変更はできない。</li><li>ワークフローで変更した内容を反映させて、CI を試したい場合は、都度 git commit しないといけないので、少し面倒。かつ、git が汚くなるかも。</li></ol><h2 id=実際にやってみた>実際にやってみた</h2><hr><p>実際にやったこととしては</p><ol><li>事前に、bitrise 管理画面からトリガーとなるワークフローを作成する</li><li>リポジトリ内の bitrise.yml 等の設定ファイルを作成する</li></ol><p>の２つです。以下その詳細を記載します。</p><h3 id=1-事前にbitrise-管理画面からトリガーとなるワークフローを作成する>1. 事前に、bitrise 管理画面からトリガーとなるワークフローを作成する</h3><hr><p>上記で、<code>リポジトリで管理する</code>と記載しましたが、 <strong>bitrise は全てのワークフローをリポジトリで管理するわけではありません。</strong> 構造としては以下のようになっています。その理由に関しては、 <a href=https://devcenter.bitrise.io/tips-and-tricks/use-bitrise-yml-from-repository/#potential-issues-of-storing-the-bitriseyml-in-the-repository>リポジトリに bitrise.yml を保存する潜在的な問題</a> を参考にしてください。</p><h4 id=11-大まかな流れ>1.1. 大まかな流れ</h4><hr><ol><li>まず、bitrise GUI から作成したワークフローをトリガーとして CI が起動する。</li><li>そのワークフローがリポジトリ管理されている bitrise.yml をキックする（起動する）。</li></ol><h4 id=12-bitrise-管理画面からワークフローを作成する>1.2. bitrise 管理画面からワークフローを作成する</h4><hr><p>やることは、以下の <code>ci</code> と <code>run_from_repo</code> の 2 つだけです。</p><p>■ ci</p><p><strong>名前は ci ではなくてもなんでも良いが、リポジトリ内の bitrise.yml で定義するワークフローと同じ名前に合わせる必要がある。</strong><br>多分、↑ ここ、最初みんなハマるかなと思うので、要注意です！！！やることとしては、<code>run_from_repo</code>を起動するだけ。<br>c.f. <a href=https://qiita.com/mqtsuo02/items/a547eab6fa6486613198#%E3%81%AF%E3%81%BE%E3%81%A3%E3%81%9F%E7%82%B9>bitrise.yml をリポジトリ内で管理するための手引き#はまった点</a></p><p>■ run_from_repo</p><ul><li>対象のリポジトリを <code>git clone</code> する。</li><li>git clone されたリポジトリ内で管理された <code>bitrise.yml</code> をみて、対象のワークフローを起動する。<br>c.f. <code>bitrise run &lt;workflow name></code></li></ul><p>実際の bitrise GUI 上から作成するワークフロー（今回の場合は、<code>ci</code>というワークフロー）は、以下の通りです。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nn>---</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>format_version</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;8&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>default_step_lib_source</span><span class=p>:</span><span class=w> </span><span class=l>https://github.com/bitrise-io/bitrise-steplib.git</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>project_type</span><span class=p>:</span><span class=w> </span><span class=l>ios</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>trigger_map</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>push_branch</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;*&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>workflow</span><span class=p>:</span><span class=w> </span><span class=l>ci</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>pull_request_target_branch</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;*&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>workflow</span><span class=p>:</span><span class=w> </span><span class=l>ci</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>workflows</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ci</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>after_run</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>run_from_repo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>run_from_repo</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>steps</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># git cloneするためのkeyのsetup</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>activate-ssh-key</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>run_if</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;{{getenv &#34;SSH_RSA_PRIVATE_KEY&#34; | ne &#34;&#34;}}&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># 対象のリポジトリを `git clone` する。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>git-clone</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># git cloneされたリポジトリ内で管理された `bitrise.yml` をみて、対象のワークフローを起動する。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>script</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=l>continue from repo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>inputs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>content</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>                #!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=sd>                set -ex
+</span></span></span><span class=line><span class=cl><span class=sd>                # この場合 `bitrise run ci` が実行される。
+</span></span></span><span class=line><span class=cl><span class=sd>                # リポジトリ内のbitrise.ymlの ci というワークフローを実行する。
+</span></span></span><span class=line><span class=cl><span class=sd>                bitrise run &#34;${BITRISE_TRIGGERED_WORKFLOW_ID}&#34;</span><span class=w>                
+</span></span></span></code></pre></div><p>ちなみに余談ですが、公式ドキュメントに合わせて、<code>after_run</code> を使って <code>ci</code> -> <code>run_from_repo</code> と実行するように記載しましたが、試していないのですが、直接指定しても動作としては、問題ないと思います。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=c># e.g. after_runを使わずに、直接指定する場合</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>workflows</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ci</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>steps</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>activate-ssh-key</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>run_if</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;{{getenv &#34;SSH_RSA_PRIVATE_KEY&#34; | ne &#34;&#34;}}&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>git-clone</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>script</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=l>continue from repo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>inputs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>content</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>                #!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=sd>                set -ex
+</span></span></span><span class=line><span class=cl><span class=sd>                bitrise run &#34;${BITRISE_TRIGGERED_WORKFLOW_ID}&#34;</span><span class=w>                
+</span></span></span></code></pre></div><p>ただ</p><ol><li>activate-ssh-key</li><li>git-clone</li><li>script</li></ol><p>この部分を <code>run_from_repo</code> というワークフローで <strong>共通化する</strong> ことで、ワークフローの管理を少なくすることができるので基本的には <code>after_run</code>を使った公式ドキュメントのやり方をすることが推奨されているのだと思います。</p><h3 id=2-リポジトリ内の-bitriseyml-等の設定ファイルを作成する>2. リポジトリ内の bitrise.yml 等の設定ファイルを作成する</h3><hr><p>さて、bitrise GUI 上での設定は終わりました。<br>あとは、いつも通りローカルで、エディタを開いて、対象のリポジトリに設定ファイルを追加するだけです。結論今回試したのは、Swift のプロジェクトだったので、用意したのは、以下の 3 つのファイル。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>$ tree -L <span class=m>2</span>
+</span></span><span class=line><span class=cl>.
+</span></span><span class=line><span class=cl>├── Dangerfile
+</span></span><span class=line><span class=cl>・・・
+</span></span><span class=line><span class=cl>├── bitrise.yml
+</span></span><span class=line><span class=cl>├── fastlane
+</span></span><span class=line><span class=cl>│   └── Fastfile
+</span></span><span class=line><span class=cl>・・・
+</span></span></code></pre></div><h3 id=bitriseyml>bitrise.yml</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nn>---</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>format_version</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;8&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>default_step_lib_source</span><span class=p>:</span><span class=w> </span><span class=l>https://github.com/bitrise-io/bitrise-steplib.git</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>project_type</span><span class=p>:</span><span class=w> </span><span class=l>ios</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>workflows</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ci</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>steps</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># fastlaneでSwiftLintを動かしたい場合、事前にInstallしないとダメっぽい？</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>script</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=l>Install SwiftLint</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>inputs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>content</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>                #!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=sd>                set -ex
+</span></span></span><span class=line><span class=cl><span class=sd>                curl -s -L -O https://github.com/realm/SwiftLint/releases/download/0.38.2/SwiftLint.pkg &gt; /dev/null
+</span></span></span><span class=line><span class=cl><span class=sd>                sudo installer -pkg SwiftLint.pkg -target / &gt; /dev/null
+</span></span></span><span class=line><span class=cl><span class=sd>                rm SwiftLint.pkg</span><span class=w>                
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># fastlaneで、build laneを実行する</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>fastlane</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>inputs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>lane</span><span class=p>:</span><span class=w> </span><span class=l>build</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># bitriseに swiftlint の結果を artifact としてuploadする</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>deploy-to-bitrise-io</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>inputs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>deploy_path</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;swiftlint-output.html&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># 結果をSlack通知</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>slack</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>inputs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>emoji</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>emoji_on_error</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>webhook_url</span><span class=p>:</span><span class=w> </span><span class=l>https://hooks.slack.com/services/xxxxxx/xxxxxx/xxxxxx</span><span class=w> </span><span class=c># Slack の incoming webhook url</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>channel</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;#bitrise-ci&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>message</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>message_on_error</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>icon_url</span><span class=p>:</span><span class=w> </span><span class=l>https://bitrise-public-content-production.s3.amazonaws.com/slack/bitrise-slack-icon-128.png</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>icon_url_on_error</span><span class=p>:</span><span class=w> </span><span class=l>https://bitrise-public-content-production.s3.amazonaws.com/slack/bitrise-slack-error-icon-128.png</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>fields</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>                App|${BITRISE_APP_TITLE}
+</span></span></span><span class=line><span class=cl><span class=sd>                Branch|${BITRISE_GIT_BRANCH}
+</span></span></span><span class=line><span class=cl><span class=sd>                Message|${BITRISE_GIT_MESSAGE}
+</span></span></span><span class=line><span class=cl><span class=sd>                Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}</span><span class=w>                
+</span></span></span></code></pre></div><h3 id=fastlane>Fastlane</h3><ol><li>Swiftlint</li><li>danger</li></ol><p>を実行するだけ。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=line><span class=cl><span class=n>fastlane_version</span> <span class=s2>&#34;2.140.0&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>default_platform</span> <span class=ss>:ios</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>lane</span> <span class=ss>:build</span> <span class=k>do</span> <span class=o>|</span><span class=n>options</span><span class=o>|</span>
+</span></span><span class=line><span class=cl>  <span class=n>danger</span><span class=p>(</span><span class=ss>use_bundle_exec</span><span class=p>:</span> <span class=kp>true</span><span class=p>)</span>　<span class=c1># use_bundle_execをtrueにする必要あったか不明。。すいません。</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=n>swiftlint</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=ss>mode</span><span class=p>:</span> <span class=ss>:lint</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=ss>reporter</span><span class=p>:</span>    <span class=s2>&#34;html&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=ss>output_file</span><span class=p>:</span> <span class=s2>&#34;swiftlint-output.html&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=ss>config_file</span><span class=p>:</span> <span class=s2>&#34;.swiftlint.yml&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><h3 id=dangerfle>Dangerfle</h3><p>とりあえず、wip だったら warn するだけ。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=line><span class=cl><span class=n>has_label_wip</span> <span class=o>=</span> <span class=n>github</span><span class=o>.</span><span class=n>pr_title</span><span class=o>.</span><span class=n>match</span><span class=p>(</span><span class=sr>/WIP/i</span><span class=p>)</span> <span class=o>||</span> <span class=n>github</span><span class=o>.</span><span class=n>pr_labels</span><span class=o>.</span><span class=n>include?</span><span class=p>(</span><span class=s1>&#39;wip&#39;</span><span class=p>)</span> <span class=o>||</span> <span class=n>github</span><span class=o>.</span><span class=n>pr_labels</span><span class=o>.</span><span class=n>include?</span><span class=p>(</span><span class=s1>&#39;Wip&#39;</span><span class=p>)</span> <span class=o>||</span> <span class=n>github</span><span class=o>.</span><span class=n>pr_labels</span><span class=o>.</span><span class=n>include?</span><span class=p>(</span><span class=s1>&#39;WIP&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>warn</span><span class=p>(</span><span class=s2>&#34;PR is Work in Progress&#34;</span><span class=p>)</span> <span class=k>if</span> <span class=n>has_label_wip</span>
 </span></span></code></pre></div><h3 id=実行する>実行する</h3><p>あとは、これらのファイルを対象リポジトリに追加、commit して、push するだけ。</p><p>bitrise の log を管理画面から確認してみると</p><p><img src=/images/bitrise-from-repo.png alt=bitrise-from-repo>
 <img src=/images/bitrise-artifact.png alt=bitrise-artifact></p><p>こんな感じで成功です！
 今後これをベースに bitrise.yml を改善していこうと思っています。</p><h2 id=さいごに>さいごに</h2><p>今まで bitrise 触ったことなかったですが、いい感じにベースは設定できたのかなという感じでした。
 fastlane も初めて触ったのですが、色々便利だなーと思いました。
-<a href=https://techblog.zozo.com/entry/ios-bitrise-workflow>iOS で構築している CI の Workflow 紹介</a>の記事の中で紹介しているように、bitrise のワークフローではなく、Fastlane でメイン部分のワークフローを管理すれば、実質今回やりたかった「ワークフローを git で管理すること」は満たせる感じはあるので、まずそちらをやってみて、それでもワークフローの管理に課題感を感じたら、本記事のように bitrise.yml も git で管理することも検討してみるといいのかなと思いました。</p><h2 id=参考>参考</h2><ul><li><a href=https://devcenter.bitrise.io/tips-and-tricks/use-bitrise-yml-from-repository/>Using the bitrise.yml from repository</a></li><li><a href=https://qiita.com/mqtsuo02/items/a547eab6fa6486613198>bitrise.yml をリポジトリ内で管理するための手引き</a></li><li><a href=https://inside.pixiv.blog/kwzr/6190>モバイルアプリの CI を Bitrise にして 1 年が経ちました</a></li><li><a href=https://techblog.zozo.com/entry/ios-bitrise-workflow>iOS で構築している CI の Workflow 紹介</a></li></ul></article></main><footer id=footer></footer></body></html>
+<a href=https://techblog.zozo.com/entry/ios-bitrise-workflow>iOS で構築している CI の Workflow 紹介</a>の記事の中で紹介しているように、bitrise のワークフローではなく、Fastlane でメイン部分のワークフローを管理すれば、実質今回やりたかった「ワークフローを git で管理すること」は満たせる感じはあるので、まずそちらをやってみて、それでもワークフローの管理に課題感を感じたら、本記事のように bitrise.yml も git で管理することも検討してみるといいのかなと思いました。</p><h2 id=参考>参考</h2><ul><li><a href=https://devcenter.bitrise.io/tips-and-tricks/use-bitrise-yml-from-repository/>Using the bitrise.yml from repository</a></li><li><a href=https://qiita.com/mqtsuo02/items/a547eab6fa6486613198>bitrise.yml をリポジトリ内で管理するための手引き</a></li><li><a href=https://inside.pixiv.blog/kwzr/6190>モバイルアプリの CI を Bitrise にして 1 年が経ちました</a></li><li><a href=https://techblog.zozo.com/entry/ios-bitrise-workflow>iOS で構築している CI の Workflow 紹介</a></li></ul></article></main><footer id=footer>Copyright © 2020 Jun Kitamura</footer></body></html>
