@@ -1,4 +1,81 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>puppet bolt on jkkitakita</title><link>https://blog.jkkitakita.dev/tags/puppet-bolt/</link><description>Recent content in puppet bolt on jkkitakita</description><generator>Hugo -- gohugo.io</generator><language>ja</language><lastBuildDate>Wed, 16 Dec 2020 00:20:36 +0900</lastBuildDate><atom:link href="https://blog.jkkitakita.dev/tags/puppet-bolt/index.xml" rel="self" type="application/rss+xml"/><item><title>puppet bolt のディレクトリ構成</title><link>https://blog.jkkitakita.dev/post/202012160020/</link><pubDate>Wed, 16 Dec 2020 00:20:36 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202012160020/</guid><description>&lt;p>この記事は &lt;a href="https://qiita.com/advent-calendar/2020/puppet">Puppet Advent Calendar 2020 16 日目&lt;/a> の記事です。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>puppet bolt on jkkitakita</title><link>https://blog.jkkitakita.dev/tags/puppet-bolt/</link><description>Recent content in puppet bolt on jkkitakita</description><generator>Hugo -- gohugo.io</generator><language>ja</language><lastBuildDate>Wed, 16 Dec 2020 00:20:36 +0900</lastBuildDate><atom:link href="https://blog.jkkitakita.dev/tags/puppet-bolt/index.xml" rel="self" type="application/rss+xml"/><item><title>Observability とは</title><link>https://blog.jkkitakita.dev/post/202204270000/</link><pubDate>Wed, 27 Apr 2022 00:00:00 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202204270000/</guid><description>&lt;h2 id="observability-とは何か">Observability とは何か&lt;/h2>
+&lt;p>Observability(オブザーバビリティ) ってなんだろう？と思い考えてみる。と、思ったが、&lt;a href="https://ymotongpoo.hatenablog.com/entry/2019/03/25/084500">他の方のブログ&lt;/a>が、割としっくり来てしまったので、そちらに任せたいので、ざっくり↓の大きく2つについて、個人的な考察も交えて、まとめておこうと思う。&lt;/p>
+&lt;ol>
+&lt;li>Observability と Monitoring の違い&lt;/li>
+&lt;li>Metrics・Logs・Traces について&lt;/li>
+&lt;/ol>
+&lt;h2 id="1-observability-と-monitoring-の違い">1. Observability と Monitoring の違い&lt;/h2>
+&lt;p>これもまたいろんなところで論じられているので、詳しくはそちらを参考にしてほしいが、基本的な考え方としては、以下のような違いがあるように感じています。&lt;/p>
+&lt;ol>
+&lt;li>問題の理解・解決がしたいのか？発見がしたいのか？&lt;/li>
+&lt;li>プロアクティブか？リアクティブか？&lt;/li>
+&lt;/ol>
+&lt;p>当然、Observability が「問題の理解・解決」を目的とした「プロアクティブ」なアプローチ・考え方であり、その「手段」の1つとして Monitoring があるという捉え方をするのが良さそうです。続いて、Observability といえば、必ず出てくる Metrics・Logs・Traces について、まとめます。&lt;/p>
+&lt;h2 id="2-metricslogstraces-について">2. Metrics・Logs・Traces について&lt;/h2>
+&lt;p>まず、この3要素は、順序関係を意識して捉えるのが良いとされており、ざっくり、以下のような流れで使い分けることが多いようです。&lt;/p>
+&lt;ol>
+&lt;li>Metrics - 異常値を検知して（いわゆる、監視をして）&lt;/li>
+&lt;li>Logs - 特定システムにおける詳細な事象の把握・直接原因を特定し&lt;/li>
+&lt;li>Traces - システム全体横断・リクエストベースで、ボトルネックの特定・根本原因を特定する&lt;/li>
+&lt;/ol>
+&lt;p>前提として、そもそも Observability という考え方は、&lt;a href="https://blog.twitter.com/engineering/en_us/a/2013/observability-at-twitter">Observability at Twitter&lt;/a>にもあるように「分散型のシステム」「マイクロサービス」が背景にあるので、極論、そういったシステムでなければ、Observability は必要ないかもしれません。（少なくとも、Tracesとかは不要とかはあるかなと思います。）&lt;/p>
+&lt;p>その他にもたくさんの記事・ブログが公開されているので、探してみるといいですが、↓あたりがパッと見良さそうかなと感じました。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://knowledge.sakura.ad.jp/26395/">さくらのナレッジ&lt;/a> - 日本語で丁寧に整理されているように感じました。&lt;/li>
+&lt;li>&lt;a href="https://peter.bourgon.org/blog/2017/02/21/metrics-tracing-and-logging.html">Peter Bourgon さんの記事&lt;/a> - 3要素を面白い観点整理をしていて個人的には好きですが、ちょっと古いかも？&lt;/li>
+&lt;/ul>
+&lt;p>以下では、3要素それぞれをシステムに適用していく際の個人的に指針としていることについてつらつらと書いていこうと思います。&lt;/p>
+&lt;h3 id="metrics">Metrics&lt;/h3>
+&lt;blockquote>
+&lt;p>システムの正常とは何か？&lt;/p>
+&lt;/blockquote>
+&lt;p>Metrics 自体は「定量化」「計測」などの意味しか持たないかとは思いますが、「プロアクティブ」的に考えると、計測結果をどう取り扱うべきかとセットで議論すべきかなと感じております。そう捉えた場合、大事だなと感じることは、上でも書きましたが &lt;code>異常を検知&lt;/code>することだと考えています。そのためにはまず、 &lt;code>異常とは&lt;/code> を定義するにはどうすれば良いかでいうと、&lt;code>正常とは&lt;/code> から考え始める必要があるかなと思います。&lt;/p>
+&lt;p>例を挙げて説明すると「任意の API リクエスト成功率が、80%である」=「異常」は、正しいか。この質問に対する答えとしては「正しい」とも「正しくない」とも言えないと思います。なぜなら「正常」な状態がわからないから。乱暴な言い方をすると「いつも75%」なのであれば、「正常」となるかもしれません。&lt;/p>
+&lt;p>上記は、比較的わかりやすい例でしたが、日々扱っている複雑なシステムでは、そう簡単ではないケースもあるかと思います。しかし「正常とは何か」という問いが出発点になるのには変わりはないのではなかろうかと思っています。まずは「正常の定義」をしてから、その表現方法の1つとして &amp;ldquo;threshold(閾値)&amp;rdquo; を利用するのが良いかなと思います。後の細かい How に関しては、いろんな記事があるので、省略したい。&lt;/p>
+&lt;h3 id="logs">Logs&lt;/h3>
+&lt;p>Logs で大事にしている・したいことは大きく2つ。&lt;/p>
+&lt;ol>
+&lt;li>ログフォーマット&lt;/li>
+&lt;li>ログのライフサイクル&lt;/li>
+&lt;/ol>
+&lt;h4 id="1-ログフォーマット">1. ログフォーマット&lt;/h4>
+&lt;blockquote>
+&lt;p>そのログ1行で、デバッグしてリリースできるか？&lt;/p>
+&lt;/blockquote>
+&lt;p>ここは、最初の方にもあげた&lt;a href="https://ymotongpoo.hatenablog.com/entry/2019/03/25/084500">他の方のブログ&lt;/a>の中にあった「システムの出力からある時点でのシステムの内部状態を一意に知ることが出来る」が全てという感じですが、ログ1行に対して、どれだけ意味が込められるかは大事にしたいと考えています。例えばでのあるあるは&lt;/p>
+&lt;ul>
+&lt;li>どの version なのかわからない。&lt;/li>
+&lt;li>どこから呼ばれたのかわからない。&lt;/li>
+&lt;/ul>
+&lt;p>ref. &lt;a href="https://newrelic.com/resources/white-papers/log-management-best-practices">https://newrelic.com/resources/white-papers/log-management-best-practices&lt;/a>&lt;/p>
+&lt;h4 id="2-ログのライフサイクル">2. ログのライフサイクル&lt;/h4>
+&lt;blockquote>
+&lt;p>今目の前にあるログは、正しいか？&lt;/p>
+&lt;/blockquote>
+&lt;p>何かインシデントやエラーが発生して調査する際、CloudWatch Logs や Cloud Logging などのIaaSに統合されたサービスを利用したり、ELK Stack などのSaaSを利用したり、様々なツールを使うことが一般的かなと思います。では、&amp;ldquo;目の前にあるログは、正しい&amp;quot;でしょうか？これに対して「正しい」と答えるためには、ログが生成されてから人間が認識するまでのライフサイクルを理解することが大事だと考えます。&lt;/p>
+&lt;h3 id="traces">Traces&lt;/h3>
+&lt;p>よく出てくる参考文献としては以下のようなところがあるので、載せておきます。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://static.googleusercontent.com/media/research.google.com/ja//pubs/archive/36356.pdf">Dapper, a Large-Scale Distributed Systems Tracing Infrastructure&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.twitter.com/engineering/en_us/a/2013/observability-at-twitter">Observability at Twitter&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="observability-の今後について">Observability の今後について&lt;/h2>
+&lt;p>本投稿を書くにあたって、改めて Observability についていろいろ調べてましたが、今後は主に、トレーシングに関して「より広く」「より深く」拡張していくんだろうなという感覚を感じました。今後はそれを見据えて、トレーシングに関しても本格的にやっていきたい。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>より広く&lt;/p>
+&lt;ul>
+&lt;li>OpenTelemetry などによる統一規格の浸透&lt;/li>
+&lt;li>外部サービスとも統合されたトレーシングの実現 etc&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>より深く&lt;/p>
+&lt;ul>
+&lt;li>eBPF を利用した Linux カーネルのパケットも含めたトレーシング etc&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol></description></item><item><title>puppet bolt のディレクトリ構成</title><link>https://blog.jkkitakita.dev/post/202012160020/</link><pubDate>Wed, 16 Dec 2020 00:20:36 +0900</pubDate><guid>https://blog.jkkitakita.dev/post/202012160020/</guid><description>&lt;p>この記事は &lt;a href="https://qiita.com/advent-calendar/2020/puppet">Puppet Advent Calendar 2020 16 日目&lt;/a> の記事です。&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">はじめに&lt;/a>&lt;/li>
 &lt;li>&lt;a href="#puppet-bolt-%E3%81%AE%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E6%A7%8B%E6%88%90">puppet bolt のディレクトリ構成&lt;/a>&lt;/li>
